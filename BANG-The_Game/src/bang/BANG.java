@@ -50,6 +50,20 @@ public class BANG {
         Dice dice4 = new Dice();
         Dice dice5 = new Dice();
         System.out.println(dice1.roll()+ ", " +dice2.roll()+ ", " +dice3.roll()+ ", " +dice4.roll()+ ", " +dice5.roll());
+        
+        //Create role cards
+        Role_Cards card0 = new Role_Cards("Sheriff");
+        Role_Cards card1 = new Role_Cards("Renegade");
+        Role_Cards card2 = new Role_Cards("Outlaw");
+        Role_Cards card3 = new Role_Cards("Outlaw");
+        Role_Cards card4 = new Role_Cards("Deputy");
+        Role_Cards card5 = new Role_Cards("Outlaw");
+        Role_Cards card6 = new Role_Cards("Deputy");
+        Role_Cards card7 = new Role_Cards("Renegade");
+        
+        //Test out character object;
+        Player human = new Player(character5.name, character5.hp, card2.role, false);
+        System.out.println("This player's name is: " + human.name + ", has " + human.health +" hp, and is a " + human.role);
     }
     
 }
