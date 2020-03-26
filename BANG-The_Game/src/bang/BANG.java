@@ -50,6 +50,7 @@ public class BANG {
         Dice dice4 = new Dice(0);
         Dice dice5 = new Dice(0);
         System.out.println(dice1.roll()+ ", " +dice2.roll()+ ", " +dice3.roll()+ ", " +dice4.roll()+ ", " +dice5.roll());
+        System.out.println("Rerolling dice 4 and 5!");
         System.out.println(dice1.keep() + ", " + dice2.keep() + ", " + dice3.keep() + ", " + dice4.roll() + ", " + dice5.roll());
         
         //Create role cards
