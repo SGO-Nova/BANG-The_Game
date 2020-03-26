@@ -44,12 +44,13 @@ public class BANG {
         character2.heal(1);
         System.out.println("Black Jack now has " + character2.hp);
         
-        Dice dice1 = new Dice();
-        Dice dice2 = new Dice();
-        Dice dice3 = new Dice();
-        Dice dice4 = new Dice();
-        Dice dice5 = new Dice();
+        Dice dice1 = new Dice(0);
+        Dice dice2 = new Dice(0);
+        Dice dice3 = new Dice(0);
+        Dice dice4 = new Dice(0);
+        Dice dice5 = new Dice(0);
         System.out.println(dice1.roll()+ ", " +dice2.roll()+ ", " +dice3.roll()+ ", " +dice4.roll()+ ", " +dice5.roll());
+        System.out.println(dice1.keep() + ", " + dice2.keep() + ", " + dice3.keep() + ", " + dice4.roll() + ", " + dice5.roll());
         
         //Create role cards
         Role_Cards card0 = new Role_Cards("Sheriff");
