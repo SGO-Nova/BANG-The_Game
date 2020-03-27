@@ -202,19 +202,19 @@ public class BANG {
         int stop = -1;
         boolean sher = false;
         
-        for(int i = 0; i < 14; i++){
-            if(!(temp_play_order.get(i%7).role.equals("NULL"))){
+        for(int i = 0; i < 16; i++){
+            if(!(temp_play_order.get(i%8).role.equals("NULL"))){
                 if(sher == true){
                     if(i%7 == stop){
                         break;
                     }
                     else{
-                        play_order.add(temp_play_order.get(i%7));
+                        play_order.add(temp_play_order.get(i%8));
                     }
                 }
                 if(sher == false){
-                  if(temp_play_order.get(i%7).role.equals("Sheriff")){
-                    play_order.add(temp_play_order.get(i%7));
+                  if(temp_play_order.get(i%8).role.equals("Sheriff")){
+                    play_order.add(temp_play_order.get(i%8));
                     stop = i;
                     sher = true;
                     }  
