@@ -1,23 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//Ryan Browning
+//CS 2365
+//Project 3
+
+
+
+//main function authors: Ryan Browning
 package bang;
 
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/**
- *
- * @author ryanb
- */
+
 public class BANG {
 
-    /**
-     * @param args the command line arguments
-     */
+
     public static void main(String[] args) {
         //Create character cards, dice, and role cards
         ArrayList<Character_Cards> char_cards = new ArrayList<Character_Cards>();
@@ -63,26 +60,6 @@ public class BANG {
         
         ArrayList<Player> play_order = new ArrayList();
         ArrayList<Player> temp_play_order = new ArrayList();
-        /*Test out character hp damage and heal
-        System.out.println("Bart has " + character1.hp);
-        System.out.println("Black Jack has " + character2.hp);
-        System.out.println("Black Jack shot him");
-        character1.damage(1);
-        System.out.println("Bart now has " + character1.hp);
-        System.out.println("Black Jack still has " + character2.hp);
-        System.out.println("Black Jack drank beer");
-        character2.heal(1);
-        System.out.println("Black Jack now has " + character2.hp);
-        */
-        /* Testing dice rolls
-        System.out.println(dice1.roll()+ ", " +dice2.roll()+ ", " +dice3.roll()+ ", " +dice4.roll()+ ", " +dice5.roll());
-        System.out.println("Rerolling dice 4 and 5!");
-        System.out.println(dice1.keep() + ", " + dice2.keep() + ", " + dice3.keep() + ", " + dice4.roll() + ", " + dice5.roll());
-        */
-        /*Test out character object;
-        Player human = new Player(character5.name, character5.hp, card2.role, false);
-        System.out.println("This player's name is: " + human.name + ", has " + human.health +" hp, and is a " + human.role);
-        */
         
         do{
             System.out.println("How many people do you want to play against? (2-7 AIs)");
@@ -214,6 +191,8 @@ public class BANG {
                 }
                 if(sher == false){
                   if(temp_play_order.get(i%8).role.equals("Sheriff")){
+                    temp_play_order.get(i%8).heal(2);
+                    temp_play_order.get(i%8).shown = true;
                     play_order.add(temp_play_order.get(i%8));
                     stop = i;
                     sher = true;
