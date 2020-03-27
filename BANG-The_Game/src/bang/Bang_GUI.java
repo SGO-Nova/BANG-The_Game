@@ -1,8 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//Authors:Ryan Browning
+
 package bang;
 
 import java.io.FileInputStream; 
@@ -18,10 +15,7 @@ import javafx.scene.Group;
 import javafx.scene.paint.*;
 import javafx.util.Duration;  
 
-/**
- *
- * @author ryanb
- */
+
 public class Bang_GUI extends Application{
     public static void main(String[] args){
         launch(args);
