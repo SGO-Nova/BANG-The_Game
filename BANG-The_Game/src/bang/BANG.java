@@ -205,7 +205,7 @@ public class BANG {
         for(int i = 0; i < 16; i++){
             if(!(temp_play_order.get(i%8).role.equals("NULL"))){
                 if(sher == true){
-                    if(i%7 == stop){
+                    if(i%8 == stop){
                         break;
                     }
                     else{
