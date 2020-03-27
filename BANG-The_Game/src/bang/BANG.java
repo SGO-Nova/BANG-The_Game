@@ -36,11 +36,17 @@ public class BANG {
         char_cards.add(new Character_Cards("Willy The Kid", 8));
         Collections.shuffle(char_cards);
         
-        Dice dice1 = new Dice(0);
-        Dice dice2 = new Dice(0);
-        Dice dice3 = new Dice(0);
-        Dice dice4 = new Dice(0);
-        Dice dice5 = new Dice(0);
+        ArrayList<Dice> dice = new ArrayList();
+        Dice d1 = new Dice(0);
+        Dice d2 = new Dice(0);
+        Dice d3 = new Dice(0);
+        Dice d4 = new Dice(0);
+        Dice d5 = new Dice(0);
+        dice.add(d1);
+        dice.add(d2);
+        dice.add(d3);
+        dice.add(d4);
+        dice.add(d5);
         
         ArrayList<Role_Cards> role_cards = new ArrayList();
 
@@ -207,6 +213,669 @@ public class BANG {
         }
         
         
+        int turns = 0;
+        int arrow = 9;
+        boolean reroll = false;
+        
+        while(turns < 8){
+            int Gat = 0;
+            int BE1 = 0;
+            int BE2 = 0;
+            int total = 0;
+            int Beer = 0;
+            int dynamite = 0;
+            boolean gringo = false;
+            boolean gatAttack = false;
+            
+            System.out.println("_________________________________________________________");
+            String answer;
+            System.out.println(play_order.get(0).name + ", It is your turn!"); 
+            
+            if(play_order.get(0).name.equals("Sid Ketchum")){
+                System.out.println("Choose who you want to gain a health point: ");
+                for(int i = 0; i < play_order.size(); i++){
+                    System.out.println((i+1) + ") " + play_order.get(i).name);
+                }
+                System.out.print("> ");
+                players = scan.nextInt();   
+                play_order.get(players).heal(1);
+            }
+            
+            
+            
+            
+            
+            for(int roll = 0; roll < 5; roll++){
+                dice.get(roll).roll();
+            }
+            
+            for(int rolls = 0;rolls < play_order.get(0).rolls - 1;rolls++){
+                dynamite = 0;
+                reroll = false;
+                System.out.println("Roll " + (rolls+1) + " results:");
+                System.out.println("Dice 1 : " + d1.sides[d1.side]);
+                System.out.println("Dice 2 : " + d2.sides[d2.side]);
+                System.out.println("Dice 3 : " + d3.sides[d3.side]);
+                System.out.println("Dice 4 : " + d4.sides[d4.side]);
+                System.out.println("Dice 5 : " + d5.sides[d5.side]);
+                for(int roll = 0; roll < 5; roll++){
+                    dynamite = 0;
+                    for(int i = 0; i < 5; i++){
+                        if(dice.get(i).sides[dice.get(i).side].equals("Dynamite")){
+                            dynamite++;
+                        }
+                        if(dice.get(i).sides[dice.get(i).side].equals("Arrow")){
+                            arrow--;
+                            play_order.get(0).addArrow(1);
+                            if(arrow == 0){
+                                for(int j = 0; j < play_order.size();j++){
+                                    if(play_order.get(j).name.equals("Joursonnais") && play_order.get(j).arrows > 0){
+                                        play_order.get(j).arrows = 1;
+                                    }
+                                    play_order.get(j).damage(play_order.get(j).arrows);
+                                    play_order.get(j).arrowReset();
+                                    if(play_order.get(j).health <= 0){
+                                        System.out.println(play_order.get(j).name + " has died!");
+                                        play_order.get(j).shown = true;
+                                        play_order.remove(j);
+                                        for(int k = 0; k < play_order.size(); k++){
+                                            if(play_order.get(k).name.equals("Vulture Sam")){
+                                                play_order.get(k).heal(2);
+                                            }
+                                        }
+                                    }
+                                }
+                                arrow = 9;
+                            }
+                        } 
+                    }
+                    if(dynamite >= 3){
+                        break;
+                    }
+                    if(!(dice.get(roll).sides[dice.get(roll).side].equals("Dynamite")) || play_order.get(0).dynamiteReroll == true){
+                        System.out.println("Do you want to reroll dice " + (roll+1) + "? (y/n)");
+                        answer = scan.next();
+                        if(answer.equalsIgnoreCase("yes") || answer.equalsIgnoreCase("y")){
+                            reroll = true;
+                            dice.get(roll).roll();
+                        }
+                    }
+                }
+                if(reroll == false){
+                    break;
+                }
+            }
+            
+            System.out.println("Final results: ");
+            for(int count = 0; count < 5; count++){
+                System.out.println("Dice " + (count+1) + ": " + dice.get(count).sides[dice.get(count).side]);
+                if(dice.get(count).sides[dice.get(count).side].equals("Gatling")){
+                    Gat++;
+                    if(Gat >= play_order.get(0).gatsNeeded){
+                        gatAttack = true;
+                    }
+                    if(play_order.get(0).name.equals("Kit Carlson") && arrow != 9){
+                        System.out.println("Who do you want to remove an arrow from? ");
+                        for(int j = 0; j < play_order.size();j++){
+                            if(play_order.get(j).arrows > 0){
+                                System.out.println((j+1) + ") " + play_order.get(j).name);
+                            }
+                        }
+                        System.out.print("> ");
+                        players = scan.nextInt();   
+                        play_order.get(players).removeArrow(1);
+                        arrow++;
+                    }
+                }
+                if(dice.get(count).sides[dice.get(count).side].equals("Bull's Eye 1")){
+                    BE1++;
+                    total++;
+                }
+                if(dice.get(count).sides[dice.get(count).side].equals("Bull's Eye 2")){
+                    BE2++;
+                    total++;
+                }
+                if(dice.get(count).sides[dice.get(count).side].equals("Beer")){
+                    Beer++;
+                }
+            }
+            if(dynamite >= 3){
+                play_order.get(0).damage(1);
+            }
+            if(gatAttack == true){
+                for(int i = 1; i < play_order.size(); i++){
+                    if(!(play_order.get(i).name.equals("Paul Regret"))){
+                        if(play_order.get(i).name.equals("Bart Cassidy")){
+                            System.out.println("Bart Cassidy: Would you like to take an arrow instead of damage? (y/n)");
+                            System.out.print("> ");
+                            answer = scan.next();
+                            if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
+                                play_order.get(i).addArrow(1);
+                                arrow--;
+                                if(arrow == 0){
+                                    for(int j = 0; j < play_order.size();j++){
+                                        if(play_order.get(j).name.equals("Joursonnais") && play_order.get(j).arrows > 0){
+                                            play_order.get(j).arrows = 1;
+                                        }
+                                        play_order.get(j).damage(play_order.get(j).arrows);
+                                        play_order.get(j).arrowReset();
+                                        if(play_order.get(j).health <= 0){
+                                            System.out.println(play_order.get(j).name + " has died!");
+                                            play_order.get(j).shown = true;
+                                            play_order.remove(j);
+                                            for(int k = 0; k < play_order.size(); k++){
+                                                if(play_order.get(k).name.equals("Vulture Sam")){
+                                                    play_order.get(k).heal(2);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    arrow = 9;
+                                }
+                            }
+                            else{
+                               play_order.get(i).damage(1);
+                            }
+                        }
+                        else{
+                            play_order.get(i).damage(1);
+                            if(play_order.get(i).name.equals("Pedro Ramirez") && play_order.get(i).arrows > 0 && play_order.get(i).health != 0){
+                                play_order.get(i).removeArrow(1);
+                            }
+                            if(play_order.get(i).name.equals("El Gringo") && play_order.get(i).health != 0){
+                                play_order.get(0).addArrow(1);
+                                arrow--;
+                                if(arrow == 0){
+                                    for(int j = 0; j < play_order.size();j++){
+                                        if(play_order.get(j).name.equals("Joursonnais") && play_order.get(j).arrows > 0){
+                                            play_order.get(j).arrows = 1;
+                                        }
+                                        play_order.get(j).damage(play_order.get(j).arrows);
+                                        play_order.get(j).arrowReset();
+                                        if(play_order.get(j).health <= 0){
+                                            System.out.println(play_order.get(j).name + " has died!");
+                                            play_order.get(j).shown = true;
+                                            play_order.remove(j);
+                                            for(int k = 0; k < play_order.size(); k++){
+                                                if(play_order.get(k).name.equals("Vulture Sam")){
+                                                    play_order.get(k).heal(2);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    arrow = 9;
+                                }
+                                gringo = true;
+                            }
+                        }
+                        if(play_order.get(i).health <= 0){
+                            System.out.println(play_order.get(i).name + " has died!");
+                            play_order.get(i).shown = true;
+                            play_order.remove(i);
+                            for(int k = 0; k < play_order.size(); k++){
+                                if(play_order.get(k).name.equals("Vulture Sam")){
+                                    play_order.get(k).heal(2);
+                                }
+                            }
+                        }  
+                    }
+                }
+            }
+            
+            int arr[];
+            if(play_order.get(0).name.equals("Calamity Janet")){
+                System.out.println("You have " + total + " shots!");
+                arr = new int[total];
+                for(int i = 0; i < total; i++){
+                    System.out.println("Where do you want shot number " + (i+1) + " to go?");
+                    System.out.println("1) " + play_order.get(1).name);
+                    if(play_order.get(1) != play_order.get(2) && play_order.get(0) != play_order.get(2))
+                        System.out.println("2) " + play_order.get(2).name);
+                    if(play_order.get((play_order.size()-1)) != play_order.get(2) && play_order.get((play_order.size()-1)) != play_order.get(1) && play_order.get((play_order.size()-1)) != play_order.get(0))
+                        System.out.println((play_order.size()-1) + ") " + play_order.get((play_order.size()-1)).name);
+                    if(play_order.get((play_order.size()-2)) != play_order.get(2) && play_order.get((play_order.size()-2)) != play_order.get(1) && play_order.get((play_order.size()-2)) != play_order.get(0) && play_order.get((play_order.size()-2)) != play_order.get((play_order.size()-1)))
+                        System.out.println((play_order.size()-2) + ") " + play_order.get((play_order.size()-2)).name);
+                    System.out.print("> ");
+                    players = scan.nextInt();
+                    arr[i] = players;
+                }
+                for(int j = 0; j < arr.length; j++){
+                    if(play_order.get(arr[j]).name.equals("Bart Cassidy")){
+                            System.out.println("Bart Cassidy: Would you like to take an arrow instead of damage? (y/n)");
+                            System.out.print("> ");
+                            answer = scan.next();
+                            if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
+                                play_order.get(j).addArrow(1);
+                                arrow--;
+                                if(arrow == 0){
+                                    for(int k = 0; k < play_order.size();k++){
+                                        if(play_order.get(k).name.equals("Joursonnais") && play_order.get(k).arrows > 0){
+                                            play_order.get(k).arrows = 1;
+                                        }
+                                        play_order.get(k).damage(play_order.get(k).arrows);
+                                        play_order.get(k).arrowReset();
+                                        if(play_order.get(k).health <= 0){
+                                            System.out.println(play_order.get(k).name + " has died!");
+                                            play_order.get(k).shown = true;
+                                            play_order.remove(k);
+                                            for(int l = 0; l < play_order.size(); l++){
+                                                if(play_order.get(l).name.equals("Vulture Sam")){
+                                                    play_order.get(l).heal(2);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    arrow = 9;
+                                }
+                            }
+                            else{
+                               play_order.get(arr[j]).damage(1);
+                            }
+                        }
+                    else{
+                        play_order.get(arr[j]).damage(1);
+                        if(play_order.get(arr[j]).name.equals("Pedro Ramirez") && play_order.get(arr[j]).arrows > 0 && play_order.get(arr[j]).health != 0){
+                            play_order.get(arr[j]).removeArrow(1);
+                        }
+                        if(play_order.get(arr[j]).name.equals("El Gringo") && play_order.get(arr[j]).health != 0 && gringo == false){
+                            play_order.get(0).addArrow(1);
+                            arrow--;
+                            if(arrow == 0){
+                                for(int l = 0; l < play_order.size();l++){
+                                    if(play_order.get(l).name.equals("Joursonnais") && play_order.get(l).arrows > 0){
+                                        play_order.get(l).arrows = 1;
+                                    }
+                                    play_order.get(l).damage(play_order.get(l).arrows);
+                                    play_order.get(l).arrowReset();
+                                    if(play_order.get(l).health <= 0){
+                                        System.out.println(play_order.get(l).name + " has died!");
+                                        play_order.get(l).shown = true;
+                                        play_order.remove(l);
+                                        for(int k = 0; k < play_order.size(); k++){
+                                            if(play_order.get(k).name.equals("Vulture Sam")){
+                                                play_order.get(k).heal(2);
+                                            }
+                                        }
+                                    }
+                                }
+                                arrow = 9;
+                            }
+                            gringo = true;
+                        }
+                    }
+                }
+            }
+            
+            else{
+                if(BE1 > 0){
+                    if(play_order.get(0).name.equals("Rose Doolan")){
+                        System.out.println("You have " + BE1 + " one/two distance shots!");
+                        arr = new int[BE1];
+                        for(int i = 0; i < BE1; i++){
+                            System.out.println("Where do you want shot number " + (i+1) + " to go?");
+                            System.out.println("1) " + play_order.get(1).name);
+                            if(play_order.get(1) != play_order.get(2) && play_order.get(0) != play_order.get(2))
+                                System.out.println("2) " + play_order.get(2).name);
+                            if(play_order.get((play_order.size()-1)) != play_order.get(2) && play_order.get((play_order.size()-1)) != play_order.get(1) && play_order.get((play_order.size()-1)) != play_order.get(0))
+                                System.out.println((play_order.size()-1) + ") " + play_order.get((play_order.size()-1)).name);
+                            if(play_order.get((play_order.size()-2)) != play_order.get(2) && play_order.get((play_order.size()-2)) != play_order.get(1) && play_order.get((play_order.size()-2)) != play_order.get(0) && play_order.get((play_order.size()-2)) != play_order.get((play_order.size()-1)))
+                                System.out.println((play_order.size()-2) + ") " + play_order.get((play_order.size()-2)).name);
+                            System.out.print("> ");
+                            players = scan.nextInt();
+                            arr[i] = players; 
+                        }
+                        for(int j = 0; j < arr.length; j++){
+                            if(play_order.get(arr[j]).name.equals("Bart Cassidy")){
+                                    System.out.println("Bart Cassidy: Would you like to take an arrow instead of damage? (y/n)");
+                                    System.out.print("> ");
+                                    answer = scan.next();
+                                    if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
+                                        play_order.get(j).addArrow(1);
+                                        arrow--;
+                                        if(arrow == 0){
+                                            for(int k = 0; k < play_order.size();k++){
+                                                if(play_order.get(k).name.equals("Joursonnais") && play_order.get(k).arrows > 0){
+                                                    play_order.get(k).arrows = 1;
+                                                }
+                                                play_order.get(k).damage(play_order.get(k).arrows);
+                                                play_order.get(k).arrowReset();
+                                                if(play_order.get(k).health <= 0){
+                                                    System.out.println(play_order.get(k).name + " has died!");
+                                                    play_order.get(k).shown = true;
+                                                    play_order.remove(k);
+                                                    for(int l = 0; l < play_order.size(); l++){
+                                                        if(play_order.get(l).name.equals("Vulture Sam")){
+                                                            play_order.get(l).heal(2);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            arrow = 9;
+                                        }
+                                    }
+                                    else{
+                                       play_order.get(arr[j]).damage(1);
+                                    }
+                                }
+                            else{
+                                if(play_order.get(0).name.equals("Slab The Killer") && Beer > 0){
+                                    System.out.println("Slab: Do you want to use a Beer for double damage on " + play_order.get(arr[j]) + "?");
+                                    System.out.print("> ");
+                                    answer = scan.next();
+                                    if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
+                                        play_order.get(arr[j]).damage(2);
+                                        Beer--;
+                                    }
+                                    else{
+                                        play_order.get(arr[j]).damage(1);
+                                    }
+                                }
+                                else{
+                                    play_order.get(arr[j]).damage(1);
+                                }
+                                if(play_order.get(arr[j]).name.equals("Pedro Ramirez") && play_order.get(arr[j]).arrows > 0 && play_order.get(arr[j]).health != 0){
+                                    play_order.get(arr[j]).removeArrow(1);
+                                }
+                                if(play_order.get(arr[j]).name.equals("El Gringo") && play_order.get(arr[j]).health != 0 && gringo == false){
+                                    play_order.get(0).addArrow(1);
+                                    arrow--;
+                                    if(arrow == 0){
+                                        for(int l = 0; l < play_order.size();l++){
+                                            if(play_order.get(l).name.equals("Joursonnais") && play_order.get(l).arrows > 0){
+                                                play_order.get(l).arrows = 1;
+                                            }
+                                            play_order.get(l).damage(play_order.get(l).arrows);
+                                            play_order.get(l).arrowReset();
+                                            if(play_order.get(l).health <= 0){
+                                                System.out.println(play_order.get(l).name + " has died!");
+                                                play_order.get(l).shown = true;
+                                                play_order.remove(l);
+                                                for(int k = 0; k < play_order.size(); k++){
+                                                    if(play_order.get(k).name.equals("Vulture Sam")){
+                                                        play_order.get(k).heal(2);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        arrow = 9;
+                                    }
+                                    gringo = true;
+                                }
+                            }
+                        }
+                    }
+                    else{ 
+                        System.out.println("You have " + BE1 + " one distance shots!");
+                        arr = new int[BE1];
+                        for(int i = 0; i < BE1; i++){
+                            System.out.println("Where do you want shot number " + (i+1) + " to go?");
+                            System.out.println("1) " + play_order.get(1).name);
+                            if(play_order.get((play_order.size()-1)) != play_order.get(1) && play_order.get((play_order.size()-1)) != play_order.get(0))
+                                System.out.println((play_order.size()-1) + ") " + play_order.get((play_order.size()-1)).name);
+                            System.out.print("> ");
+                            players = scan.nextInt();
+                            arr[i] = players; 
+                        }
+                        for(int j = 0; j < arr.length; j++){
+                            if(play_order.get(arr[j]).name.equals("Bart Cassidy")){
+                                    System.out.println("Bart Cassidy: Would you like to take an arrow instead of damage? (y/n)");
+                                    System.out.print("> ");
+                                    answer = scan.next();
+                                    if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
+                                        play_order.get(j).addArrow(1);
+                                        arrow--;
+                                        if(arrow == 0){
+                                            for(int k = 0; k < play_order.size();k++){
+                                                if(play_order.get(k).name.equals("Joursonnais") && play_order.get(k).arrows > 0){
+                                                    play_order.get(k).arrows = 1;
+                                                }
+                                                play_order.get(k).damage(play_order.get(k).arrows);
+                                                play_order.get(k).arrowReset();
+                                                if(play_order.get(k).health <= 0){
+                                                    System.out.println(play_order.get(k).name + " has died!");
+                                                    play_order.get(k).shown = true;
+                                                    play_order.remove(k);
+                                                    for(int l = 0; l < play_order.size(); l++){
+                                                        if(play_order.get(l).name.equals("Vulture Sam")){
+                                                            play_order.get(l).heal(2);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            arrow = 9;
+                                        }
+                                    }
+                                    else{
+                                       play_order.get(arr[j]).damage(1);
+                                    }
+                                }
+                            else{
+                                play_order.get(arr[j]).damage(1);
+                                if(play_order.get(arr[j]).name.equals("Pedro Ramirez") && play_order.get(arr[j]).arrows > 0 && play_order.get(arr[j]).health != 0){
+                                    play_order.get(arr[j]).removeArrow(1);
+                                }
+                                if(play_order.get(arr[j]).name.equals("El Gringo") && play_order.get(arr[j]).health != 0 && gringo == false){
+                                    play_order.get(0).addArrow(1);
+                                    arrow--;
+                                    if(arrow == 0){
+                                        for(int l = 0; l < play_order.size();l++){
+                                            if(play_order.get(l).name.equals("Joursonnais") && play_order.get(l).arrows > 0){
+                                                play_order.get(l).arrows = 1;
+                                            }
+                                            play_order.get(l).damage(play_order.get(l).arrows);
+                                            play_order.get(l).arrowReset();
+                                            if(play_order.get(l).health <= 0){
+                                                System.out.println(play_order.get(l).name + " has died!");
+                                                play_order.get(l).shown = true;
+                                                play_order.remove(l);
+                                                for(int k = 0; k < play_order.size(); k++){
+                                                    if(play_order.get(k).name.equals("Vulture Sam")){
+                                                        play_order.get(k).heal(2);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        arrow = 9;
+                                    }
+                                    gringo = true;
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+                if(BE2 > 0 && play_order.size() > 2){
+                    if(play_order.get(0).name.equals("Rose Doolan")){
+                        System.out.println("You have " + BE2 + " two/three distance shots!");
+                        arr = new int[BE2];
+                        for(int i = 0; i < BE2; i++){
+                            System.out.println("Where do you want shot number " + (i+1) + " to go?");
+                            System.out.println("2) " + play_order.get(2).name);
+                            if(play_order.get(2) != play_order.get(3) && play_order.get(0) != play_order.get(3))
+                                System.out.println("3) " + play_order.get(3).name);
+                            if(play_order.get((play_order.size()-2)) != play_order.get(3) && play_order.get((play_order.size()-2)) != play_order.get(2) && play_order.get((play_order.size()-2)) != play_order.get(0))
+                                System.out.println((play_order.size()-2) + ") " + play_order.get((play_order.size()-2)).name);
+                            if(play_order.get((play_order.size()-3)) != play_order.get(3) && play_order.get((play_order.size()-3)) != play_order.get(2) && play_order.get((play_order.size()-3)) != play_order.get(0) && play_order.get((play_order.size()-3)) != play_order.get((play_order.size()-2)))
+                                System.out.println((play_order.size()-3) + ") " + play_order.get((play_order.size()-3)).name);
+                            System.out.print("> ");
+                            players = scan.nextInt();
+                            arr[i] = players; 
+                        }
+                        for(int j = 0; j < arr.length; j++){
+                            if(play_order.get(arr[j]).name.equals("Bart Cassidy")){
+                                    System.out.println("Bart Cassidy: Would you like to take an arrow instead of damage? (y/n)");
+                                    System.out.print("> ");
+                                    answer = scan.next();
+                                    if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
+                                        play_order.get(j).addArrow(1);
+                                        arrow--;
+                                        if(arrow == 0){
+                                            for(int k = 0; k < play_order.size();k++){
+                                                if(play_order.get(k).name.equals("Joursonnais") && play_order.get(k).arrows > 0){
+                                                    play_order.get(k).arrows = 1;
+                                                }
+                                                play_order.get(k).damage(play_order.get(k).arrows);
+                                                play_order.get(k).arrowReset();
+                                                if(play_order.get(k).health <= 0){
+                                                    System.out.println(play_order.get(k).name + " has died!");
+                                                    play_order.get(k).shown = true;
+                                                    play_order.remove(k);
+                                                    for(int l = 0; l < play_order.size(); l++){
+                                                        if(play_order.get(l).name.equals("Vulture Sam")){
+                                                            play_order.get(l).heal(2);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            arrow = 9;
+                                        }
+                                    }
+                                    else{
+                                       play_order.get(arr[j]).damage(1);
+                                    }
+                                }
+                            else{
+                                play_order.get(arr[j]).damage(1);
+                                if(play_order.get(arr[j]).name.equals("Pedro Ramirez") && play_order.get(arr[j]).arrows > 0 && play_order.get(arr[j]).health != 0){
+                                    play_order.get(arr[j]).removeArrow(1);
+                                }
+                                if(play_order.get(arr[j]).name.equals("El Gringo") && play_order.get(arr[j]).health != 0 && gringo == false){
+                                    play_order.get(0).addArrow(1);
+                                    arrow--;
+                                    if(arrow == 0){
+                                        for(int l = 0; l < play_order.size();l++){
+                                            if(play_order.get(l).name.equals("Joursonnais") && play_order.get(l).arrows > 0){
+                                                play_order.get(l).arrows = 1;
+                                            }
+                                            play_order.get(l).damage(play_order.get(l).arrows);
+                                            play_order.get(l).arrowReset();
+                                            if(play_order.get(l).health <= 0){
+                                                System.out.println(play_order.get(l).name + " has died!");
+                                                play_order.get(l).shown = true;
+                                                play_order.remove(l);
+                                                for(int k = 0; k < play_order.size(); k++){
+                                                    if(play_order.get(k).name.equals("Vulture Sam")){
+                                                        play_order.get(k).heal(2);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        arrow = 9;
+                                    }
+                                    gringo = true;
+                                }
+                            }
+                        }
+                    }
+                    else{ 
+                        System.out.println("You have " + BE2 + " two distance shots!");
+                        arr = new int[BE2];
+                        for(int i = 0; i < BE2; i++){
+                            System.out.println("Where do you want shot number " + (i+1) + " to go?");
+                            System.out.println("2) " + play_order.get(2).name);
+                            if(play_order.get((play_order.size()-2)) != play_order.get(1) && play_order.get((play_order.size()-2)) != play_order.get(0))
+                                System.out.println((play_order.size()-2) + ") " + play_order.get((play_order.size()-2)).name);
+                            System.out.print("> ");
+                            players = scan.nextInt();
+                            arr[i] = players; 
+                        }
+                        for(int j = 0; j < arr.length; j++){
+                            if(play_order.get(arr[j]).name.equals("Bart Cassidy")){
+                                    System.out.println("Bart Cassidy: Would you like to take an arrow instead of damage? (y/n)");
+                                    System.out.print("> ");
+                                    answer = scan.next();
+                                    if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
+                                        play_order.get(j).addArrow(1);
+                                        arrow--;
+                                        if(arrow == 0){
+                                            for(int k = 0; k < play_order.size();k++){
+                                                if(play_order.get(k).name.equals("Joursonnais") && play_order.get(k).arrows > 0){
+                                                    play_order.get(k).arrows = 1;
+                                                }
+                                                play_order.get(k).damage(play_order.get(k).arrows);
+                                                play_order.get(k).arrowReset();
+                                                if(play_order.get(k).health <= 0){
+                                                    System.out.println(play_order.get(k).name + " has died!");
+                                                    play_order.get(k).shown = true;
+                                                    play_order.remove(k);
+                                                    for(int l = 0; l < play_order.size(); l++){
+                                                        if(play_order.get(l).name.equals("Vulture Sam")){
+                                                            play_order.get(l).heal(2);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            arrow = 9;
+                                        }
+                                    }
+                                    else{
+                                       play_order.get(arr[j]).damage(1);
+                                    }
+                                }
+                            else{
+                                if(play_order.get(0).name.equals("Slab The Killer") && Beer > 0){
+                                    System.out.println("Slab: Do you want to use a Beer for double damage on " + play_order.get(arr[j]) + "?");
+                                    System.out.print("> ");
+                                    answer = scan.next();
+                                    if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
+                                        play_order.get(arr[j]).damage(2);
+                                        Beer--;
+                                    }
+                                    else{
+                                        play_order.get(arr[j]).damage(1);
+                                    }
+                                }
+                                else{
+                                    play_order.get(arr[j]).damage(1);
+                                }
+                                if(play_order.get(arr[j]).name.equals("Pedro Ramirez") && play_order.get(arr[j]).arrows > 0 && play_order.get(arr[j]).health != 0){
+                                    play_order.get(arr[j]).removeArrow(1);
+                                }
+                                if(play_order.get(arr[j]).name.equals("El Gringo") && play_order.get(arr[j]).health != 0 && gringo == false){
+                                    play_order.get(0).addArrow(1);
+                                    arrow--;
+                                    if(arrow == 0){
+                                        for(int l = 0; l < play_order.size();l++){
+                                            if(play_order.get(l).name.equals("Joursonnais") && play_order.get(l).arrows > 0){
+                                                play_order.get(l).arrows = 1;
+                                            }
+                                            play_order.get(l).damage(play_order.get(l).arrows);
+                                            play_order.get(l).arrowReset();
+                                            if(play_order.get(l).health <= 0){
+                                                System.out.println(play_order.get(l).name + " has died!");
+                                                play_order.get(l).shown = true;
+                                                play_order.remove(l);
+                                                for(int k = 0; k < play_order.size(); k++){
+                                                    if(play_order.get(k).name.equals("Vulture Sam")){
+                                                        play_order.get(k).heal(2);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        arrow = 9;
+                                    }
+                                    gringo = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if(play_order.get(0).name.equals("Jesse Jones") && play_order.get(0).health <=4){
+                Beer *= 2;
+            }
+            play_order.get(0).heal(Beer);
+            if(BE1 == 0 && BE2 == 0){
+                if(play_order.get(0).name.equals("Suzy Lafayette")){
+                    play_order.get(0).heal(2);
+                }
+            }
+            
+            play_order.add(play_order.get(0));
+            play_order.remove(play_order.get(0));
+            turns++;
+        }
+        
+        
     }
-    
 }
