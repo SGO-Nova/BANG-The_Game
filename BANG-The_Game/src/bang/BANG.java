@@ -45,7 +45,7 @@ public class BANG {
         Dice dice4 = new Dice(0);
         Dice dice5 = new Dice(0);
         
-        ArrayList<Role_Cards> role_cards = new ArrayList<Role_Cards>();
+        ArrayList<Role_Cards> role_cards = new ArrayList();
 
         Scanner scan;
         scan = new Scanner(System.in);
@@ -61,7 +61,8 @@ public class BANG {
         Player ai7 = new Player("NLUL", 0, "NULL", true);
 
         
-        
+        ArrayList<Player> play_order = new ArrayList();
+        ArrayList<Player> temp_play_order = new ArrayList();
         /*Test out character hp damage and heal
         System.out.println("Bart has " + character1.hp);
         System.out.println("Black Jack has " + character2.hp);
@@ -173,6 +174,9 @@ public class BANG {
                     ai6 = new Player(char_cards.get(6).name, char_cards.get(6).hp, role_cards.get(6).role, true);
                     ai7 = new Player(char_cards.get(7).name, char_cards.get(7).hp, role_cards.get(7).role, true);
                     break;
+                default:
+                    System.out.println("Please pick a number between 2 and 7!");
+                    break;
             }
         }while(players < 2 || players > 7);
         System.out.println("_________________________________________________________");
@@ -184,6 +188,44 @@ public class BANG {
         System.out.println("AI5 is " + ai5.name + ", has " + ai5.health + ", and is a " + ai5.role);
         System.out.println("AI6 is " + ai6.name + ", has " + ai6.health + ", and is a " + ai6.role);
         System.out.println("AI7 is " + ai7.name + ", has " + ai7.health + ", and is a " + ai7.role);
+        System.out.println("_________________________________________________________");
+        
+        temp_play_order.add(human);
+        temp_play_order.add(ai1);
+        temp_play_order.add(ai2);
+        temp_play_order.add(ai3);
+        temp_play_order.add(ai4);
+        temp_play_order.add(ai5);
+        temp_play_order.add(ai6);
+        temp_play_order.add(ai7);
+        
+        int stop = -1;
+        boolean sher = false;
+        
+        for(int i = 0; i < 14; i++){
+            if(!(temp_play_order.get(i%7).role.equals("NULL"))){
+                if(sher == true){
+                    if(i%7 == stop){
+                        break;
+                    }
+                    else{
+                        play_order.add(temp_play_order.get(i%7));
+                    }
+                }
+                if(sher == false){
+                  if(temp_play_order.get(i%7).role.equals("Sheriff")){
+                    play_order.add(temp_play_order.get(i%7));
+                    stop = i;
+                    sher = true;
+                    }  
+                }
+                
+            }
+        }
+        System.out.println("The play order is: ");
+        for(int j = 0; j < play_order.size(); j++){
+            System.out.println((j+1) + ") " + play_order.get(j).name);
+        }
         
         
     }

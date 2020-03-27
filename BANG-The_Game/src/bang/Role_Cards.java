@@ -15,8 +15,15 @@ package bang;
 
 public class Role_Cards {
     public String role;
+    public boolean shown;
     
     public Role_Cards(String role){
         this.role = role;
+        this.shown = false;
+    }
+    
+    public void revealRole(){
+        this.shown = true;
+        
     }
 }
