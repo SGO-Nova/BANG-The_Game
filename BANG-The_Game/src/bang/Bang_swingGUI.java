@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Shafat Rakin
+ * CS 2365-001
+ * This file implements a GUI using java.swing
  */
 
 package bang;
