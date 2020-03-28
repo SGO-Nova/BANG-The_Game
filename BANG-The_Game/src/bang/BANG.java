@@ -1473,7 +1473,6 @@ public class BANG {
 /*
 
 1. Impliment actual AI and not randomness
-2. Go find where indian arrows don't get checked
 3. Fix 2-distance shots
 4. Fix bull's eye numbering
 

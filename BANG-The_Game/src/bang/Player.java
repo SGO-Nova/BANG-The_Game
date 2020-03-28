@@ -15,6 +15,7 @@ public class Player {
     boolean dynamiteReroll = false;
     int rolls = 3;
     int gatsNeeded = 3;
+    int team;
     public boolean shown;
     
     public Player(String name, int health, String role, boolean comp){
@@ -35,6 +36,15 @@ public class Player {
         }
         if(this.name.equals("Willy The Kid")){
             this.gatsNeeded = 2;
+        }
+        if(this.role.equals("Sheriff") || this.role.equals("Deputy")){
+            this.team = 0;
+        }
+        else if(this.role.equals("Outlaw")){
+            this.team = 1;
+        }
+        else if(this.role.equals("Renegade")){
+            this.team = 2;
         }
     }
     
