@@ -24,7 +24,7 @@ public class Player {
         this.role = role;
         this.computer = comp;
         this.s_bul = health%3;
-        this.t_bul = health - this.s_bul;
+        this.t_bul = (health - this.s_bul) / 3;
         this.arrows = 0;
         this.shown = false;
         if(this.name.equals("Black Jack")){
@@ -40,7 +40,7 @@ public class Player {
     
     public void bulletUpdate(){
         this.s_bul = this.health%3;
-        this.t_bul = this.health - this.s_bul;
+        this.t_bul = (this.health - this.s_bul) / 3;
     }
     
     public void addArrow(int number){

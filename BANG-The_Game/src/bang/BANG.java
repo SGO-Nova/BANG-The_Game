@@ -10,6 +10,8 @@ package bang;
 import java.util.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 
 public class BANG {
@@ -53,6 +55,7 @@ public class BANG {
         Scanner scan;
         scan = new Scanner(System.in);
         int players;
+        boolean test = false;
         Random rand = new Random();
         Player human = new Player("NULL",0,"NULL",false);
         Player ai1 = new Player("NLUL", 0, "NULL", true);
@@ -70,7 +73,16 @@ public class BANG {
         do{
             System.out.println("How many people do you want to play against? (2-7 AIs)");
             System.out.print("> ");
-            players = scan.nextInt();
+            players = 0;
+            do{
+                try{
+                    players = scan.nextInt();
+                    test = true;
+                }
+                catch (Exception a){
+                    System.out.println("Please give a number");
+                }
+            }while(!test);
 
             switch(players){
                 case 2: 
@@ -185,39 +197,78 @@ public class BANG {
         int stop = -1;
         boolean sher = false;
         
-        for(int i = 0; i < 16; i++){
-            if(!(temp_play_order.get(i%8).role.equals("NULL"))){
-                if(sher == true){
-                    if(i%8 == stop){
-                        break;
+        if(players != 2){
+            for(int i = 0; i < 16; i++){
+                if(!(temp_play_order.get(i%8).role.equals("NULL"))){
+                    if(sher == true){
+                        if(i%8 == stop){
+                            break;
+                        }
+                        else{
+                            play_order.add(temp_play_order.get(i%8));
+                        }
                     }
-                    else{
+                    if(sher == false){
+                      if(temp_play_order.get(i%8).role.equals("Sheriff")){
+                        temp_play_order.get(i%8).heal(2);
+                        temp_play_order.get(i%8).shown = true;
                         play_order.add(temp_play_order.get(i%8));
+                        stop = i;
+                        sher = true;
+                        }  
                     }
+
                 }
-                if(sher == false){
-                  if(temp_play_order.get(i%8).role.equals("Sheriff")){
-                    temp_play_order.get(i%8).heal(2);
-                    temp_play_order.get(i%8).shown = true;
-                    play_order.add(temp_play_order.get(i%8));
-                    stop = i;
-                    sher = true;
-                    }  
+            }
+        }
+        else{
+            for(int i = 0; i < 16; i++){
+                if(!(temp_play_order.get(i%8).role.equals("NULL"))){
+                    if(sher == true){
+                        if(i%8 == stop){
+                            break;
+                        }
+                        else{
+                            temp_play_order.get(i%8).shown = true;
+                            play_order.add(temp_play_order.get(i%8));
+                        }
+                    }
+                    if(sher == false){
+                      if(temp_play_order.get(i%8).role.equals("Deputy")){
+                        temp_play_order.get(i%8).shown = true;
+                        play_order.add(temp_play_order.get(i%8));
+                        stop = i;
+                        sher = true;
+                        }  
+                    }
+
                 }
-                
             }
         }
         System.out.println("The play order is: ");
         for(int j = 0; j < play_order.size(); j++){
             System.out.println((j+1) + ") " + play_order.get(j).name);
         }
+        System.out.println("_________________________________________________________");
         
         
-        int turns = 0;
         int arrow = 9;
-        boolean reroll = false;
+        boolean reroll;
+        ArrayList<Integer> list = new ArrayList();
         
-        while(turns < 8){
+        
+        int total_players = play_order.size();
+        
+        try{
+            System.out.println("LET'S PLAY!!!");
+            TimeUnit.SECONDS.sleep(5);
+        }
+        catch(InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
+        }
+        
+        while(play_order.size() > 1){
             int Gat = 0;
             int BE1 = 0;
             int BE2 = 0;
@@ -227,18 +278,57 @@ public class BANG {
             boolean gringo = false;
             boolean gatAttack = false;
             
+            
+            System.out.println("_________________________________________________________");
+            for(int i = 0; i < total_players; i++){
+              System.out.println(temp_play_order.get(i).name + ": "); 
+              System.out.print("\tHealth: " + temp_play_order.get(i).health + ", Triple: " + temp_play_order.get(i).t_bul + ", Single: " + temp_play_order.get(i).s_bul + ", Arrows: " + temp_play_order.get(i).arrows + ", Shown: " + temp_play_order.get(i).shown); 
+              if(temp_play_order.get(i).shown == true){
+                  System.out.println(" Role: " + temp_play_order.get(i).role);
+              }
+              else{
+                  System.out.println("");
+              }
+            }
+            System.out.println("Arrows in the middle: " + arrow);
+            
             System.out.println("_________________________________________________________");
             String answer;
             System.out.println(play_order.get(0).name + ", It is your turn!"); 
-            
+            list.clear();
             if(play_order.get(0).name.equals("Sid Ketchum")){
                 System.out.println("Choose who you want to gain a health point: ");
                 for(int i = 0; i < play_order.size(); i++){
                     System.out.println((i+1) + ") " + play_order.get(i).name);
+                    list.add(i+1);
                 }
                 System.out.print("> ");
-                players = scan.nextInt();   
-                play_order.get(players).heal(1);
+                do{
+                    try{
+                        if(play_order.get(0).computer == true){
+                            Random random = new Random();  
+                            players = (random.nextInt(10000000)%list.size());
+                            players = list.get(players);
+                            System.out.println(players);
+                            try{
+                                TimeUnit.SECONDS.sleep(2);
+                            }
+                            catch(InterruptedException ex)
+                            {
+                                Thread.currentThread().interrupt();
+                            }
+                        }
+                        else{
+                            players = scan.nextInt();
+                        }
+                        test = true;
+                    }
+                    catch (Exception a){
+                        System.out.println("Please give a number");
+                    }
+                }while(!test);
+                play_order.get(players-1).heal(1);
+                System.out.print("Sid healed: " + play_order.get(players-1));
             }
             
             
@@ -258,43 +348,61 @@ public class BANG {
                 System.out.println("Dice 3 : " + d3.sides[d3.side]);
                 System.out.println("Dice 4 : " + d4.sides[d4.side]);
                 System.out.println("Dice 5 : " + d5.sides[d5.side]);
-                for(int roll = 0; roll < 5; roll++){
-                    dynamite = 0;
-                    for(int i = 0; i < 5; i++){
-                        if(dice.get(i).sides[dice.get(i).side].equals("Dynamite")){
-                            dynamite++;
-                        }
-                        if(dice.get(i).sides[dice.get(i).side].equals("Arrow")){
-                            arrow--;
-                            play_order.get(0).addArrow(1);
-                            if(arrow == 0){
-                                for(int j = 0; j < play_order.size();j++){
-                                    if(play_order.get(j).name.equals("Joursonnais") && play_order.get(j).arrows > 0){
-                                        play_order.get(j).arrows = 1;
-                                    }
-                                    play_order.get(j).damage(play_order.get(j).arrows);
-                                    play_order.get(j).arrowReset();
-                                    if(play_order.get(j).health <= 0){
-                                        System.out.println(play_order.get(j).name + " has died!");
-                                        play_order.get(j).shown = true;
-                                        play_order.remove(j);
-                                        for(int k = 0; k < play_order.size(); k++){
-                                            if(play_order.get(k).name.equals("Vulture Sam")){
-                                                play_order.get(k).heal(2);
-                                            }
+                for(int i = 0; i < 5; i++){
+                    if(dice.get(i).sides[dice.get(i).side].equals("Dynamite")){
+                        dynamite++;
+                    }
+                    if(dice.get(i).sides[dice.get(i).side].equals("Indian Arrow")){
+                        arrow--;
+                        play_order.get(0).addArrow(1);
+                        if(arrow == 0){
+                            System.out.println("The Indians have attacked!");
+                            for(int j = 0; j < play_order.size();j++){
+                                if(play_order.get(j).name.equals("Joursonnais") && play_order.get(j).arrows > 0){
+                                    play_order.get(j).arrows = 1;
+                                }
+                                play_order.get(j).damage(play_order.get(j).arrows);
+                                play_order.get(j).arrowReset();
+                                if(play_order.get(j).health <= 0){
+                                    System.out.println(play_order.get(j).name + " has died!");
+                                    play_order.get(j).shown = true;
+                                    for(int k = 0; k < play_order.size(); k++){
+                                        if(play_order.get(k).name.equals("Vulture Sam") && !(play_order.get(j).name.equals("Vulture Sam"))){
+                                            play_order.get(k).heal(2);
                                         }
                                     }
+                                    play_order.remove(j);
                                 }
-                                arrow = 9;
                             }
-                        } 
-                    }
+                            arrow = 9;
+                        }
+                    } 
+                }
+                for(int roll = 0; roll < 5; roll++){
                     if(dynamite >= 3){
                         break;
                     }
                     if(!(dice.get(roll).sides[dice.get(roll).side].equals("Dynamite")) || play_order.get(0).dynamiteReroll == true){
                         System.out.println("Do you want to reroll dice " + (roll+1) + "? (y/n)");
-                        answer = scan.next();
+                        answer = "n";
+                        if(play_order.get(0).computer == true){
+                            Random random = new Random();  
+                            int random_int = (random.nextInt(10000000)%2);
+                            if(random_int == 1){
+                                answer = "y";
+                            }
+                            System.out.println(answer);
+                            try{
+                                TimeUnit.SECONDS.sleep(2);
+                            }
+                            catch(InterruptedException ex)
+                            {
+                                Thread.currentThread().interrupt();
+                            }
+                        }
+                        else{
+                            answer = scan.next();
+                        }
                         if(answer.equalsIgnoreCase("yes") || answer.equalsIgnoreCase("y")){
                             reroll = true;
                             dice.get(roll).roll();
@@ -316,14 +424,40 @@ public class BANG {
                     }
                     if(play_order.get(0).name.equals("Kit Carlson") && arrow != 9){
                         System.out.println("Who do you want to remove an arrow from? ");
+                        list.clear();
                         for(int j = 0; j < play_order.size();j++){
                             if(play_order.get(j).arrows > 0){
                                 System.out.println((j+1) + ") " + play_order.get(j).name);
+                                list.add(j);
                             }
                         }
                         System.out.print("> ");
-                        players = scan.nextInt();   
-                        play_order.get(players).removeArrow(1);
+                        do{
+                            try{
+                                if(play_order.get(0).computer == true){
+                                    Random random = new Random();  
+                                    players = (random.nextInt(10000000)%list.size());
+                                    players = list.get(players);
+                                    System.out.println(players);
+                                    try{
+                                        TimeUnit.SECONDS.sleep(2);
+                                    }
+                                    catch(InterruptedException ex)
+                                    {
+                                        Thread.currentThread().interrupt();
+                                    }
+                                }
+                                else{
+                                    players = scan.nextInt();
+                                }
+                                test = true;
+                            }
+                            catch (Exception a){
+                                System.out.println("Please give a number");
+                            }
+                        }while(!test);   
+                        play_order.get(players-1).removeArrow(1);
+                        System.out.println("Kit removed an arrow from: " + play_order.get(players-1));
                         arrow++;
                     }
                 }
@@ -341,6 +475,17 @@ public class BANG {
             }
             if(dynamite >= 3){
                 play_order.get(0).damage(1);
+                if(play_order.get(0).health <= 0){
+                    System.out.println(play_order.get(0).name + " has died!");
+                    play_order.get(0).shown = true;                    
+                    for(int l = 0; l < play_order.size(); l++){
+                        if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(0).name.equals("Vulture Sam"))){
+                            play_order.get(l).heal(2);
+                        }
+                    }
+                    play_order.remove(0);
+                }
+                continue;
             }
             if(gatAttack == true){
                 for(int i = 1; i < play_order.size(); i++){
@@ -348,11 +493,30 @@ public class BANG {
                         if(play_order.get(i).name.equals("Bart Cassidy")){
                             System.out.println("Bart Cassidy: Would you like to take an arrow instead of damage? (y/n)");
                             System.out.print("> ");
-                            answer = scan.next();
+                            answer = "n";
+                            if(play_order.get(0).computer == true){ //Change from .get(0) to find Bart
+                                Random random = new Random();  
+                                int random_int = (random.nextInt(10000000)%2);
+                                if(random_int == 1){
+                                    answer = "y";
+                                }
+                                System.out.println(answer);
+                                try{
+                                    TimeUnit.SECONDS.sleep(2);
+                                }
+                                catch(InterruptedException ex)
+                                {
+                                    Thread.currentThread().interrupt();
+                                }
+                            }
+                            else{
+                                answer = scan.next();
+                            }
                             if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
                                 play_order.get(i).addArrow(1);
                                 arrow--;
                                 if(arrow == 0){
+                                    System.out.println("The Indians have attacked!");
                                     for(int j = 0; j < play_order.size();j++){
                                         if(play_order.get(j).name.equals("Joursonnais") && play_order.get(j).arrows > 0){
                                             play_order.get(j).arrows = 1;
@@ -362,12 +526,12 @@ public class BANG {
                                         if(play_order.get(j).health <= 0){
                                             System.out.println(play_order.get(j).name + " has died!");
                                             play_order.get(j).shown = true;
-                                            play_order.remove(j);
                                             for(int k = 0; k < play_order.size(); k++){
-                                                if(play_order.get(k).name.equals("Vulture Sam")){
+                                                if(play_order.get(k).name.equals("Vulture Sam") && !(play_order.get(j).name.equals("Vulture Sam"))){
                                                     play_order.get(k).heal(2);
                                                 }
                                             }
+                                            play_order.remove(j);
                                         }
                                     }
                                     arrow = 9;
@@ -375,6 +539,16 @@ public class BANG {
                             }
                             else{
                                play_order.get(i).damage(1);
+                               if(play_order.get(i).health <= 0){
+                                    System.out.println(play_order.get(i).name + " has died!");
+                                    play_order.get(i).shown = true;                                    
+                                    for(int l = 0; l < play_order.size(); l++){
+                                        if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(i).name.equals("Vulture Sam"))){
+                                            play_order.get(l).heal(2);
+                                        }
+                                    }
+                                    play_order.remove(i);
+                                }
                             }
                         }
                         else{
@@ -386,6 +560,7 @@ public class BANG {
                                 play_order.get(0).addArrow(1);
                                 arrow--;
                                 if(arrow == 0){
+                                    System.out.println("The Indians have attacked!");
                                     for(int j = 0; j < play_order.size();j++){
                                         if(play_order.get(j).name.equals("Joursonnais") && play_order.get(j).arrows > 0){
                                             play_order.get(j).arrows = 1;
@@ -395,28 +570,38 @@ public class BANG {
                                         if(play_order.get(j).health <= 0){
                                             System.out.println(play_order.get(j).name + " has died!");
                                             play_order.get(j).shown = true;
-                                            play_order.remove(j);
                                             for(int k = 0; k < play_order.size(); k++){
-                                                if(play_order.get(k).name.equals("Vulture Sam")){
+                                                if(play_order.get(k).name.equals("Vulture Sam") && !(play_order.get(j).name.equals("Vulture Sam"))){
                                                     play_order.get(k).heal(2);
                                                 }
                                             }
+                                            play_order.remove(j);
                                         }
                                     }
                                     arrow = 9;
                                 }
                                 gringo = true;
                             }
+                            if(play_order.get(i).health <= 0){
+                                System.out.println(play_order.get(i).name + " has died!");
+                                play_order.get(i).shown = true;
+                                for(int l = 0; l < play_order.size(); l++){
+                                    if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(i).name.equals("Vulture Sam"))){
+                                        play_order.get(l).heal(2);
+                                    }
+                                }
+                                play_order.remove(i);
+                            }
                         }
                         if(play_order.get(i).health <= 0){
                             System.out.println(play_order.get(i).name + " has died!");
                             play_order.get(i).shown = true;
-                            play_order.remove(i);
                             for(int k = 0; k < play_order.size(); k++){
-                                if(play_order.get(k).name.equals("Vulture Sam")){
+                                if(play_order.get(k).name.equals("Vulture Sam") && !(play_order.get(i).name.equals("Vulture Sam"))){
                                     play_order.get(k).heal(2);
                                 }
                             }
+                            play_order.remove(i);
                         }  
                     }
                 }
@@ -428,26 +613,76 @@ public class BANG {
                 arr = new int[total];
                 for(int i = 0; i < total; i++){
                     System.out.println("Where do you want shot number " + (i+1) + " to go?");
+                    list.clear();
                     System.out.println("1) " + play_order.get(1).name);
-                    if(play_order.get(1) != play_order.get(2) && play_order.get(0) != play_order.get(2))
+                    list.add(1);
+                    if(play_order.size() > 2 && play_order.get(1) != play_order.get(2) && play_order.get(0) != play_order.get(2)){
                         System.out.println("2) " + play_order.get(2).name);
-                    if(play_order.get((play_order.size()-1)) != play_order.get(2) && play_order.get((play_order.size()-1)) != play_order.get(1) && play_order.get((play_order.size()-1)) != play_order.get(0))
+                        list.add(2);
+                    }
+                    if(play_order.size() > 2 && play_order.get((play_order.size()-1)) != play_order.get(2) && play_order.get((play_order.size()-1)) != play_order.get(1) && play_order.get((play_order.size()-1)) != play_order.get(0)){
                         System.out.println((play_order.size()-1) + ") " + play_order.get((play_order.size()-1)).name);
-                    if(play_order.get((play_order.size()-2)) != play_order.get(2) && play_order.get((play_order.size()-2)) != play_order.get(1) && play_order.get((play_order.size()-2)) != play_order.get(0) && play_order.get((play_order.size()-2)) != play_order.get((play_order.size()-1)))
+                        list.add(play_order.size()-1);
+                    }
+                    if(play_order.size() > 2 && play_order.get((play_order.size()-2)) != play_order.get(2) && play_order.get((play_order.size()-2)) != play_order.get(1) && play_order.get((play_order.size()-2)) != play_order.get(0) && play_order.get((play_order.size()-2)) != play_order.get((play_order.size()-1))){
                         System.out.println((play_order.size()-2) + ") " + play_order.get((play_order.size()-2)).name);
+                        list.add(play_order.size()-2);
+                    }
                     System.out.print("> ");
-                    players = scan.nextInt();
+                    do{
+                        try{
+                            if(play_order.get(0).computer == true){
+                                Random random = new Random();  
+                                players = (random.nextInt(10000000)%list.size());
+                                players = list.get(players);
+                                System.out.println(players);
+                                try{
+                                    TimeUnit.SECONDS.sleep(2);
+                                }
+                                catch(InterruptedException ex)
+                                {
+                                    Thread.currentThread().interrupt();
+                                }
+                            }
+                            else{
+                                players = scan.nextInt();
+                            }
+                            test = true;
+                        }
+                        catch (Exception a){
+                            System.out.println("Please give a number");
+                        }
+                    }while(!test);
                     arr[i] = players;
                 }
                 for(int j = 0; j < arr.length; j++){
-                    if(play_order.get(arr[j]).name.equals("Bart Cassidy")){
+                    if(play_order.size() > 1 && play_order.get(arr[j]).name.equals("Bart Cassidy")){
                             System.out.println("Bart Cassidy: Would you like to take an arrow instead of damage? (y/n)");
                             System.out.print("> ");
-                            answer = scan.next();
+                            answer = "n";
+                            if(play_order.get(0).computer == true){ //Change from .get(0) to find Bart
+                                Random random = new Random();  
+                                int random_int = (random.nextInt(10000000)%2);
+                                if(random_int == 1){
+                                    answer = "y";
+                                }
+                                System.out.println(answer);
+                                try{
+                                    TimeUnit.SECONDS.sleep(2);
+                                }
+                                catch(InterruptedException ex)
+                                {
+                                    Thread.currentThread().interrupt();
+                                }
+                            }
+                            else{
+                                answer = scan.next();
+                            }
                             if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
                                 play_order.get(j).addArrow(1);
                                 arrow--;
                                 if(arrow == 0){
+                                    System.out.println("The Indians have attacked!");
                                     for(int k = 0; k < play_order.size();k++){
                                         if(play_order.get(k).name.equals("Joursonnais") && play_order.get(k).arrows > 0){
                                             play_order.get(k).arrows = 1;
@@ -457,12 +692,12 @@ public class BANG {
                                         if(play_order.get(k).health <= 0){
                                             System.out.println(play_order.get(k).name + " has died!");
                                             play_order.get(k).shown = true;
-                                            play_order.remove(k);
                                             for(int l = 0; l < play_order.size(); l++){
-                                                if(play_order.get(l).name.equals("Vulture Sam")){
+                                                if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(k).name.equals("Vulture Sam"))){
                                                     play_order.get(l).heal(2);
                                                 }
                                             }
+                                            play_order.remove(k);
                                         }
                                     }
                                     arrow = 9;
@@ -470,6 +705,16 @@ public class BANG {
                             }
                             else{
                                play_order.get(arr[j]).damage(1);
+                               if(play_order.get(arr[j]).health <= 0){
+                                    System.out.println(play_order.get(arr[j]).name + " has died!");
+                                    play_order.get(arr[j]).shown = true;
+                                    for(int l = 0; l < play_order.size(); l++){
+                                        if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(arr[j]).name.equals("Vulture Sam"))){
+                                            play_order.get(l).heal(2);
+                                        }
+                                    }
+                                    play_order.remove(arr[j]);
+                                }
                             }
                         }
                     else{
@@ -481,6 +726,7 @@ public class BANG {
                             play_order.get(0).addArrow(1);
                             arrow--;
                             if(arrow == 0){
+                                System.out.println("The Indians have attacked!");
                                 for(int l = 0; l < play_order.size();l++){
                                     if(play_order.get(l).name.equals("Joursonnais") && play_order.get(l).arrows > 0){
                                         play_order.get(l).arrows = 1;
@@ -490,17 +736,27 @@ public class BANG {
                                     if(play_order.get(l).health <= 0){
                                         System.out.println(play_order.get(l).name + " has died!");
                                         play_order.get(l).shown = true;
-                                        play_order.remove(l);
                                         for(int k = 0; k < play_order.size(); k++){
-                                            if(play_order.get(k).name.equals("Vulture Sam")){
+                                            if(play_order.get(k).name.equals("Vulture Sam") && !(play_order.get(l).name.equals("Vulture Sam"))){
                                                 play_order.get(k).heal(2);
                                             }
                                         }
+                                        play_order.remove(l);
                                     }
                                 }
                                 arrow = 9;
                             }
                             gringo = true;
+                        }
+                        if(play_order.get(arr[j]).health <= 0){
+                            System.out.println(play_order.get(arr[j]).name + " has died!");
+                            play_order.get(arr[j]).shown = true;
+                            for(int l = 0; l < play_order.size(); l++){
+                                if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(arr[j]).name.equals("Vulture Sam"))){
+                                    play_order.get(l).heal(2);
+                                }
+                            }
+                            play_order.remove(arr[j]);
                         }
                     }
                 }
@@ -513,26 +769,76 @@ public class BANG {
                         arr = new int[BE1];
                         for(int i = 0; i < BE1; i++){
                             System.out.println("Where do you want shot number " + (i+1) + " to go?");
+                            list.clear();
                             System.out.println("1) " + play_order.get(1).name);
-                            if(play_order.get(1) != play_order.get(2) && play_order.get(0) != play_order.get(2))
+                            list.add(1);
+                            if(play_order.size() > 2 && play_order.get(1) != play_order.get(2) && play_order.get(0) != play_order.get(2)){
                                 System.out.println("2) " + play_order.get(2).name);
-                            if(play_order.get((play_order.size()-1)) != play_order.get(2) && play_order.get((play_order.size()-1)) != play_order.get(1) && play_order.get((play_order.size()-1)) != play_order.get(0))
+                                list.add(2);
+                            }
+                            if(play_order.size() > 2 && play_order.get((play_order.size()-1)) != play_order.get(2) && play_order.get((play_order.size()-1)) != play_order.get(1) && play_order.get((play_order.size()-1)) != play_order.get(0)){
                                 System.out.println((play_order.size()-1) + ") " + play_order.get((play_order.size()-1)).name);
-                            if(play_order.get((play_order.size()-2)) != play_order.get(2) && play_order.get((play_order.size()-2)) != play_order.get(1) && play_order.get((play_order.size()-2)) != play_order.get(0) && play_order.get((play_order.size()-2)) != play_order.get((play_order.size()-1)))
+                                list.add(play_order.size()-1);
+                            }
+                            if(play_order.size() > 2 && play_order.get((play_order.size()-2)) != play_order.get(2) && play_order.get((play_order.size()-2)) != play_order.get(1) && play_order.get((play_order.size()-2)) != play_order.get(0) && play_order.get((play_order.size()-2)) != play_order.get((play_order.size()-1))){
                                 System.out.println((play_order.size()-2) + ") " + play_order.get((play_order.size()-2)).name);
+                                list.add(play_order.size()-2);
+                            }
                             System.out.print("> ");
-                            players = scan.nextInt();
+                            do{
+                                try{
+                                    if(play_order.get(0).computer == true){
+                                        Random random = new Random();  
+                                        players = (random.nextInt(10000000)%list.size());
+                                        players = list.get(players);
+                                        System.out.println(players);
+                                        try{
+                                            TimeUnit.SECONDS.sleep(2);
+                                        }
+                                        catch(InterruptedException ex)
+                                        {
+                                            Thread.currentThread().interrupt();
+                                        }
+                                    }
+                                    else{
+                                        players = scan.nextInt();
+                                    }
+                                    test = true;
+                                }
+                                catch (Exception a){
+                                    System.out.println("Please give a number");
+                                }
+                            }while(!test);
                             arr[i] = players; 
                         }
                         for(int j = 0; j < arr.length; j++){
-                            if(play_order.get(arr[j]).name.equals("Bart Cassidy")){
+                            if(play_order.size() > 1 && play_order.get(arr[j]).name.equals("Bart Cassidy")){
                                     System.out.println("Bart Cassidy: Would you like to take an arrow instead of damage? (y/n)");
                                     System.out.print("> ");
-                                    answer = scan.next();
+                                    answer = "n";
+                                    if(play_order.get(0).computer == true){ //Change from .get(0) to find Bart
+                                        Random random = new Random();  
+                                        int random_int = (random.nextInt(10000000)%2);
+                                        if(random_int == 1){
+                                            answer = "y";
+                                        }
+                                        System.out.println(answer);
+                                        try{
+                                            TimeUnit.SECONDS.sleep(2);
+                                        }
+                                        catch(InterruptedException ex)
+                                        {
+                                            Thread.currentThread().interrupt();
+                                        }
+                                    }
+                                    else{
+                                        answer = scan.next();
+                                    }
                                     if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
                                         play_order.get(j).addArrow(1);
                                         arrow--;
                                         if(arrow == 0){
+                                            System.out.println("The Indians have attacked!");
                                             for(int k = 0; k < play_order.size();k++){
                                                 if(play_order.get(k).name.equals("Joursonnais") && play_order.get(k).arrows > 0){
                                                     play_order.get(k).arrows = 1;
@@ -542,12 +848,12 @@ public class BANG {
                                                 if(play_order.get(k).health <= 0){
                                                     System.out.println(play_order.get(k).name + " has died!");
                                                     play_order.get(k).shown = true;
-                                                    play_order.remove(k);
                                                     for(int l = 0; l < play_order.size(); l++){
-                                                        if(play_order.get(l).name.equals("Vulture Sam")){
+                                                        if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(k).name.equals("Vulture Sam"))){
                                                             play_order.get(l).heal(2);
                                                         }
                                                     }
+                                                    play_order.remove(k);
                                                 }
                                             }
                                             arrow = 9;
@@ -555,23 +861,71 @@ public class BANG {
                                     }
                                     else{
                                        play_order.get(arr[j]).damage(1);
+                                       if(play_order.get(arr[j]).health <= 0){
+                                            System.out.println(play_order.get(arr[j]).name + " has died!");
+                                            play_order.get(arr[j]).shown = true;
+                                            for(int l = 0; l < play_order.size(); l++){
+                                                if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(arr[j]).name.equals("Vulture Sam"))){
+                                                    play_order.get(l).heal(2);
+                                                }
+                                            }
+                                            play_order.remove(arr[j]);
+                                        }
                                     }
                                 }
                             else{
                                 if(play_order.get(0).name.equals("Slab The Killer") && Beer > 0){
-                                    System.out.println("Slab: Do you want to use a Beer for double damage on " + play_order.get(arr[j]) + "?");
+                                    System.out.println("Slab: Do you want to use a Beer for double damage on " + play_order.get(arr[j]).name + "?");
                                     System.out.print("> ");
-                                    answer = scan.next();
+                                    answer = "n";
+                                    if(play_order.get(0).computer == true){
+                                        Random random = new Random();  
+                                        int random_int = (random.nextInt(10000000)%2);
+                                        if(random_int == 1){
+                                            answer = "y";
+                                        }
+                                        System.out.println(answer);
+                                        try{
+                                            TimeUnit.SECONDS.sleep(2);
+                                        }
+                                        catch(InterruptedException ex)
+                                        {
+                                            Thread.currentThread().interrupt();
+                                        }
+                                    }
+                                    else{
+                                        answer = scan.next();
+                            }
                                     if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
                                         play_order.get(arr[j]).damage(2);
                                         Beer--;
                                     }
                                     else{
                                         play_order.get(arr[j]).damage(1);
+                                        if(play_order.get(arr[j]).health <= 0){
+                                                    System.out.println(play_order.get(arr[j]).name + " has died!");
+                                                    play_order.get(arr[j]).shown = true;
+                                                    for(int l = 0; l < play_order.size(); l++){
+                                                        if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(arr[j]).name.equals("Vulture Sam"))){
+                                                            play_order.get(l).heal(2);
+                                                        }
+                                                    }
+                                                    play_order.remove(arr[j]);
+                                                }
                                     }
                                 }
                                 else{
                                     play_order.get(arr[j]).damage(1);
+                                    if(play_order.get(arr[j]).health <= 0){
+                                                    System.out.println(play_order.get(arr[j]).name + " has died!");
+                                                    play_order.get(arr[j]).shown = true;
+                                                    for(int l = 0; l < play_order.size(); l++){
+                                                        if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(arr[j]).name.equals("Vulture Sam"))){
+                                                            play_order.get(l).heal(2);
+                                                        }
+                                                    }
+                                                    play_order.remove(arr[j]);
+                                                }
                                 }
                                 if(play_order.get(arr[j]).name.equals("Pedro Ramirez") && play_order.get(arr[j]).arrows > 0 && play_order.get(arr[j]).health != 0){
                                     play_order.get(arr[j]).removeArrow(1);
@@ -580,6 +934,7 @@ public class BANG {
                                     play_order.get(0).addArrow(1);
                                     arrow--;
                                     if(arrow == 0){
+                                        System.out.println("The Indians have attacked!");
                                         for(int l = 0; l < play_order.size();l++){
                                             if(play_order.get(l).name.equals("Joursonnais") && play_order.get(l).arrows > 0){
                                                 play_order.get(l).arrows = 1;
@@ -589,17 +944,27 @@ public class BANG {
                                             if(play_order.get(l).health <= 0){
                                                 System.out.println(play_order.get(l).name + " has died!");
                                                 play_order.get(l).shown = true;
-                                                play_order.remove(l);
                                                 for(int k = 0; k < play_order.size(); k++){
-                                                    if(play_order.get(k).name.equals("Vulture Sam")){
+                                                    if(play_order.get(k).name.equals("Vulture Sam") && !(play_order.get(l).name.equals("Vulture Sam"))){
                                                         play_order.get(k).heal(2);
                                                     }
                                                 }
+                                                play_order.remove(l);
                                             }
                                         }
                                         arrow = 9;
                                     }
                                     gringo = true;
+                                }
+                                if(play_order.get(arr[j]).health <= 0){
+                                    System.out.println(play_order.get(arr[j]).name + " has died!");
+                                    play_order.get(arr[j]).shown = true;
+                                    for(int l = 0; l < play_order.size(); l++){
+                                        if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(arr[j]).name.equals("Vulture Sam"))){
+                                            play_order.get(l).heal(2);
+                                        }
+                                    }
+                                    play_order.remove(arr[j]);
                                 }
                             }
                         }
@@ -609,22 +974,68 @@ public class BANG {
                         arr = new int[BE1];
                         for(int i = 0; i < BE1; i++){
                             System.out.println("Where do you want shot number " + (i+1) + " to go?");
+                            list.clear();
                             System.out.println("1) " + play_order.get(1).name);
-                            if(play_order.get((play_order.size()-1)) != play_order.get(1) && play_order.get((play_order.size()-1)) != play_order.get(0))
+                            list.add(1);
+                            if(play_order.get((play_order.size()-1)) != play_order.get(1) && play_order.get((play_order.size()-1)) != play_order.get(0)){
                                 System.out.println((play_order.size()-1) + ") " + play_order.get((play_order.size()-1)).name);
+                                list.add(play_order.size()-1);
+                            }
                             System.out.print("> ");
-                            players = scan.nextInt();
+                            do{
+                                try{
+                                    if(play_order.get(0).computer == true){
+                                        Random random = new Random();  
+                                        players = (random.nextInt(10000000)%list.size());
+                                        players = list.get(players);
+                                        System.out.println(players);
+                                        try{
+                                            TimeUnit.SECONDS.sleep(2);
+                                        }
+                                        catch(InterruptedException ex)
+                                        {
+                                            Thread.currentThread().interrupt();
+                                        }
+                                    }
+                                    else{
+                                        players = scan.nextInt();
+                                    }
+                                    test = true;
+                                }
+                                catch (Exception a){
+                                    System.out.println("Please give a number");
+                                }
+                            }while(!test);
                             arr[i] = players; 
                         }
                         for(int j = 0; j < arr.length; j++){
-                            if(play_order.get(arr[j]).name.equals("Bart Cassidy")){
+                            if(play_order.size() > 1 && play_order.get(arr[j]).name.equals("Bart Cassidy")){
                                     System.out.println("Bart Cassidy: Would you like to take an arrow instead of damage? (y/n)");
                                     System.out.print("> ");
-                                    answer = scan.next();
+                                    answer = "n";
+                                    if(play_order.get(0).computer == true){ //Change from .get(0) to find Bart
+                                        Random random = new Random();  
+                                        int random_int = (random.nextInt(10000000)%2);
+                                        if(random_int == 1){
+                                            answer = "y";
+                                        }
+                                        System.out.println(answer);
+                                        try{
+                                            TimeUnit.SECONDS.sleep(2);
+                                        }
+                                        catch(InterruptedException ex)
+                                        {
+                                            Thread.currentThread().interrupt();
+                                        }
+                                    }
+                                    else{
+                                        answer = scan.next();
+                                    }
                                     if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
                                         play_order.get(j).addArrow(1);
                                         arrow--;
                                         if(arrow == 0){
+                                            System.out.println("The Indians have attacked!");
                                             for(int k = 0; k < play_order.size();k++){
                                                 if(play_order.get(k).name.equals("Joursonnais") && play_order.get(k).arrows > 0){
                                                     play_order.get(k).arrows = 1;
@@ -633,20 +1044,30 @@ public class BANG {
                                                 play_order.get(k).arrowReset();
                                                 if(play_order.get(k).health <= 0){
                                                     System.out.println(play_order.get(k).name + " has died!");
-                                                    play_order.get(k).shown = true;
-                                                    play_order.remove(k);
+                                                    play_order.get(k).shown = true; 
                                                     for(int l = 0; l < play_order.size(); l++){
-                                                        if(play_order.get(l).name.equals("Vulture Sam")){
+                                                        if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(k).name.equals("Vulture Sam"))){
                                                             play_order.get(l).heal(2);
                                                         }
                                                     }
+                                                    play_order.remove(k);
                                                 }
                                             }
                                             arrow = 9;
                                         }
                                     }
                                     else{
-                                       play_order.get(arr[j]).damage(1);
+                                        play_order.get(arr[j]).damage(1);
+                                        if(play_order.get(arr[j]).health <= 0){
+                                            System.out.println(play_order.get(arr[j]).name + " has died!");
+                                            play_order.get(arr[j]).shown = true;
+                                            for(int l = 0; l < play_order.size(); l++){
+                                                if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(arr[j]).name.equals("Vulture Sam"))){
+                                                    play_order.get(l).heal(2);
+                                                }
+                                            }
+                                            play_order.remove(arr[j]);
+                                        }
                                     }
                                 }
                             else{
@@ -658,6 +1079,7 @@ public class BANG {
                                     play_order.get(0).addArrow(1);
                                     arrow--;
                                     if(arrow == 0){
+                                        System.out.println("The Indians have attacked!");
                                         for(int l = 0; l < play_order.size();l++){
                                             if(play_order.get(l).name.equals("Joursonnais") && play_order.get(l).arrows > 0){
                                                 play_order.get(l).arrows = 1;
@@ -667,17 +1089,27 @@ public class BANG {
                                             if(play_order.get(l).health <= 0){
                                                 System.out.println(play_order.get(l).name + " has died!");
                                                 play_order.get(l).shown = true;
-                                                play_order.remove(l);
                                                 for(int k = 0; k < play_order.size(); k++){
-                                                    if(play_order.get(k).name.equals("Vulture Sam")){
+                                                    if(play_order.get(k).name.equals("Vulture Sam") && !(play_order.get(l).name.equals("Vulture Sam"))){
                                                         play_order.get(k).heal(2);
                                                     }
                                                 }
+                                                play_order.remove(l);
                                             }
                                         }
                                         arrow = 9;
                                     }
                                     gringo = true;
+                                }
+                                if(play_order.get(arr[j]).health <= 0){
+                                    System.out.println(play_order.get(arr[j]).name + " has died!");
+                                    play_order.get(arr[j]).shown = true;
+                                    for(int l = 0; l < play_order.size(); l++){
+                                        if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(arr[j]).name.equals("Vulture Sam"))){
+                                            play_order.get(l).heal(2);
+                                        }
+                                    }
+                                    play_order.remove(arr[j]);
                                 }
                             }
                         }
@@ -690,26 +1122,76 @@ public class BANG {
                         arr = new int[BE2];
                         for(int i = 0; i < BE2; i++){
                             System.out.println("Where do you want shot number " + (i+1) + " to go?");
+                            list.clear();
                             System.out.println("2) " + play_order.get(2).name);
-                            if(play_order.get(2) != play_order.get(3) && play_order.get(0) != play_order.get(3))
+                            list.add(2);
+                            if(play_order.size() > 2 && play_order.get(2) != play_order.get(3) && play_order.get(0) != play_order.get(3)){
                                 System.out.println("3) " + play_order.get(3).name);
-                            if(play_order.get((play_order.size()-2)) != play_order.get(3) && play_order.get((play_order.size()-2)) != play_order.get(2) && play_order.get((play_order.size()-2)) != play_order.get(0))
+                                list.add(3);
+                            }
+                            if(play_order.size() > 2 && play_order.get((play_order.size()-2)) != play_order.get(3) && play_order.get((play_order.size()-2)) != play_order.get(2) && play_order.get((play_order.size()-2)) != play_order.get(0)){
                                 System.out.println((play_order.size()-2) + ") " + play_order.get((play_order.size()-2)).name);
-                            if(play_order.get((play_order.size()-3)) != play_order.get(3) && play_order.get((play_order.size()-3)) != play_order.get(2) && play_order.get((play_order.size()-3)) != play_order.get(0) && play_order.get((play_order.size()-3)) != play_order.get((play_order.size()-2)))
+                                list.add(play_order.size()-2);
+                            }
+                            if(play_order.size() > 2 && play_order.get((play_order.size()-3)) != play_order.get(3) && play_order.get((play_order.size()-3)) != play_order.get(2) && play_order.get((play_order.size()-3)) != play_order.get(0) && play_order.get((play_order.size()-3)) != play_order.get((play_order.size()-2))){
                                 System.out.println((play_order.size()-3) + ") " + play_order.get((play_order.size()-3)).name);
+                                list.add(play_order.size()-3);
+                            }
                             System.out.print("> ");
-                            players = scan.nextInt();
+                            do{
+                                try{
+                                    if(play_order.get(0).computer == true){
+                                        Random random = new Random();  
+                                        players = (random.nextInt(10000000)%list.size());
+                                        players = list.get(players);
+                                        System.out.println(players);
+                                        try{
+                                            TimeUnit.SECONDS.sleep(2);
+                                        }
+                                        catch(InterruptedException ex)
+                                        {
+                                            Thread.currentThread().interrupt();
+                                        }
+                                    }
+                                    else{
+                                        players = scan.nextInt();
+                                    }
+                                    test = true;
+                                }
+                                catch (Exception a){
+                                    System.out.println("Please give a number");
+                                }
+                            }while(!test);
                             arr[i] = players; 
                         }
                         for(int j = 0; j < arr.length; j++){
-                            if(play_order.get(arr[j]).name.equals("Bart Cassidy")){
+                            if(play_order.size() > 1 && play_order.get(arr[j]).name.equals("Bart Cassidy")){
                                     System.out.println("Bart Cassidy: Would you like to take an arrow instead of damage? (y/n)");
                                     System.out.print("> ");
-                                    answer = scan.next();
+                                    answer = "n";
+                                    if(play_order.get(0).computer == true){ //Change from .get(0) to find Bart
+                                        Random random = new Random();  
+                                        int random_int = (random.nextInt(10000000)%2);
+                                        if(random_int == 1){
+                                            answer = "y";
+                                        }
+                                        System.out.println(answer);
+                                        try{
+                                            TimeUnit.SECONDS.sleep(2);
+                                        }
+                                        catch(InterruptedException ex)
+                                        {
+                                            Thread.currentThread().interrupt();
+                                        }
+                                    }
+                                    else{
+                                        answer = scan.next();
+                                    }
                                     if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
                                         play_order.get(j).addArrow(1);
                                         arrow--;
                                         if(arrow == 0){
+                                            System.out.println("The Indians have attacked!");
                                             for(int k = 0; k < play_order.size();k++){
                                                 if(play_order.get(k).name.equals("Joursonnais") && play_order.get(k).arrows > 0){
                                                     play_order.get(k).arrows = 1;
@@ -719,12 +1201,12 @@ public class BANG {
                                                 if(play_order.get(k).health <= 0){
                                                     System.out.println(play_order.get(k).name + " has died!");
                                                     play_order.get(k).shown = true;
-                                                    play_order.remove(k);
                                                     for(int l = 0; l < play_order.size(); l++){
-                                                        if(play_order.get(l).name.equals("Vulture Sam")){
+                                                        if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(k).name.equals("Vulture Sam"))){
                                                             play_order.get(l).heal(2);
                                                         }
                                                     }
+                                                    play_order.remove(k);
                                                 }
                                             }
                                             arrow = 9;
@@ -732,6 +1214,16 @@ public class BANG {
                                     }
                                     else{
                                        play_order.get(arr[j]).damage(1);
+                                       if(play_order.get(arr[j]).health <= 0){
+                                            System.out.println(play_order.get(arr[j]).name + " has died!");
+                                            play_order.get(arr[j]).shown = true;
+                                            for(int l = 0; l < play_order.size(); l++){
+                                                if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(arr[j]).name.equals("Vulture Sam"))){
+                                                    play_order.get(l).heal(2);
+                                                }
+                                            }
+                                            play_order.remove(arr[j]);
+                                        }
                                     }
                                 }
                             else{
@@ -743,6 +1235,7 @@ public class BANG {
                                     play_order.get(0).addArrow(1);
                                     arrow--;
                                     if(arrow == 0){
+                                        System.out.println("The Indians have attacked!");
                                         for(int l = 0; l < play_order.size();l++){
                                             if(play_order.get(l).name.equals("Joursonnais") && play_order.get(l).arrows > 0){
                                                 play_order.get(l).arrows = 1;
@@ -751,18 +1244,28 @@ public class BANG {
                                             play_order.get(l).arrowReset();
                                             if(play_order.get(l).health <= 0){
                                                 System.out.println(play_order.get(l).name + " has died!");
-                                                play_order.get(l).shown = true;
-                                                play_order.remove(l);
+                                                play_order.get(l).shown = true;                                                
                                                 for(int k = 0; k < play_order.size(); k++){
-                                                    if(play_order.get(k).name.equals("Vulture Sam")){
+                                                    if(play_order.get(k).name.equals("Vulture Sam") && !(play_order.get(l).name.equals("Vulture Sam"))){
                                                         play_order.get(k).heal(2);
                                                     }
                                                 }
+                                                play_order.remove(l);
                                             }
                                         }
                                         arrow = 9;
                                     }
                                     gringo = true;
+                                }
+                                if(play_order.get(arr[j]).health <= 0){
+                                    System.out.println(play_order.get(arr[j]).name + " has died!");
+                                    play_order.get(arr[j]).shown = true;                                    
+                                    for(int l = 0; l < play_order.size(); l++){
+                                        if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(arr[j]).name.equals("Vulture Sam"))){
+                                            play_order.get(l).heal(2);
+                                        }
+                                    }
+                                    play_order.remove(arr[j]);
                                 }
                             }
                         }
@@ -772,22 +1275,68 @@ public class BANG {
                         arr = new int[BE2];
                         for(int i = 0; i < BE2; i++){
                             System.out.println("Where do you want shot number " + (i+1) + " to go?");
+                            list.clear();
                             System.out.println("2) " + play_order.get(2).name);
-                            if(play_order.get((play_order.size()-2)) != play_order.get(1) && play_order.get((play_order.size()-2)) != play_order.get(0))
+                            list.add(2);
+                            if(play_order.get((play_order.size()-2)) != play_order.get(1) && play_order.get((play_order.size()-2)) != play_order.get(0)){
                                 System.out.println((play_order.size()-2) + ") " + play_order.get((play_order.size()-2)).name);
+                                list.add(play_order.size()-2);
+                            }
                             System.out.print("> ");
-                            players = scan.nextInt();
+                            do{
+                                try{
+                                    if(play_order.get(0).computer == true){
+                                        Random random = new Random();  
+                                        players = (random.nextInt(10000000)%list.size());
+                                        players = list.get(players);
+                                        System.out.println(players);
+                                        try{
+                                            TimeUnit.SECONDS.sleep(2);
+                                        }
+                                        catch(InterruptedException ex)
+                                        {
+                                            Thread.currentThread().interrupt();
+                                        }
+                                    }
+                                    else{
+                                        players = scan.nextInt();
+                                    }
+                                    test = true;
+                                }
+                                catch (Exception a){
+                                    System.out.println("Please give a number");
+                                }
+                            }while(!test);
                             arr[i] = players; 
                         }
                         for(int j = 0; j < arr.length; j++){
-                            if(play_order.get(arr[j]).name.equals("Bart Cassidy")){
+                            if(play_order.size() > 1 && play_order.get(arr[j]).name.equals("Bart Cassidy")){
                                     System.out.println("Bart Cassidy: Would you like to take an arrow instead of damage? (y/n)");
                                     System.out.print("> ");
-                                    answer = scan.next();
+                                    answer = "n";
+                                    if(play_order.get(0).computer == true){ //Change from .get(0) to find Bart
+                                        Random random = new Random();  
+                                        int random_int = (random.nextInt(10000000)%2);
+                                        if(random_int == 1){
+                                            answer = "y";
+                                        }
+                                        System.out.println(answer);
+                                        try{
+                                            TimeUnit.SECONDS.sleep(2);
+                                        }
+                                        catch(InterruptedException ex)
+                                        {
+                                            Thread.currentThread().interrupt();
+                                        }
+                                    }
+                                    else{
+                                        answer = scan.next();
+                                    }
                                     if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
                                         play_order.get(j).addArrow(1);
                                         arrow--;
                                         if(arrow == 0){
+                                            System.out.println("The Indians have attacked!");
                                             for(int k = 0; k < play_order.size();k++){
                                                 if(play_order.get(k).name.equals("Joursonnais") && play_order.get(k).arrows > 0){
                                                     play_order.get(k).arrows = 1;
@@ -796,13 +1345,13 @@ public class BANG {
                                                 play_order.get(k).arrowReset();
                                                 if(play_order.get(k).health <= 0){
                                                     System.out.println(play_order.get(k).name + " has died!");
-                                                    play_order.get(k).shown = true;
-                                                    play_order.remove(k);
+                                                    play_order.get(k).shown = true;                                                    
                                                     for(int l = 0; l < play_order.size(); l++){
-                                                        if(play_order.get(l).name.equals("Vulture Sam")){
+                                                        if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(k).name.equals("Vulture Sam"))){
                                                             play_order.get(l).heal(2);
                                                         }
                                                     }
+                                                    play_order.remove(k);
                                                 }
                                             }
                                             arrow = 9;
@@ -810,13 +1359,41 @@ public class BANG {
                                     }
                                     else{
                                        play_order.get(arr[j]).damage(1);
+                                       if(play_order.get(arr[j]).health <= 0){
+                                            System.out.println(play_order.get(arr[j]).name + " has died!");
+                                            play_order.get(arr[j]).shown = true;                                            
+                                            for(int l = 0; l < play_order.size(); l++){
+                                                if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(arr[j]).name.equals("Vulture Sam"))){
+                                                    play_order.get(l).heal(2);
+                                                }
+                                            }
+                                            play_order.remove(arr[j]);
+                                        }
                                     }
                                 }
                             else{
                                 if(play_order.get(0).name.equals("Slab The Killer") && Beer > 0){
-                                    System.out.println("Slab: Do you want to use a Beer for double damage on " + play_order.get(arr[j]) + "?");
+                                    System.out.println("Slab: Do you want to use a Beer for double damage on " + play_order.get(arr[j]).name + "?");
                                     System.out.print("> ");
-                                    answer = scan.next();
+                                    answer = "n";
+                                    if(play_order.get(0).computer == true){
+                                        Random random = new Random();  
+                                        int random_int = (random.nextInt(10000000)%2);
+                                        if(random_int == 1){
+                                            answer = "y";
+                                        }
+                                        System.out.println(answer);
+                                        try{
+                                            TimeUnit.SECONDS.sleep(2);
+                                        }
+                                        catch(InterruptedException ex)
+                                        {
+                                            Thread.currentThread().interrupt();
+                                        }
+                                    }
+                                    else{
+                                        answer = scan.next();
+                                    }
                                     if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
                                         play_order.get(arr[j]).damage(2);
                                         Beer--;
@@ -827,34 +1404,45 @@ public class BANG {
                                 }
                                 else{
                                     play_order.get(arr[j]).damage(1);
-                                }
-                                if(play_order.get(arr[j]).name.equals("Pedro Ramirez") && play_order.get(arr[j]).arrows > 0 && play_order.get(arr[j]).health != 0){
-                                    play_order.get(arr[j]).removeArrow(1);
-                                }
-                                if(play_order.get(arr[j]).name.equals("El Gringo") && play_order.get(arr[j]).health != 0 && gringo == false){
-                                    play_order.get(0).addArrow(1);
-                                    arrow--;
-                                    if(arrow == 0){
-                                        for(int l = 0; l < play_order.size();l++){
-                                            if(play_order.get(l).name.equals("Joursonnais") && play_order.get(l).arrows > 0){
-                                                play_order.get(l).arrows = 1;
-                                            }
-                                            play_order.get(l).damage(play_order.get(l).arrows);
-                                            play_order.get(l).arrowReset();
-                                            if(play_order.get(l).health <= 0){
-                                                System.out.println(play_order.get(l).name + " has died!");
-                                                play_order.get(l).shown = true;
-                                                play_order.remove(l);
-                                                for(int k = 0; k < play_order.size(); k++){
-                                                    if(play_order.get(k).name.equals("Vulture Sam")){
-                                                        play_order.get(k).heal(2);
+                                    if(play_order.get(arr[j]).name.equals("Pedro Ramirez") && play_order.get(arr[j]).arrows > 0 && play_order.get(arr[j]).health != 0){
+                                        play_order.get(arr[j]).removeArrow(1);
+                                    }
+                                    if(play_order.get(arr[j]).name.equals("El Gringo") && play_order.get(arr[j]).health != 0 && gringo == false){
+                                        play_order.get(0).addArrow(1);
+                                        arrow--;
+                                        if(arrow == 0){
+                                            System.out.println("The Indians have attacked!");
+                                            for(int l = 0; l < play_order.size();l++){
+                                                if(play_order.get(l).name.equals("Joursonnais") && play_order.get(l).arrows > 0){
+                                                    play_order.get(l).arrows = 1;
+                                                }
+                                                play_order.get(l).damage(play_order.get(l).arrows);
+                                                play_order.get(l).arrowReset();
+                                                if(play_order.get(l).health <= 0){
+                                                    System.out.println(play_order.get(l).name + " has died!");
+                                                    play_order.get(l).shown = true;                                                    
+                                                    for(int k = 0; k < play_order.size(); k++){
+                                                        if(play_order.get(k).name.equals("Vulture Sam") && !(play_order.get(l).name.equals("Vulture Sam"))){
+                                                            play_order.get(k).heal(2);
+                                                        }
                                                     }
+                                                    play_order.remove(l);
                                                 }
                                             }
+                                            arrow = 9;
                                         }
-                                        arrow = 9;
+                                        gringo = true;
                                     }
-                                    gringo = true;
+                                    if(play_order.get(arr[j]).health <= 0){
+                                        System.out.println(play_order.get(arr[j]).name + " has died!");
+                                        play_order.get(arr[j]).shown = true;                                        
+                                        for(int l = 0; l < play_order.size(); l++){
+                                            if(play_order.get(l).name.equals("Vulture Sam") && !(play_order.get(arr[j]).name.equals("Vulture Sam"))){
+                                                play_order.get(l).heal(2);
+                                            }
+                                        }
+                                        play_order.remove(arr[j]);
+                                    }
                                 }
                             }
                         }
@@ -873,9 +1461,21 @@ public class BANG {
             
             play_order.add(play_order.get(0));
             play_order.remove(play_order.get(0));
-            turns++;
         }
         
+        System.out.println("CONGRATS!" + "\n" + play_order.get(0).name + ", you are the winner!");
         
     }
 }
+
+
+// TO DO
+/*
+
+1. Impliment actual AI and not randomness
+2. Go find where indian arrows don't get checked
+3. Fix 2-distance shots
+4. Fix bull's eye numbering
+
+*
+*/
