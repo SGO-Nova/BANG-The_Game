@@ -16,13 +16,16 @@ import javafx.scene.paint.*;
 import javafx.util.Duration;  
 
 
-public class Bang_GUI extends Application{
-    public static void main(String[] args){
+public class Bang_GUI extends Application
+{
+    public static void main(String[] args)
+    {
         launch(args);
     }
     
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception
+    {
         Image table = new Image(new FileInputStream("src/bang/media/Top_down_table.jpg"));
         ImageView imageView_table = new ImageView(table);
         Image logo = new Image(new FileInputStream("src/bang/media/bang.png"));
