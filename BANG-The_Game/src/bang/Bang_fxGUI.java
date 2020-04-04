@@ -90,7 +90,7 @@ public class Bang_fxGUI extends Application
                 .addAll(table, logo, playerName, numPlayers, label_numPlayers,
                         startButton);
         
-        // display the stuff; window size, icon text
+        // display the stuff; window size, icon, title
         Scene scene1 = new Scene(group1, 1280, 720, Color.BEIGE);
         stage1.getIcons().add(img_logo);
         stage1.setScene(scene1);
