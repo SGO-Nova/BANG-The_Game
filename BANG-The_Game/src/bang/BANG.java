@@ -17,8 +17,9 @@ import java.util.concurrent.TimeUnit;
 public class BANG {
     static int arrow = 9;
     static Scanner scan;
+    static int players;
     
-    public static void main(String[] args) {
+    public static void main() {
         //Create character cards, dice, and role cards
         ArrayList<Character_Cards> char_cards = new ArrayList<Character_Cards>();
         char_cards.add(new Character_Cards("Bart Cassidy", 8));
@@ -55,7 +56,6 @@ public class BANG {
 
         
         scan = new Scanner(System.in);
-        int players;
         boolean test = false;
         Random rand = new Random();
         Player human = new Player("NULL",0,"NULL",false);
@@ -71,19 +71,7 @@ public class BANG {
         ArrayList<Player> play_order = new ArrayList();
         ArrayList<Player> temp_play_order = new ArrayList();
         
-        do{
-            System.out.println("How many people do you want to play against? (2-7 AIs)");
-            System.out.print("> ");
-            players = 0;
-            do{
-                try{
-                    players = scan.nextInt();
-                    test = true;
-                }
-                catch (Exception a){
-                    System.out.println("Please give a number");
-                }
-            }while(!test);
+
 
             switch(players){
                 case 2: 
@@ -174,7 +162,7 @@ public class BANG {
                     System.out.println("Please pick a number between 2 and 7!");
                     break;
             }
-        }while(players < 2 || players > 7);
+
         System.out.println("_________________________________________________________");
         System.out.println("Human is " + human.name + ", has " + human.health + ", and is a " + human.role);
         System.out.println("AI1 is " + ai1.name + ", has " + ai1.health + ", and is a " + ai1.role);
@@ -971,6 +959,12 @@ public class BANG {
                break;
         }
         System.exit(0);
+    }
+    
+    public static void setPlayers(int players){
+        BANG.players = players;
+        System.out.println(BANG.players);
+        main();
     }
     
 }

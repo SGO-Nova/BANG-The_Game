@@ -78,11 +78,16 @@ public class Bang_fxGUI extends Application
         numPlayers.setLayoutX(925);
         numPlayers.setLayoutY(420);
         
-        // start button
+        // start button & Action
         Button startButton = new Button("Start!");
         startButton.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
         startButton.setLayoutX(850);
         startButton.setLayoutY(460);
+        startButton.setOnAction(e -> {
+            BANG.setPlayers(((int) numPlayers.getValue()) - 1);
+            //System.out.println(playerName.getText());
+            //System.out.println(numPlayers.getValue());
+        });
 
         // group all the above together
         Group group1 = new Group();
