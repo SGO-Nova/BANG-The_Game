@@ -29,6 +29,10 @@ import javafx.stage.Stage;
 
 public class Bang_fxGUI extends Application
 {
+    Stage window;
+    Scene scene1, scene2;
+    //Scene scene1 = new Scene(group1, 1280, 720, Color.BEIGE);
+    
     public static void main(String[] args)
     {
         // lauches the whole thing
@@ -36,11 +40,15 @@ public class Bang_fxGUI extends Application
     }
     
     @Override
-    public void start (Stage stage1) throws Exception
+    public void start (Stage primaryStage) throws Exception
     {
+        window = primaryStage;
+        
         // load images
         Image img_table = new Image(new FileInputStream("src/bang/media/wood_TableTop.jpg"));
         ImageView table = new ImageView(img_table);
+        Image img_table2 = new Image(new FileInputStream("src/bang/media/wood_TableTop.jpg"));
+        ImageView table2 = new ImageView(img_table);
         Image img_logo = new Image(new FileInputStream("src/bang/media/bang.png"));
         ImageView logo = new ImageView(img_logo);
         
@@ -53,12 +61,16 @@ public class Bang_fxGUI extends Application
         //set height and width of images
         table.setFitWidth(1280);
         table.setFitHeight(720);
+        table2.setFitWidth(1280);
+        table2.setFitHeight(720);
         logo.setFitWidth(540);
         logo.setFitHeight(260);
         
         //set position of table image within window
         table.setX(5.75);
         table.setY(5.75);
+        table2.setX(5.75);
+        table2.setY(5.75);
         
         // text field for taking user name input
         TextField playerName = new TextField("Enter Name");
@@ -92,23 +104,38 @@ public class Bang_fxGUI extends Application
         startButton.setLayoutX(850);
         startButton.setLayoutY(460);
         startButton.setOnAction(e -> {
+            window.setScene(scene2);
+            window.show();
             BANG.setPlayers(((int) numPlayers.getValue()) - 1);
             //System.out.println(playerName.getText());
             //System.out.println(numPlayers.getValue());
         });
-
+        
         // group all the above together
         Group group1 = new Group();
         group1.getChildren()
                 .addAll(table, logo, playerName, numPlayers, label_numPlayers,
                         startButton);
         
+        // group all the above together
+        Group group2 = new Group();
+        group2.getChildren()
+                .addAll(table2);
+        
+        
         // display the stuff; window size, icon, title
-        Scene scene1 = new Scene(group1, 1280, 720, Color.BEIGE);
-        stage1.getIcons().add(img_logo);
-        stage1.setScene(scene1);
-        stage1.setTitle("BANG! Dice Game");
-        stage1.setResizable(false);
-        stage1.show();
+        //Scene1
+        scene1 = new Scene(group1, 1280, 720, Color.BEIGE);
+        window.getIcons().add(img_logo);
+        window.setTitle("BANG! Dice Game");
+        window.setResizable(false);
+        window.setScene(scene1);
+        window.show();
+        
+        //Scene1
+        scene2 = new Scene(group2, 1280, 720, Color.BEIGE);
+
+ 
+        
     }
 }
