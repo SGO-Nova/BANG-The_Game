@@ -20,6 +20,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -41,6 +43,12 @@ public class Bang_fxGUI extends Application
         ImageView table = new ImageView(img_table);
         Image img_logo = new Image(new FileInputStream("src/bang/media/bang.png"));
         ImageView logo = new ImageView(img_logo);
+        
+        //Music
+        Media media = new Media(this.getClass().getResource("/bang/media/background.mp3").toString());
+        MediaPlayer music = new MediaPlayer(media);
+        music.setVolume(.5);
+        music.setAutoPlay(true);
         
         //set height and width of images
         table.setFitWidth(1280);
