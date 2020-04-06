@@ -47,7 +47,7 @@ public class Bang_fxGUI extends Application
         // load images
         Image img_table = new Image(new FileInputStream("src/bang/media/wood_TableTop.jpg"));
         ImageView table = new ImageView(img_table);
-        Image img_table2 = new Image(new FileInputStream("src/bang/media/wood_TableTop.jpg"));
+        //Image img_table2 = new Image(new FileInputStream("src/bang/media/wood_TableTop.jpg"));
         ImageView table2 = new ImageView(img_table);
         Image img_logo = new Image(new FileInputStream("src/bang/media/bang.png"));
         ImageView logo = new ImageView(img_logo);
@@ -132,7 +132,7 @@ public class Bang_fxGUI extends Application
         window.setScene(scene1);
         window.show();
         
-        //Scene1
+        //Scene2
         scene2 = new Scene(group2, 1280, 720, Color.BEIGE);
 
  
