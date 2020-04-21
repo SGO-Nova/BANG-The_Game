@@ -56,11 +56,13 @@ public class Player {
     }
    
     public void addArrow(int number){ 
-        if (this.getCharacter().name == "Jessie Jones" && this.health < 5)  //do nothing 
-          
-            ;
-        //else 
+        if(this.name.equals("Jessie Jones") && this.health < 5){
+            //do nothing 
+        }
+        //else
+        else{
             this.arrows += number;
+        }
     }
    
     public void removeArrow(int number){
@@ -81,7 +83,7 @@ public class Player {
         bulletUpdate();
         //assign each character roles according to player wish
         
-         if (this.getCharacter().name == "calamity janey")
+         //if (this.getCharacter().name == "calamity janey")
       //if character is calamity janey ask player to chose next player 
       //HERE I will be assigning each character special features and the roles using if statements
        

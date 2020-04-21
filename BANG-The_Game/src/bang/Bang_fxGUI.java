@@ -14,6 +14,7 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -56,7 +57,7 @@ public class Bang_fxGUI extends Application
         Media media = new Media(this.getClass().getResource("/bang/media/background.mp3").toString());
         MediaPlayer music = new MediaPlayer(media);
         music.setVolume(.5);
-        music.setAutoPlay(true);
+        music.setAutoPlay(false);
         
         //set height and width of images
         table.setFitWidth(1280);
@@ -88,7 +89,6 @@ public class Bang_fxGUI extends Application
         label_numPlayers.setLayoutY(420);
         
         ComboBox numPlayers = new ComboBox();
-        numPlayers.getItems().add(3);
         numPlayers.getItems().add(4);
         numPlayers.getItems().add(5);
         numPlayers.getItems().add(6);
@@ -98,12 +98,23 @@ public class Bang_fxGUI extends Application
         numPlayers.setLayoutX(925);
         numPlayers.setLayoutY(420);
         
+        // Music check box
+        CheckBox cb1 = new CheckBox("Music in Game");
+        cb1.setSelected(true);
+        cb1.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+        cb1.setLayoutX(700);
+        cb1.setLayoutY(460);
+        
+        
         // start button & Action
         Button startButton = new Button("Start!");
         startButton.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
         startButton.setLayoutX(850);
-        startButton.setLayoutY(460);
+        startButton.setLayoutY(490);
         startButton.setOnAction(e -> {
+            if(cb1.isSelected()){
+                music.setAutoPlay(true);
+            }
             window.setScene(scene2);
             window.show();
             BANG.setPlayers(((int) numPlayers.getValue()) - 1);
@@ -115,7 +126,7 @@ public class Bang_fxGUI extends Application
         Group group1 = new Group();
         group1.getChildren()
                 .addAll(table, logo, playerName, numPlayers, label_numPlayers,
-                        startButton);
+                        startButton, cb1);
         
         // group all the above together
         Group group2 = new Group();

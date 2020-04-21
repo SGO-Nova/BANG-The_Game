@@ -22,7 +22,7 @@ public class BANG {
     
     public static void main() {
         //Create character cards, dice, and role cards
-        ArrayList<Character_Cards> char_cards = new ArrayList<Character_Cards>();
+        ArrayList<Character_Cards> char_cards = new ArrayList();
         char_cards.add(new Character_Cards("Bart Cassidy", 8));
         char_cards.add(new Character_Cards("Black Jack", 8));
         char_cards.add(new Character_Cards("Calamity Janet", 8));
@@ -39,6 +39,8 @@ public class BANG {
         char_cards.add(new Character_Cards("Suzy Lafayette", 8));
         char_cards.add(new Character_Cards("Vulture Sam", 9));
         char_cards.add(new Character_Cards("Willy The Kid", 8));
+        char_cards.add(new Character_Cards("Belle Star", 8));
+        char_cards.add(new Character_Cards("Greg Digger", 7));
         Collections.shuffle(char_cards);
         
         ArrayList<Dice> dice = new ArrayList();
@@ -47,8 +49,6 @@ public class BANG {
         Dice d3 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling");
         Dice d4 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling");
         Dice d5 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling");
-        Dice d6 = new Dice(1, 0, "Indian Arrow", "Dynamite", "Double Bull's Eye 1", "Double Bull's Eye 2", "Bullet", "Double Gatling"); //LOUDMOUTH
-        Dice d7 = new Dice(1, 0, "Broken Indian Arrow", "Dynamite", "Bull's Eye 1", "Indian Arrow", "Double Beer", "Beer"); //COWARD
         dice.add(d1);
         dice.add(d2);
         dice.add(d3);
@@ -256,12 +256,20 @@ public class BANG {
             int Gat = 0;
             int BE1 = 0;
             int BE2 = 0;
+            int DBE1 = 0;
+            int DBE2 = 0;
+            int duel = 0;
             int total = 0;
             int Beer = 0;
             int dynamite = 0;
             boolean gringo = false;
             boolean gatAttack = false;
-            
+            Player left1 = play_order.get(1);
+            Player right1 = play_order.get(play_order.size() - 1);
+            Player left2 = play_order.get(2);
+            Player right2 = play_order.get(play_order.size() - 2);
+            Player left3 = play_order.get(3);
+            Player right3 = play_order.get(play_order.size() - 3);
             
             System.out.println("_________________________________________________________");
             for(int i = 0; i < total_players; i++){
@@ -312,9 +320,80 @@ public class BANG {
                     }
                 }while(!test);
                 play_order.get(players-1).heal(1);
-                System.out.print("Sid healed: " + play_order.get(players-1));
+                System.out.println("Sid healed: " + play_order.get(players-1).name);
             }
             
+            test = false;
+            System.out.println("Do you want to change out one of your dice for the COWARD die or LOUDMOUTH die?");
+            System.out.print("> ");
+            answer = "n";
+            do{
+                try{
+                    if(play_order.get(0).computer == true){
+                        Random random = new Random();
+                        int random_int = (random.nextInt(10000000)%2);
+                        if(random_int == 1){
+                            answer = "y";
+                        }
+                        System.out.println(answer);
+                        try{
+                            TimeUnit.SECONDS.sleep(2);
+                        }
+                        catch(InterruptedException ex)
+                        {
+                            Thread.currentThread().interrupt();
+                        }
+                    }
+                    else{
+                        answer = scan.next();
+                    }
+                    test = true;
+                }
+                catch (Exception a){
+                    System.out.println("Please give a y or n");
+                }
+            }while(!test);
+            if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
+                test = false;
+                System.out.println("Do you want to change out one of your dice for the COWARD die?");
+                System.out.print("> ");
+                answer = "n";
+                do{
+                    try{
+                        if(play_order.get(0).computer == true){
+                            Random random = new Random();
+                            int random_int = (random.nextInt(10000000)%2);
+                            if(random_int == 1){
+                                answer = "y";
+                            }
+                            System.out.println(answer);
+                            try{
+                                TimeUnit.SECONDS.sleep(2);
+                            }
+                            catch(InterruptedException ex)
+                            {
+                                Thread.currentThread().interrupt();
+                            }
+                        }
+                        else{
+                            answer = scan.next();
+                        }
+                        test = true;
+                    }
+                    catch (Exception a){
+                        System.out.println("Please give a y or n");
+                    }
+                }while(!test);
+                if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
+                    d5 = new Dice(1, 0, "Broken Indian Arrow", "Dynamite", "Bull's Eye 1", "Indian Arrow", "Double Beer", "Beer"); //COWARD
+                }
+                else{
+                    d5 = new Dice(1, 0, "Indian Arrow", "Dynamite", "Double Bull's Eye 1", "Double Bull's Eye 2", "Bullet", "Double Gatling"); //LOUDMOUTH
+                }
+            }
+            else{
+                d5 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling");
+            }
             
             
             
@@ -342,13 +421,49 @@ public class BANG {
                         if(arrow == 0){
                             indianAttack(play_order);
                         }
-                    } 
+                    }
+                    if(dice.get(i).sides[dice.get(i).side].equals("Broken Indian Arrow")){
+                        play_order.get(0).removeArrow(1);
+                    }
+                    if(dice.get(i).sides[dice.get(i).side].equals("Bullet")){
+                        play_order.get(0).damage(1);
+                    }
                 }
                 for(int roll = 0; roll < 5; roll++){
                     if(dynamite >= 3){
                         break;
                     }
-                    if(!(dice.get(roll).sides[dice.get(roll).side].equals("Dynamite")) || play_order.get(0).dynamiteReroll == true){
+                    if(dice.get(roll).sides[dice.get(roll).side].equals("Dynamite") && play_order.get(0).name.equals("Belle Star")){
+                        System.out.println("Do you want to change dice" + (roll+1) + " to a gatling gun? (y/n)");
+                        answer = "n";
+                        if(play_order.get(0).computer == true){
+                            Random random = new Random();  
+                            int random_int = (random.nextInt(10000000)%2);
+                            if(random_int == 1){
+                                answer = "y";
+                            }
+                            System.out.println(answer);
+                            try{
+                                TimeUnit.SECONDS.sleep(2);
+                            }
+                            catch(InterruptedException ex)
+                            {
+                                Thread.currentThread().interrupt();
+                            }
+                        }
+                        else{
+                            answer = scan.next();
+                        }
+                        if(answer.equalsIgnoreCase("yes") || answer.equalsIgnoreCase("y")){
+                            for(int i = 0; i < 6; i++){
+                                dice.get(roll).side = i;
+                                if(dice.get(roll).sides[dice.get(roll).side].equals("Gatling") || dice.get(roll).sides[dice.get(roll).side].equals("Double Gatling")){
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else if(!(dice.get(roll).sides[dice.get(roll).side].equals("Dynamite")) || play_order.get(0).dynamiteReroll == true){
                         System.out.println("Do you want to reroll dice " + (roll+1) + "? (y/n)");
                         answer = "n";
                         if(play_order.get(0).computer == true){
@@ -374,6 +489,10 @@ public class BANG {
                             dice.get(roll).roll();
                         }
                     }
+                    else{
+                        System.out.println("Wtf?");
+                    }
+                    
                 }
                 if(reroll == false){
                     break;
@@ -383,6 +502,50 @@ public class BANG {
             System.out.println("Final results: ");
             for(int count = 0; count < 5; count++){
                 System.out.println("Dice " + (count+1) + ": " + dice.get(count).sides[dice.get(count).side]);
+                if(dice.get(count).sides[dice.get(count).side].equals("Double Gat")){
+                    Gat += 2;
+                    if(Gat >= play_order.get(0).gatsNeeded){
+                        gatAttack = true;
+                    }
+                    if(play_order.get(0).name.equals("Kit Carlson") && arrow != 9){
+                        System.out.println("Who do you want to remove an arrow from? ");
+                        list.clear();
+                        for(int j = 0; j < play_order.size();j++){
+                            if(play_order.get(j).arrows > 0){
+                                System.out.println((j+1) + ") " + play_order.get(j).name);
+                                list.add(j);
+                            }
+                        }
+                        System.out.print("> ");
+                        do{
+                            try{
+                                if(play_order.get(0).computer == true){
+                                    Random random = new Random();  
+                                    players = (random.nextInt(10000000)%list.size());
+                                    players = list.get(players);
+                                    System.out.println(players);
+                                    try{
+                                        TimeUnit.SECONDS.sleep(2);
+                                    }
+                                    catch(InterruptedException ex)
+                                    {
+                                        Thread.currentThread().interrupt();
+                                    }
+                                }
+                                else{
+                                    players = scan.nextInt();
+                                }
+                                test = true;
+                            }
+                            catch (Exception a){
+                                System.out.println("Please give a number");
+                            }
+                        }while(!test);   
+                        play_order.get(players-1).removeArrow(1);
+                        System.out.println("Kit removed an arrow from: " + play_order.get(players-1));
+                        arrow++;
+                    }
+                }
                 if(dice.get(count).sides[dice.get(count).side].equals("Gatling")){
                     Gat++;
                     if(Gat >= play_order.get(0).gatsNeeded){
@@ -438,6 +601,24 @@ public class BANG {
                 if(dice.get(count).sides[dice.get(count).side].equals("Beer")){
                     Beer++;
                 }
+                if(dice.get(count).sides[dice.get(count).side].equals("Duel")){
+                    duel++;
+                }
+                if(dice.get(count).sides[dice.get(count).side].equals("Whiskey")){
+                    play_order.get(0).heal(1);
+                    if(play_order.get(0).name.equals("Greg Digger")){
+                       play_order.get(0).heal(1); 
+                    }
+                }
+                if(dice.get(count).sides[dice.get(count).side].equals("Double Bull's Eye 1")){
+                    DBE1++;
+                }
+                if(dice.get(count).sides[dice.get(count).side].equals("Double Bull's Eye 2")){
+                    DBE2++;
+                }
+                if(dice.get(count).sides[dice.get(count).side].equals("Double Beer")){
+                    Beer += 2;
+                }
             }
             if(dynamite >= 3){
                 play_order.get(0).damage(1);
@@ -450,10 +631,10 @@ public class BANG {
                 for(int i = 1; i < play_order.size(); i++){
                     if(!(play_order.get(i).name.equals("Paul Regret"))){
                         if(play_order.get(i).name.equals("Bart Cassidy")){
-                            bartAction(play_order, i);
+                            bartAction(play_order, i, 1);
                         }
                         else{
-                            notBart(play_order, i, gringo);
+                            notBart(play_order, i, gringo, 1);
                         }
                         if(play_order.get(i).health <= 0){
                             deathSeq(play_order, i);
@@ -469,18 +650,18 @@ public class BANG {
                 for(int i = 0; i < total; i++){
                     System.out.println("Where do you want shot number " + (i+1) + " to go?");
                     list.clear();
-                    System.out.println("1) " + play_order.get(1).name);
+                    System.out.println("1) " + left1.name);
                     list.add(1);
-                    if(play_order.size() > 2 && play_order.get(1) != play_order.get(2) && play_order.get(0) != play_order.get(2)){
-                        System.out.println("2) " + play_order.get(2).name);
+                    if(play_order.size() > 2 && left1 != left2 && play_order.get(0) != left2){
+                        System.out.println("2) " + left2.name);
                         list.add(2);
                     }
-                    if(play_order.size() > 2 && play_order.get((play_order.size()-1)) != play_order.get(2) && play_order.get((play_order.size()-1)) != play_order.get(1) && play_order.get((play_order.size()-1)) != play_order.get(0)){
-                        System.out.println((play_order.size()-1) + ") " + play_order.get((play_order.size()-1)).name);
+                    if(play_order.size() > 2 && right1 != left2 && right1 != left1 && right1 != play_order.get(0)){
+                        System.out.println(play_order.size()-1 + ") " + right1.name);
                         list.add(play_order.size()-1);
                     }
-                    if(play_order.size() > 2 && play_order.get((play_order.size()-2)) != play_order.get(2) && play_order.get((play_order.size()-2)) != play_order.get(1) && play_order.get((play_order.size()-2)) != play_order.get(0) && play_order.get((play_order.size()-2)) != play_order.get((play_order.size()-1))){
-                        System.out.println((play_order.size()-2) + ") " + play_order.get((play_order.size()-2)).name);
+                    if(play_order.size() > 2 && right2 != left2 && right2 != left1 && right2 != play_order.get(0) && right2 != right1){
+                        System.out.println(play_order.size()-2 + ") " + right2.name);
                         list.add(play_order.size()-2);
                     }
                     System.out.print("> ");
@@ -512,10 +693,10 @@ public class BANG {
                 }
                 for(int j = 0; j < arr.length; j++){
                     if(play_order.size() > 1 && play_order.get(arr[j]).name.equals("Bart Cassidy")){
-                            bartAction(play_order, arr[j]);
+                            bartAction(play_order, arr[j], 1);
                         }
                     else{
-                        notBart(play_order, arr[j], gringo);
+                        notBart(play_order, arr[j], gringo, 1);
                     }
                 }
             }
@@ -528,18 +709,18 @@ public class BANG {
                         for(int i = 0; i < BE1; i++){
                             System.out.println("Where do you want shot number " + (i+1) + " to go?");
                             list.clear();
-                            System.out.println("1) " + play_order.get(1).name);
+                            System.out.println("1) " + left1.name);
                             list.add(1);
-                            if(play_order.size() > 2 && play_order.get(1) != play_order.get(2) && play_order.get(0) != play_order.get(2)){
-                                System.out.println("2) " + play_order.get(2).name);
+                            if(play_order.size() > 2 && left1 != left2 && play_order.get(0) != left2){
+                                System.out.println("2) " + left2.name);
                                 list.add(2);
                             }
-                            if(play_order.size() > 2 && play_order.get((play_order.size()-1)) != play_order.get(2) && play_order.get((play_order.size()-1)) != play_order.get(1) && play_order.get((play_order.size()-1)) != play_order.get(0)){
-                                System.out.println((play_order.size()-1) + ") " + play_order.get((play_order.size()-1)).name);
+                            if(play_order.size() > 2 && right1 != left2 && right1 != left1 && right1 != play_order.get(0)){
+                                System.out.println(play_order.size()-1 + ") " + right1.name);
                                 list.add(play_order.size()-1);
                             }
-                            if(play_order.size() > 2 && play_order.get((play_order.size()-2)) != play_order.get(2) && play_order.get((play_order.size()-2)) != play_order.get(1) && play_order.get((play_order.size()-2)) != play_order.get(0) && play_order.get((play_order.size()-2)) != play_order.get((play_order.size()-1))){
-                                System.out.println((play_order.size()-2) + ") " + play_order.get((play_order.size()-2)).name);
+                            if(play_order.size() > 2 && right2 != left2 && right2 != left1 && right2 != play_order.get(0) && right2 != right1){
+                                System.out.println((play_order.size()-2) + ") " + right2.name);
                                 list.add(play_order.size()-2);
                             }
                             System.out.print("> ");
@@ -571,7 +752,7 @@ public class BANG {
                         }
                         for(int j = 0; j < arr.length; j++){
                             if(play_order.size() > 1 && play_order.get(arr[j]).name.equals("Bart Cassidy")){
-                                    bartAction(play_order, arr[j]);
+                                    bartAction(play_order, arr[j], 1);
                                 }
                             else{
                                 if(play_order.get(0).name.equals("Slab The Killer") && Beer > 0){
@@ -597,22 +778,15 @@ public class BANG {
                                         answer = scan.next();
                                     }
                                     if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
-                                        play_order.get(arr[j]).damage(1);
-                                        notBart(play_order, arr[j], gringo);
+                                        notBart(play_order, arr[j], gringo, 2);
                                         Beer--;
                                     }
                                     else{
-                                        notBart(play_order, arr[j], gringo);
-                                        if(play_order.get(arr[j]).health <= 0){
-                                            deathSeq(play_order, arr[j]);
-                                        }
+                                        notBart(play_order, arr[j], gringo, 1);
                                     }
                                 }
                                 else{
-                                    notBart(play_order, arr[j], gringo);
-                                    if(play_order.get(arr[j]).health <= 0){
-                                        deathSeq(play_order, arr[j]);
-                                    }
+                                    notBart(play_order, arr[j], gringo, 1);
                                 } 
                             }
                         }
@@ -623,10 +797,10 @@ public class BANG {
                         for(int i = 0; i < BE1; i++){
                             System.out.println("Where do you want shot number " + (i+1) + " to go?");
                             list.clear();
-                            System.out.println("1) " + play_order.get(1).name);
+                            System.out.println("1) " + left1.name);
                             list.add(1);
-                            if(play_order.get((play_order.size()-1)) != play_order.get(1) && play_order.get((play_order.size()-1)) != play_order.get(0)){
-                                System.out.println((play_order.size()-1) + ") " + play_order.get((play_order.size()-1)).name);
+                            if(right1 != left1 && right1 != play_order.get(0)){
+                                System.out.println((play_order.size()-1) + ") " + right1.name);
                                 list.add(play_order.size()-1);
                             }
                             System.out.print("> ");
@@ -658,10 +832,10 @@ public class BANG {
                         }
                         for(int j = 0; j < arr.length; j++){
                             if(play_order.size() > 1 && play_order.get(arr[j]).name.equals("Bart Cassidy")){
-                                    bartAction(play_order, arr[j]);
+                                    bartAction(play_order, arr[j], 1);
                                 }
                             else{
-                                notBart(play_order, arr[j], gringo);
+                                notBart(play_order, arr[j], gringo, 1);
                             }
                         }
                     }
@@ -674,18 +848,18 @@ public class BANG {
                         for(int i = 0; i < BE2; i++){
                             System.out.println("Where do you want shot number " + (i+1) + " to go?");
                             list.clear();
-                            System.out.println("2) " + play_order.get(2).name);
+                            System.out.println("2) " + left2.name);
                             list.add(2);
-                            if(play_order.size() > 2 && play_order.get(2) != play_order.get(3) && play_order.get(0) != play_order.get(3)){
-                                System.out.println("3) " + play_order.get(3).name);
+                            if(play_order.size() > 2 && left2 != left3 && play_order.get(0) != left3){
+                                System.out.println("3) " + left3.name);
                                 list.add(3);
                             }
-                            if(play_order.size() > 2 && play_order.get((play_order.size()-2)) != play_order.get(3) && play_order.get((play_order.size()-2)) != play_order.get(2) && play_order.get((play_order.size()-2)) != play_order.get(0)){
-                                System.out.println((play_order.size()-2) + ") " + play_order.get((play_order.size()-2)).name);
+                            if(play_order.size() > 2 && right2 != left3 && right2 != left2 && right2 != play_order.get(0)){
+                                System.out.println((play_order.size()-2) + ") " + right2.name);
                                 list.add(play_order.size()-2);
                             }
-                            if(play_order.size() > 2 && play_order.get((play_order.size()-3)) != play_order.get(3) && play_order.get((play_order.size()-3)) != play_order.get(2) && play_order.get((play_order.size()-3)) != play_order.get(0) && play_order.get((play_order.size()-3)) != play_order.get((play_order.size()-2))){
-                                System.out.println((play_order.size()-3) + ") " + play_order.get((play_order.size()-3)).name);
+                            if(play_order.size() > 2 && right3 != left3 && right3 != left2 && right3 != play_order.get(0) && right3 != right2){
+                                System.out.println((play_order.size()-3) + ") " + right3.name);
                                 list.add(play_order.size()-3);
                             }
                             System.out.print("> ");
@@ -717,10 +891,10 @@ public class BANG {
                         }
                         for(int j = 0; j < arr.length; j++){
                             if(play_order.size() > 1 && play_order.get(arr[j]).name.equals("Bart Cassidy")){
-                                    bartAction(play_order, arr[j]);
+                                    bartAction(play_order, arr[j], 1);
                                 }
                             else{
-                                notBart(play_order, arr[j], gringo);
+                                notBart(play_order, arr[j], gringo, 1);
                             }
                         }
                     }
@@ -730,10 +904,10 @@ public class BANG {
                         for(int i = 0; i < BE2; i++){
                             System.out.println("Where do you want shot number " + (i+1) + " to go?");
                             list.clear();
-                            System.out.println("2) " + play_order.get(2).name);
+                            System.out.println("2) " + left2.name);
                             list.add(2);
-                            if(play_order.get((play_order.size()-2)) != play_order.get(1) && play_order.get((play_order.size()-2)) != play_order.get(0)){
-                                System.out.println((play_order.size()-2) + ") " + play_order.get((play_order.size()-2)).name);
+                            if(right2 != left2 && right2 != play_order.get(0)){
+                                System.out.println((play_order.size()-2) + ") " + right2.name);
                                 list.add(play_order.size()-2);
                             }
                             System.out.print("> ");
@@ -765,7 +939,7 @@ public class BANG {
                         }
                         for(int j = 0; j < arr.length; j++){
                             if(play_order.size() > 1 && play_order.get(arr[j]).name.equals("Bart Cassidy")){
-                                    bartAction(play_order, arr[j]);
+                                    bartAction(play_order, arr[j], 1);
                                 }
                             else{
                                 if(play_order.get(0).name.equals("Slab The Killer") && Beer > 0){
@@ -791,16 +965,301 @@ public class BANG {
                                         answer = scan.next();
                                     }
                                     if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
-                                        play_order.get(arr[j]).damage(2);
+                                        notBart(play_order, arr[j], gringo, 2);
                                         Beer--;
                                     }
                                     else{
-                                        play_order.get(arr[j]).damage(1);
+                                        notBart(play_order, arr[j], gringo, 1);
+                                        if(play_order.get(arr[j]).health <= 0){
+                                            deathSeq(play_order, arr[j]);
+                                        }
                                     }
                                 }
                                 else{
-                                    notBart(play_order, arr[j], gringo);
+                                    notBart(play_order, arr[j], gringo, 1);
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+            if(DBE1 > 0){
+                if(play_order.get(0).name.equals("Rose Doolan")){
+                    System.out.println("You have " + DBE1 + " one/two distance shots!");
+                    arr = new int[DBE1];
+                    for(int i = 0; i < DBE1; i++){
+                        System.out.println("Where do you want shot number " + (i+1) + " to go?");
+                        list.clear();
+                        System.out.println("1) " + left1.name);
+                        list.add(1);
+                        if(play_order.size() > 2 && left1 != left2 && play_order.get(0) != left2){
+                            System.out.println("2) " + left2.name);
+                            list.add(2);
+                        }
+                        if(play_order.size() > 2 && right1 != left2 && right1 != left1 && right1 != play_order.get(0)){
+                            System.out.println(play_order.size()-1 + ") " + right1.name);
+                            list.add(play_order.size()-1);
+                        }
+                        if(play_order.size() > 2 && right2 != left2 && right2 != left1 && right2 != play_order.get(0) && right2 != right1){
+                            System.out.println((play_order.size()-2) + ") " + right2.name);
+                            list.add(play_order.size()-2);
+                        }
+                        System.out.print("> ");
+                        do{
+                            try{
+                                if(play_order.get(0).computer == true){
+                                    Random random = new Random();  
+                                    players = (random.nextInt(10000000)%list.size());
+                                    players = list.get(players);
+                                    System.out.println(players);
+                                    try{
+                                        TimeUnit.SECONDS.sleep(2);
+                                    }
+                                    catch(InterruptedException ex)
+                                    {
+                                        Thread.currentThread().interrupt();
+                                    }
+                                }
+                                else{
+                                    players = scan.nextInt();
+                                }
+                                test = true;
+                            }
+                            catch (Exception a){
+                                System.out.println("Please give a number");
+                            }
+                        }while(!test);
+                        arr[i] = players; 
+                    }
+                    for(int j = 0; j < arr.length; j++){
+                        if(play_order.size() > 1 && play_order.get(arr[j]).name.equals("Bart Cassidy")){
+                                bartAction(play_order, arr[j], 2);
+                            }
+                        else{
+                            if(play_order.get(0).name.equals("Slab The Killer") && Beer > 0){
+                                System.out.println("Slab: Do you want to use a Beer for double damage on " + play_order.get(arr[j]).name + "?");
+                                System.out.print("> ");
+                                answer = "n";
+                                if(play_order.get(0).computer == true){
+                                    Random random = new Random();  
+                                    int random_int = (random.nextInt(10000000)%2);
+                                    if(random_int == 1){
+                                        answer = "y";
+                                    }
+                                    System.out.println(answer);
+                                    try{
+                                        TimeUnit.SECONDS.sleep(2);
+                                    }
+                                    catch(InterruptedException ex)
+                                    {
+                                        Thread.currentThread().interrupt();
+                                    }
+                                }
+                                else{
+                                    answer = scan.next();
+                                }
+                                if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
+                                    notBart(play_order, arr[j], gringo, 4);
+                                    Beer--;
+                                }
+                                else{
+                                    play_order.get(arr[j]).damage(1);
+                                    notBart(play_order, arr[j], gringo, 2);
+                                }
+                            }
+                            else{
+                                play_order.get(arr[j]).damage(1);
+                                notBart(play_order, arr[j], gringo, 2);
+                            } 
+                        }
+                    }
+                }
+                else{ 
+                    System.out.println("You have " + DBE1 + " one distance shots!");
+                    arr = new int[DBE1];
+                    for(int i = 0; i < DBE1; i++){
+                        System.out.println("Where do you want shot number " + (i+1) + " to go?");
+                        list.clear();
+                        System.out.println("1) " + left1.name);
+                        list.add(1);
+                        if(right1 != left1 && right1 != play_order.get(0)){
+                            System.out.println((play_order.size()-1) + ") " + right1.name);
+                            list.add(play_order.size()-1);
+                        }
+                        System.out.print("> ");
+                        do{
+                            try{
+                                if(play_order.get(0).computer == true){
+                                    Random random = new Random();  
+                                    players = (random.nextInt(10000000)%list.size());
+                                    players = list.get(players);
+                                    System.out.println(players);
+                                    try{
+                                        TimeUnit.SECONDS.sleep(2);
+                                    }
+                                    catch(InterruptedException ex)
+                                    {
+                                        Thread.currentThread().interrupt();
+                                    }
+                                }
+                                else{
+                                    players = scan.nextInt();
+                                }
+                                test = true;
+                            }
+                            catch (Exception a){
+                                System.out.println("Please give a number");
+                            }
+                        }while(!test);
+                        arr[i] = players; 
+                    }
+                    for(int j = 0; j < arr.length; j++){
+                        if(play_order.size() > 1 && play_order.get(arr[j]).name.equals("Bart Cassidy")){
+                            bartAction(play_order, arr[j], 2);
+                        }
+                        else{
+                            notBart(play_order, arr[j], gringo, 2);
+                        }
+                    }
+                }
+
+            }
+            if(DBE2 > 0 && play_order.size() > 2){
+                if(play_order.get(0).name.equals("Rose Doolan")){
+                    System.out.println("You have " + DBE2 + " two/three distance shots!");
+                    arr = new int[DBE2];
+                    for(int i = 0; i < DBE2; i++){
+                        System.out.println("Where do you want shot number " + (i+1) + " to go?");
+                        list.clear();
+                        System.out.println("2) " + left2.name);
+                        list.add(2);
+                        if(play_order.size() > 2 && left2 != left3 && play_order.get(0) != left3){
+                            System.out.println("3) " + left3.name);
+                            list.add(3);
+                        }
+                        if(play_order.size() > 2 && right2 != left3 && right2 != left2 && right2 != play_order.get(0)){
+                            System.out.println((play_order.size()-2) + ") " + right2.name);
+                            list.add(play_order.size()-2);
+                        }
+                        if(play_order.size() > 2 && right3 != left3 && right3 != left2 && right3 != play_order.get(0) && right3 != right2){
+                            System.out.println((play_order.size()-3) + ") " + right3.name);
+                            list.add(play_order.size()-3);
+                        }
+                        System.out.print("> ");
+                        do{
+                            try{
+                                if(play_order.get(0).computer == true){
+                                    Random random = new Random();  
+                                    players = (random.nextInt(10000000)%list.size());
+                                    players = list.get(players);
+                                    System.out.println(players);
+                                    try{
+                                        TimeUnit.SECONDS.sleep(2);
+                                    }
+                                    catch(InterruptedException ex)
+                                    {
+                                        Thread.currentThread().interrupt();
+                                    }
+                                }
+                                else{
+                                    players = scan.nextInt();
+                                }
+                                test = true;
+                            }
+                            catch (Exception a){
+                                System.out.println("Please give a number");
+                            }
+                        }while(!test);
+                        arr[i] = players; 
+                    }
+                    for(int j = 0; j < arr.length; j++){
+                        if(play_order.size() > 1 && play_order.get(arr[j]).name.equals("Bart Cassidy")){
+                                bartAction(play_order, arr[j], 2);
+                            }
+                        else{
+                            notBart(play_order, arr[j], gringo, 2);
+                        }
+                    }
+                }
+                else{ 
+                    System.out.println("You have " + DBE2 + " two distance shots!");
+                    arr = new int[DBE2];
+                    for(int i = 0; i < DBE2; i++){
+                        System.out.println("Where do you want shot number " + (i+1) + " to go?");
+                        list.clear();
+                        System.out.println("2) " + left2.name);
+                        list.add(2);
+                        if(right2 != left2 && right2 != play_order.get(0)){
+                            System.out.println((play_order.size()-2) + ") " + right2.name);
+                            list.add(play_order.size()-2);
+                        }
+                        System.out.print("> ");
+                        do{
+                            try{
+                                if(play_order.get(0).computer == true){
+                                    Random random = new Random();  
+                                    players = (random.nextInt(10000000)%list.size());
+                                    players = list.get(players);
+                                    System.out.println(players);
+                                    try{
+                                        TimeUnit.SECONDS.sleep(2);
+                                    }
+                                    catch(InterruptedException ex)
+                                    {
+                                        Thread.currentThread().interrupt();
+                                    }
+                                }
+                                else{
+                                    players = scan.nextInt();
+                                }
+                                test = true;
+                            }
+                            catch (Exception a){
+                                System.out.println("Please give a number");
+                            }
+                        }while(!test);
+                        arr[i] = players; 
+                    }
+                    for(int j = 0; j < arr.length; j++){
+                        if(play_order.size() > 1 && play_order.get(arr[j]).name.equals("Bart Cassidy")){
+                                bartAction(play_order, arr[j], 2);
+                            }
+                        else{
+                            if(play_order.get(0).name.equals("Slab The Killer") && Beer > 0){
+                                System.out.println("Slab: Do you want to use a Beer for double damage on " + play_order.get(arr[j]).name + "?");
+                                System.out.print("> ");
+                                answer = "n";
+                                if(play_order.get(0).computer == true){
+                                    Random random = new Random();  
+                                    int random_int = (random.nextInt(10000000)%2);
+                                    if(random_int == 1){
+                                        answer = "y";
+                                    }
+                                    System.out.println(answer);
+                                    try{
+                                        TimeUnit.SECONDS.sleep(2);
+                                    }
+                                    catch(InterruptedException ex)
+                                    {
+                                        Thread.currentThread().interrupt();
+                                    }
+                                }
+                                else{
+                                    answer = scan.next();
+                                }
+                                if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
+                                    notBart(play_order, arr[j], gringo, 4);
+
+                                    Beer--;
+                                }
+                                else{
+                                    notBart(play_order, arr[j], gringo, 2);
+
+                                }
+                            }
+                            else{
+                                notBart(play_order, arr[j], gringo, 2);
+
                             }
                         }
                     }
@@ -810,7 +1269,100 @@ public class BANG {
                 Beer *= 2;
             }
             play_order.get(0).heal(Beer);
-            if(BE1 == 0 && BE2 == 0){
+            if(duel > 0){
+                ArrayList<Player> duelList = new ArrayList();
+                for(int i = 1; i < play_order.size(); i++){
+                    duelList.add(play_order.get(i));
+                }
+                while(duel > 0){
+                    Player turn;
+                    turn = play_order.get(0);
+                    for(int j = 0; j < duelList.size(); j++){
+                        System.out.println(j + ") " + duelList.get(j).name);
+                    }
+                    System.out.println("Who do you want to duel?");
+                    System.out.print("> ");
+                    test = false;
+                    do{
+                        try{
+                            if(play_order.get(0).computer == true){
+                                Random random = new Random();  
+                                players = (random.nextInt(10000000)%duelList.size());
+                                System.out.println(players);
+                                try{
+                                    TimeUnit.SECONDS.sleep(2);
+                                }
+                                catch(InterruptedException ex)
+                                {
+                                    Thread.currentThread().interrupt();
+                                }
+                            }
+                            else{
+                                players = scan.nextInt();
+                            }
+                        }
+                        catch (Exception a){
+                            System.out.println("Please give a number");
+                        }
+                        test = true;
+                    }while(!test);
+                    
+                    
+                    System.out.println("Do you want to roll first? (y/n)");
+                    answer = "n";
+                    if(play_order.get(0).computer == true){
+                        Random random = new Random();  
+                        int random_int = (random.nextInt(10000000)%2);
+                        if(random_int == 1){
+                            answer = "y";
+                        }
+                        System.out.println(answer);
+                        try{
+                            TimeUnit.SECONDS.sleep(2);
+                        }
+                        catch(InterruptedException ex)
+                        {
+                            Thread.currentThread().interrupt();
+                        }
+                    }
+                    else{
+                        answer = scan.next();
+                    }
+                    if(answer.equalsIgnoreCase("yes") || answer.equalsIgnoreCase("y")){
+                        turn = play_order.get(0);
+                        dice.get(0).roll();
+                        if(dice.get(0).sides[dice.get(0).side].equals("Duel")){
+                            while(dice.get(0).sides[dice.get(0).side].equals("Duel")){
+                                turn = duelList.get(players);
+                                dice.get(0).roll();
+                                if(!(dice.get(0).sides[dice.get(0).side].equals("Duel"))){
+                                    break;
+                                }
+                                turn = play_order.get(0);
+                                dice.get(0).roll();
+                            }
+                        }
+                    }
+                    else{
+                        while(dice.get(0).sides[dice.get(0).side].equals("Duel")){
+                            turn = duelList.get(players);
+                            dice.get(0).roll();
+                            if(!(dice.get(0).sides[dice.get(0).side].equals("Duel"))){
+                                break;
+                            }
+                            turn = play_order.get(0);
+                            dice.get(0).roll();
+                        }
+                    }
+                    duelList.remove(duelList.get(players));
+                    turn.damage(1);
+                    System.out.println(turn.name + " has lost the duel and has picked up a duel wound card and lost 1 health!");
+                    //turn (player), gains duel fail card
+                    
+                    duel--;
+                }
+            }
+            if(BE1 == 0 && BE2 == 0 && DBE1 == 0 && DBE2 == 0){
                 if(play_order.get(0).name.equals("Suzy Lafayette")){
                     play_order.get(0).heal(2);
                 }
@@ -818,13 +1370,14 @@ public class BANG {
             
             play_order.add(play_order.get(0));
             play_order.remove(play_order.get(0));
+            d5 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling");
         }
         
         
         
     }
     
-    public static void bartAction(ArrayList<Player> play_order, int i){
+    public static void bartAction(ArrayList<Player> play_order, int i, int dam){
         System.out.println("Bart Cassidy: Would you like to take an arrow instead of damage? (y/n)");
         System.out.print("> ");
         String answer = "n";
@@ -854,7 +1407,7 @@ public class BANG {
             }
         }
         else{
-           play_order.get(i).damage(1);
+           play_order.get(i).damage(dam);
            if(play_order.get(i).health <= 0){
                 deathSeq(play_order, i);
             }
@@ -935,9 +1488,9 @@ public class BANG {
         
     }
     
-    public static boolean notBart(ArrayList<Player> play_order, int i, boolean gringo){
+    public static boolean notBart(ArrayList<Player> play_order, int i, boolean gringo, int damage){
         try{
-            play_order.get(i).damage(1);
+            play_order.get(i).damage(damage);
         }
         catch(Exception e){
             return gringo;
