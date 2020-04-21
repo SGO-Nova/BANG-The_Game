@@ -7,15 +7,17 @@ import java.util.Random;
 public class Dice {
     String sides[] = new String[6];
     int side;
+    int dice;
     
-    public Dice(int side){
+    public Dice(int dice, int side, String s1, String s2, String s3, String s4, String s5, String s6){
         this.side = side;
-        sides[0] = "Indian Arrow";
-        sides[1] = "Dynamite";
-        sides[2] = "Bull's Eye 1";
-        sides[3] = "Bull's Eye 2";
-        sides[4] = "Beer";
-        sides[5] = "Gatling";
+        this.dice = dice;
+        sides[0] = s1;
+        sides[1] = s2;
+        sides[2] = s3;
+        sides[3] = s4;
+        sides[4] = s5;
+        sides[5] = s6;
     }
     
     public String keep(){

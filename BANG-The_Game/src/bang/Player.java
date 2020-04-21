@@ -14,6 +14,7 @@ public class Player {
     int gatsNeeded = 3;
     int team;
     public boolean shown;
+    public boolean chiefArrow = false;
 
     Character_Cards c; //team assign
     public Player(String name, int health, String role, boolean comp){

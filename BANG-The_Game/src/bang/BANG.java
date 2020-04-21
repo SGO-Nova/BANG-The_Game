@@ -15,7 +15,8 @@ import java.util.concurrent.TimeUnit;
 
 
 public class BANG {
-    static int arrow = 9;
+    static int arrow = 10;
+    static boolean chiefArrow = true;
     static Scanner scan;
     static int players;
     
@@ -41,11 +42,13 @@ public class BANG {
         Collections.shuffle(char_cards);
         
         ArrayList<Dice> dice = new ArrayList();
-        Dice d1 = new Dice(0);
-        Dice d2 = new Dice(0);
-        Dice d3 = new Dice(0);
-        Dice d4 = new Dice(0);
-        Dice d5 = new Dice(0);
+        Dice d1 = new Dice(2, 0, "Indian Arrow", "Dynamite", "Duel", "Duel", "Whiskey", "Gatling");//LOOK AT ME DICE
+        Dice d2 = new Dice(2, 0, "Indian Arrow", "Dynamite", "Duel", "Duel", "Whiskey", "Gatling");//LOOK AT ME DICE
+        Dice d3 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling");
+        Dice d4 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling");
+        Dice d5 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling");
+        Dice d6 = new Dice(1, 0, "Indian Arrow", "Dynamite", "Double Bull's Eye 1", "Double Bull's Eye 2", "Bullet", "Double Gatling"); //LOUDMOUTH
+        Dice d7 = new Dice(1, 0, "Broken Indian Arrow", "Dynamite", "Bull's Eye 1", "Indian Arrow", "Double Beer", "Beer"); //COWARD
         dice.add(d1);
         dice.add(d2);
         dice.add(d3);
@@ -74,15 +77,6 @@ public class BANG {
 
 
             switch(players){
-                case 2: 
-                    role_cards.add(new Role_Cards("Outlaw"));
-                    role_cards.add(new Role_Cards("Deputy"));
-                    role_cards.add(new Role_Cards("Renegade"));
-                    Collections.shuffle(role_cards);
-                    human = new Player(char_cards.get(0).name, char_cards.get(0).hp, role_cards.get(0).role, false);
-                    ai1 = new Player(char_cards.get(1).name, char_cards.get(1).hp, role_cards.get(1).role, true);
-                    ai2 = new Player(char_cards.get(2).name, char_cards.get(2).hp, role_cards.get(2).role, true);
-                    break;
                 case 3:
                     role_cards.add(new Role_Cards("Sheriff"));
                     role_cards.add(new Role_Cards("Renegade"));
@@ -159,7 +153,7 @@ public class BANG {
                     ai7 = new Player(char_cards.get(7).name, char_cards.get(7).hp, role_cards.get(7).role, true);
                     break;
                 default:
-                    System.out.println("Please pick a number between 2 and 7!");
+                    System.out.println("Please pick a number between 3 and 7!");
                     break;
             }
 
@@ -343,7 +337,7 @@ public class BANG {
                         dynamite++;
                     }
                     if(dice.get(i).sides[dice.get(i).side].equals("Indian Arrow")){
-                        arrow--;
+                        arrowTakeAction(play_order, 0);
                         play_order.get(0).addArrow(1);
                         if(arrow == 0){
                             indianAttack(play_order);
@@ -854,7 +848,7 @@ public class BANG {
         }
         if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
             play_order.get(i).addArrow(1);
-            arrow--;
+            arrowTakeAction(play_order, 1);
             if(arrow == 0){
                 indianAttack(play_order);
             }
@@ -869,17 +863,39 @@ public class BANG {
     
     public static void indianAttack(ArrayList<Player> play_order){
         System.out.println("The Indians have attacked!");
-            for(int j = 0; j < play_order.size();j++){
-                if(play_order.get(j).name.equals("Joursonnais") && play_order.get(j).arrows > 0){
+        int most = 0;
+        int index = 0;
+        for(int i = 0; i < play_order.size(); i++){
+            if(play_order.get(i).arrows > most){
+                most = play_order.get(i).arrows;
+                index = i;
+            }
+            if(play_order.get(i).arrows == most){
+                index = 10;
+            }
+        } 
+        for(int j = 0; j < play_order.size();j++){
+            if(play_order.get(j).chiefArrow == false || j != index){
+               if(play_order.get(j).name.equals("Joursonnais") && play_order.get(j).arrows > 0){
                     play_order.get(j).arrows = 1;
                 }
                 play_order.get(j).damage(play_order.get(j).arrows);
+                if(play_order.get(j).chiefArrow == true){
+                    play_order.get(j).damage(1);
+                }
                 play_order.get(j).arrowReset();
+                play_order.get(j).chiefArrow = false;
                 if(play_order.get(j).health <= 0){
                     deathSeq(play_order, j);
-                }
+                } 
+            } 
+            else{
+                play_order.get(j).arrowReset();
+                play_order.get(j).chiefArrow = false;
             }
-            arrow = 9;
+        }
+        arrow = 10;
+        chiefArrow = true;
     }
     
     public static void deathSeq(ArrayList<Player> play_order, int i){
@@ -932,7 +948,7 @@ public class BANG {
         }
         if(play_order.get(i).name.equals("El Gringo") && play_order.get(i).health != 0){
             play_order.get(0).addArrow(1);
-            arrow--;
+            arrowTakeAction(play_order, 0);
             if(arrow == 0){
                 indianAttack(play_order);
             }
@@ -965,6 +981,40 @@ public class BANG {
         BANG.players = players;
         System.out.println(BANG.players);
         main();
+    }
+    
+    public static void arrowTakeAction(ArrayList <Player> play_order, int order){
+        String answer; 
+        if(chiefArrow == true){
+            System.out.println("Do you want to take the chief arrow?");
+            answer = "n";
+            if(play_order.get(order).computer == true){
+                Random random = new Random();  
+                int random_int = (random.nextInt(10000000)%2);
+                if(random_int == 1){
+                    answer = "y";
+                }
+                System.out.println(answer);
+                try{
+                    TimeUnit.SECONDS.sleep(2);
+                }
+                catch(InterruptedException ex)
+                {
+                    Thread.currentThread().interrupt();
+                }
+            }
+            else{
+                answer = scan.next();
+            }
+            if(answer.equalsIgnoreCase("yes") || answer.equalsIgnoreCase("y")){
+                chiefArrow = false;
+                play_order.get(order).chiefArrow = true;
+                arrow--;
+            }
+        }
+        else{
+            arrow--;
+        }
     }
     
 }
