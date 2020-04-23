@@ -55,8 +55,36 @@ public class Bang_fxGUI extends Application
     Label Line7 = new Label(textField);
     Label Line8 = new Label(textField);
     Label Line9 = new Label(textField);
+    Label main1 = new Label(textField);
+    Label main2 = new Label(textField);
+    Label main3 = new Label(textField);
+    Label main4 = new Label(textField);
+    Label main5 = new Label(textField);
+    Label main6 = new Label(textField);
+    Label main7 = new Label(textField);
+    Label main8 = new Label(textField);
+    ArrayList<Label> lines = new ArrayList();
     TextField playerName = new TextField("Enter Name");
     ComboBox numPlayers = new ComboBox();
+    
+    //Global creation of game variables 
+    int Gat = 0;
+    int BE1 = 0;
+    int BE2 = 0;
+    int DBE1 = 0;
+    int DBE2 = 0;
+    int duel = 0;
+    int total = 0;
+    int Beer = 0;
+    int dynamite = 0;
+    boolean gringo = false;
+    boolean gatAttack = false;
+    Player left1;
+    Player right1;
+    Player left2;
+    Player right2;
+    Player left3;
+    Player right3;
     
     //Global creation of game elements
     ArrayList<Character_Cards> char_cards = new ArrayList();
@@ -111,43 +139,17 @@ public class Bang_fxGUI extends Application
         logo.setFitHeight(260);
         
         //Text for new scene
+        textMove(Line1, "Loading Computers...", 500, 100, 24);
+        textMove(Line2, "", 500, 140, 24);
+        textMove(Line3, "", 500, 180, 24);
+        textMove(Line4, "", 500, 220, 24);
+        textMove(Line5, "", 500, 260, 24);
+        textMove(Line6, "", 500, 300, 24);
+        textMove(Line7, "", 500, 340, 24);
+        textMove(Line8, "", 500, 380, 24);
+        textMove(Line9, "", 500, 420, 24);
+
         
-        Line1.setText("Loading Computers...");
-        Line1.setLayoutX(500);
-        Line1.setLayoutY(100);
-        Line1.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
-        Line2.setText("");
-        Line2.setLayoutX(500);
-        Line2.setLayoutY(140);
-        Line2.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
-        Line3.setText("");
-        Line3.setLayoutX(500);
-        Line3.setLayoutY(180);
-        Line3.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
-        Line4.setText("");
-        Line4.setLayoutX(500);
-        Line4.setLayoutY(220);
-        Line4.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
-        Line5.setText("");
-        Line5.setLayoutX(500);
-        Line5.setLayoutY(260);
-        Line5.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
-        Line6.setText("");
-        Line6.setLayoutX(500);
-        Line6.setLayoutY(300);
-        Line6.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
-        Line7.setText("");
-        Line7.setLayoutX(500);
-        Line7.setLayoutY(340);
-        Line7.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
-        Line8.setText("");
-        Line8.setLayoutX(500);
-        Line8.setLayoutY(380);
-        Line8.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
-        Line9.setText("");
-        Line9.setLayoutX(500);
-        Line9.setLayoutY(420);
-        Line9.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
         
         //set position of table image within window
         table.setX(5.75);
@@ -194,6 +196,22 @@ public class Bang_fxGUI extends Application
         startButton.setLayoutX(850);
         startButton.setLayoutY(490);
         startButton.setOnAction(e -> {
+            lines.add(Line2);
+            lines.add(Line3);
+            lines.add(Line4);
+            lines.add(Line5);
+            lines.add(Line6);
+            lines.add(Line7);
+            lines.add(Line8);
+            lines.add(Line9);
+            lines.add(main1);
+            lines.add(main2);
+            lines.add(main3);
+            lines.add(main4);
+            lines.add(main5);
+            lines.add(main6);
+            lines.add(main7);
+            lines.add(main8);
             if(cb1.isSelected()){
                 music.setAutoPlay(true);
             }
@@ -212,13 +230,29 @@ public class Bang_fxGUI extends Application
         nextButton.setLayoutX(1100);
         nextButton.setLayoutY(600);
         nextButton.setOnAction(d -> {
-             // button & Action
-            Button Button1 = new Button("Next");
-            Button1.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
-            Button1.setLayoutX(1100);
-            Button1.setLayoutY(600);
-            Button1.setOnAction(e -> {
-                // button & Action
+            //Move player texts
+                for(int i = 0; i< lines.size(); i += 2){
+                    
+                    lines.get(i).setLayoutX(20);
+                    lines.get(i).setLayoutY((i+1) * 20);
+                    lines.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+                    lines.get(i+1).setLayoutX(20);
+                    lines.get(i+1).setLayoutY((int)lines.get(i).getLayoutY() + 16);
+                    lines.get(i+1).setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+                    
+                    if((i < (players+1)*2) && temp_play_order.get((i+1)/2).shown && (i+1)%2 == 1){
+                        lines.get(i).setText(temp_play_order.get((i+1)/2).name + "(" + temp_play_order.get((i+1)/2).role + ")");
+                        lines.get(i+1).setText("HP: " + temp_play_order.get((i+1)/2).health + " Arrows: " + temp_play_order.get((i+1)/2).arrows);
+                    }
+                    else if(i < ((players+1)*2) && (i+1)%2 == 1){
+                        lines.get(i).setText(temp_play_order.get((i+1)/2).name + "(Unknown)");
+                        lines.get(i+1).setText("HP: " + temp_play_order.get((i+1)/2).health + " Arrows: " + temp_play_order.get((i+1)/2).arrows);
+                    }
+                }
+                
+            
+            
+            // button & Action Without Sid K
                 Button Button2 = new Button("Next");
                 Button2.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
                 Button2.setLayoutX(1100);
@@ -228,31 +262,40 @@ public class Bang_fxGUI extends Application
                      // group all the above together
                     Group group = new Group();
                     group.getChildren()
-                            .addAll(table2, nextButton, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9);
+                            .addAll(table2, nextButton, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8);
                     scene5 = new Scene(group, 1280, 720, Color.BEIGE);
                     window.setScene(scene5);
                     window.show();
-                    Line1.setText("AND GET THIS FINISHED!");
+                    Line1.setText("I'M A MF GENIUS!");
 
                 });
                  // group all the above together
                 Group group = new Group();
                 group.getChildren()
-                        .addAll(table2, Button2, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9);
+                        .addAll(table2, Button2, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8);
                 scene4 = new Scene(group, 1280, 720, Color.BEIGE);
                 window.setScene(scene4);
                 window.show();
+                
                 Line1.setText("We just got to get started coding and shit!");
-
-            });
+                
              // group all the above together
-            Group group3 = new Group();
-            group3.getChildren()
-                    .addAll(table2, Button1, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9);
-            scene3 = new Scene(group3, 1280, 720, Color.BEIGE);
+             if(play_order.get(0).name.equals("Sid Ketchum")){
+                Group group3 = new Group();
+                group3.getChildren()
+                    .addAll(table2, Button2, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8);
+                scene3 = new Scene(group3, 1280, 720, Color.BEIGE);  
+             }
+             else{
+                Group group3 = new Group();
+                group3.getChildren()
+                    .addAll(table2, Button2, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8);
+                scene3 = new Scene(group3, 1280, 720, Color.BEIGE);
+             }
+            
             window.setScene(scene3);
             window.show();
-            Line1.setText("We did it bois!");
+            Line1.setText(play_order.get(0).name + ", you are up!");
             
         });
         
@@ -268,7 +311,7 @@ public class Bang_fxGUI extends Application
         // group all the above together
         Group group2 = new Group();
         group2.getChildren()
-                .addAll(table2, nextButton, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9);
+                .addAll(table2, nextButton, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8);
        
 
         
@@ -290,6 +333,12 @@ public class Bang_fxGUI extends Application
         
     }
     
+    public void textMove(Label line, String text, int x, int y, int fontSize){
+        line.setText(text);
+        line.setLayoutX(x);
+        line.setLayoutY(y);
+        line.setFont(Font.font("Verdana", FontWeight.BOLD, fontSize));
+    }
     
     public void go1(){
         players = (int)numPlayers.getValue() - 1; 
@@ -405,6 +454,7 @@ public class Bang_fxGUI extends Application
                     }
                     if(sher == false){
                       if(temp_play_order.get(i%8).role.equals("Sheriff")){
+                        temp_play_order.get(i%8).setMaxHealth(temp_play_order.get(i%8).maxHealth + 2);
                         temp_play_order.get(i%8).heal(2);
                         temp_play_order.get(i%8).shown = true;
                         play_order.add(temp_play_order.get(i%8));
@@ -484,5 +534,35 @@ public class Bang_fxGUI extends Application
             if(play_order.size() > 7){
                 Line9.setText("8) " + play_order.get(7).name);
             }
+    }
+    
+    public void go2(){
+        left1 = play_order.get(1);
+        right1 = play_order.get(play_order.size()-1);
+        try{
+            left2 = play_order.get(2);
+        }
+        catch (Exception a){
+            left2 = play_order.get(0);
+        }
+        try{
+            left3 = play_order.get(3);
+        }
+        catch (Exception a){
+            left3 = play_order.get(0);
+        }
+        try{
+            right2 = play_order.get(play_order.size()-2);
+        }
+        catch (Exception a){
+            right2 = play_order.get(0);
+        }
+        try{
+            right3 = play_order.get(play_order.size()-3);
+        }
+        catch (Exception a){
+            right3 = play_order.get(0);
+        }
+        
     }
 }

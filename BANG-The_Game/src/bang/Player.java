@@ -88,6 +88,11 @@ public class Player {
       //HERE I will be assigning each character special features and the roles using if statements
        
     }
+    
+    public void setMaxHealth(int max){
+        this.maxHealth = max;
+    
+    }
    
     public void heal(int heal){
         //if jessie jones then heal points + 1
