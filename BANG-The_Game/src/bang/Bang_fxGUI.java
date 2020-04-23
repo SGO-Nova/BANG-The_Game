@@ -29,7 +29,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -46,6 +45,7 @@ public class Bang_fxGUI extends Application
     static int players;
     
     //Global creation of lines and UI elements
+    // also, labels galore
     Label Line1 = new Label(textField);
     Label Line2 = new Label(textField);
     Label Line3 = new Label(textField);
@@ -91,13 +91,13 @@ public class Bang_fxGUI extends Application
     ArrayList<Dice> dice = new ArrayList();
     ArrayList<Role_Cards> role_cards = new ArrayList();
     Player human = new Player("NULL",0,"NULL",false);
-    Player ai1 = new Player("NLUL", 0, "NULL", true);
-    Player ai2 = new Player("NLUL", 0, "NULL", true);
-    Player ai3 = new Player("NLUL", 0, "NULL", true);
-    Player ai4 = new Player("NLUL", 0, "NULL", true);
-    Player ai5 = new Player("NLUL", 0, "NULL", true);
-    Player ai6 = new Player("NLUL", 0, "NULL", true);
-    Player ai7 = new Player("NLUL", 0, "NULL", true);
+    Player ai1 = new Player("NULL", 0, "NULL", true);
+    Player ai2 = new Player("NULL", 0, "NULL", true);
+    Player ai3 = new Player("NULL", 0, "NULL", true);
+    Player ai4 = new Player("NULL", 0, "NULL", true);
+    Player ai5 = new Player("NULL", 0, "NULL", true);
+    Player ai6 = new Player("NULL", 0, "NULL", true);
+    Player ai7 = new Player("NULL", 0, "NULL", true);
 
 
     ArrayList<Player> play_order = new ArrayList();
@@ -212,7 +212,8 @@ public class Bang_fxGUI extends Application
             lines.add(main6);
             lines.add(main7);
             lines.add(main8);
-            if(cb1.isSelected()){
+            if(cb1.isSelected())
+            {
                 music.setAutoPlay(true);
             }
             window.setScene(scene2);
@@ -240,11 +241,13 @@ public class Bang_fxGUI extends Application
                     lines.get(i+1).setLayoutY((int)lines.get(i).getLayoutY() + 16);
                     lines.get(i+1).setFont(Font.font("Verdana", FontWeight.BOLD, 18));
                     
-                    if((i < (players+1)*2) && temp_play_order.get((i+1)/2).shown && (i+1)%2 == 1){
+                    if((i < (players+1)*2) && temp_play_order.get((i+1)/2).shown && (i+1)%2 == 1)
+                    {
                         lines.get(i).setText(temp_play_order.get((i+1)/2).name + "(" + temp_play_order.get((i+1)/2).role + ")");
                         lines.get(i+1).setText("HP: " + temp_play_order.get((i+1)/2).health + " Arrows: " + temp_play_order.get((i+1)/2).arrows);
                     }
-                    else if(i < ((players+1)*2) && (i+1)%2 == 1){
+                    else if(i < ((players+1)*2) && (i+1)%2 == 1)
+                    {
                         lines.get(i).setText(temp_play_order.get((i+1)/2).name + "(Unknown)");
                         lines.get(i+1).setText("HP: " + temp_play_order.get((i+1)/2).health + " Arrows: " + temp_play_order.get((i+1)/2).arrows);
                     }
@@ -266,7 +269,7 @@ public class Bang_fxGUI extends Application
                     scene5 = new Scene(group, 1280, 720, Color.BEIGE);
                     window.setScene(scene5);
                     window.show();
-                    Line1.setText("I'M A MF GENIUS!");
+                    Line1.setText("I'M A MF'ING GENIUS!");
 
                 });
                  // group all the above together
@@ -280,13 +283,15 @@ public class Bang_fxGUI extends Application
                 Line1.setText("We just got to get started coding and shit!");
                 
              // group all the above together
-             if(play_order.get(0).name.equals("Sid Ketchum")){
+             if(play_order.get(0).name.equals("Sid Ketchum"))
+             {
                 Group group3 = new Group();
                 group3.getChildren()
                     .addAll(table2, Button2, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8);
                 scene3 = new Scene(group3, 1280, 720, Color.BEIGE);  
              }
-             else{
+             else
+             {
                 Group group3 = new Group();
                 group3.getChildren()
                     .addAll(table2, Button2, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8);
@@ -333,14 +338,16 @@ public class Bang_fxGUI extends Application
         
     }
     
-    public void textMove(Label line, String text, int x, int y, int fontSize){
+    public void textMove(Label line, String text, int x, int y, int fontSize)
+    {
         line.setText(text);
         line.setLayoutX(x);
         line.setLayoutY(y);
         line.setFont(Font.font("Verdana", FontWeight.BOLD, fontSize));
     }
     
-    public void go1(){
+    public void go1()
+    {
         players = (int)numPlayers.getValue() - 1; 
             //Create character cards, dice, and role cards
         
@@ -385,7 +392,8 @@ public class Bang_fxGUI extends Application
         
         
 
-            switch(players){
+            switch(players)
+            {
                 case 7:
                     role_cards.add(new Role_Cards("Renegade"));
                 case 6:
@@ -411,7 +419,9 @@ public class Bang_fxGUI extends Application
                 case 4:
                     ai4 = new Player(char_cards.get(4).name, char_cards.get(4).hp, role_cards.get(4).role, true);
                 case 3:
-                    human = new Player(char_cards.get(0).name, char_cards.get(0).hp, role_cards.get(0).role, false); //MAKE THIS TRUE TO LET AI DO ALL THE PLAYING
+                    //MAKE THIS TRUE TO LET AI DO ALL THE PLAYING
+                    human = new Player(char_cards.get(0).name, char_cards.get(0).hp, role_cards.get(0).role, false);
+                    //
                     ai1 = new Player(char_cards.get(1).name, char_cards.get(1).hp, role_cards.get(1).role, true);
                     ai2 = new Player(char_cards.get(2).name, char_cards.get(2).hp, role_cards.get(2).role, true);
                     ai3 = new Player(char_cards.get(3).name, char_cards.get(3).hp, role_cards.get(3).role, true);
@@ -504,7 +514,8 @@ public class Bang_fxGUI extends Application
         
         int total_players = play_order.size();
         
-        try{
+        try
+        {
             Line1.setText("LET'S PLAY!!!");
             TimeUnit.SECONDS.sleep(3);
         }
@@ -512,8 +523,10 @@ public class Bang_fxGUI extends Application
         {
             Thread.currentThread().interrupt();
         }
-        for(int i = 0; i < play_order.size(); i++){
-            if(play_order.get(i).computer == false){
+        for(int i = 0; i < play_order.size(); i++)
+        {
+            if(play_order.get(i).computer == false)
+            {
                 play_order.get(i).name = playerName.getText();
             }
         }
@@ -522,16 +535,20 @@ public class Bang_fxGUI extends Application
             Line3.setText("2) " + play_order.get(1).name);
             Line4.setText("3) " + play_order.get(2).name);
             Line5.setText("4) " + play_order.get(3).name);
-            if(play_order.size() > 4){
+            if(play_order.size() > 4)
+            {
                 Line6.setText("5) " + play_order.get(4).name);
             }
-            if(play_order.size() > 5){
+            if(play_order.size() > 5)
+            {
                 Line7.setText("6) " + play_order.get(5).name);
             }
-            if(play_order.size() > 6){
+            if(play_order.size() > 6)
+            {
                 Line8.setText("7) " + play_order.get(6).name);
             }
-            if(play_order.size() > 7){
+            if(play_order.size() > 7)
+            {
                 Line9.setText("8) " + play_order.get(7).name);
             }
     }
@@ -539,25 +556,31 @@ public class Bang_fxGUI extends Application
     public void go2(){
         left1 = play_order.get(1);
         right1 = play_order.get(play_order.size()-1);
-        try{
+        try
+        {
             left2 = play_order.get(2);
         }
-        catch (Exception a){
+        catch (Exception a)
+        {
             left2 = play_order.get(0);
         }
-        try{
+        try
+        {
             left3 = play_order.get(3);
         }
-        catch (Exception a){
+        catch (Exception a)
+        {
             left3 = play_order.get(0);
         }
-        try{
+        try
+        {
             right2 = play_order.get(play_order.size()-2);
         }
         catch (Exception a){
             right2 = play_order.get(0);
         }
-        try{
+        try
+        {
             right3 = play_order.get(play_order.size()-3);
         }
         catch (Exception a){
