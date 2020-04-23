@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import javafx.scene.text.Text;
 
 
 public class BANG {
@@ -20,7 +21,7 @@ public class BANG {
     static Scanner scan;
     static int players;
     
-    public static void main() {
+    public static void main(Text text) {
         //Create character cards, dice, and role cards
         ArrayList<Character_Cards> char_cards = new ArrayList();
         char_cards.add(new Character_Cards("Bart Cassidy", 8));
@@ -130,6 +131,7 @@ public class BANG {
         int stop = -1;
         boolean sher = false;
         
+        
         if(players != 2){
             for(int i = 0; i < 16; i++){
                 if(!(temp_play_order.get(i%8).role.equals("NULL"))){
@@ -203,6 +205,7 @@ public class BANG {
         
         
         while(true){
+            Bang_fxGUI.update(text, "Test");
             int Gat = 0;
             int BE1 = 0;
             int BE2 = 0;
@@ -289,13 +292,6 @@ public class BANG {
                             players = (random.nextInt(10000000)%list.size());
                             players = list.get(players);
                             System.out.println(players);
-                            try{
-                                TimeUnit.SECONDS.sleep(2);
-                            }
-                            catch(InterruptedException ex)
-                            {
-                                Thread.currentThread().interrupt();
-                            }
                         }
                         else{
                             players = scan.nextInt();
@@ -323,13 +319,6 @@ public class BANG {
                             answer = "y";
                         }
                         System.out.println(answer);
-                        try{
-                            TimeUnit.SECONDS.sleep(2);
-                        }
-                        catch(InterruptedException ex)
-                        {
-                            Thread.currentThread().interrupt();
-                        }
                     }
                     else{
                         answer = scan.next();
@@ -354,13 +343,6 @@ public class BANG {
                                 answer = "y";
                             }
                             System.out.println(answer);
-                            try{
-                                TimeUnit.SECONDS.sleep(2);
-                            }
-                            catch(InterruptedException ex)
-                            {
-                                Thread.currentThread().interrupt();
-                            }
                         }
                         else{
                             answer = scan.next();
@@ -436,13 +418,6 @@ public class BANG {
                                 answer = "y";
                             }
                             System.out.println(answer);
-                            try{
-                                TimeUnit.SECONDS.sleep(2);
-                            }
-                            catch(InterruptedException ex)
-                            {
-                                Thread.currentThread().interrupt();
-                            }
                         }
                         else{
                             answer = scan.next();
@@ -466,13 +441,6 @@ public class BANG {
                                 answer = "y";
                             }
                             System.out.println(answer);
-                            try{
-                                TimeUnit.SECONDS.sleep(2);
-                            }
-                            catch(InterruptedException ex)
-                            {
-                                Thread.currentThread().interrupt();
-                            }
                         }
                         else{
                             answer = scan.next();
@@ -518,13 +486,6 @@ public class BANG {
                                     players = (random.nextInt(10000000)%list.size());
                                     players = list.get(players);
                                     System.out.println(players);
-                                    try{
-                                        TimeUnit.SECONDS.sleep(2);
-                                    }
-                                    catch(InterruptedException ex)
-                                    {
-                                        Thread.currentThread().interrupt();
-                                    }
                                 }
                                 else{
                                     players = scan.nextInt();
@@ -562,13 +523,6 @@ public class BANG {
                                     players = ((random.nextInt(10000000)%list.size()) + 1);
                                     players = list.get(players);
                                     System.out.println(players);
-                                    try{
-                                        TimeUnit.SECONDS.sleep(2);
-                                    }
-                                    catch(InterruptedException ex)
-                                    {
-                                        Thread.currentThread().interrupt();
-                                    }
                                 }
                                 else{
                                     players = scan.nextInt();
@@ -666,13 +620,6 @@ public class BANG {
                                 players = (random.nextInt(10000000)%list.size());
                                 players = list.get(players);
                                 System.out.println(players);
-                                try{
-                                    TimeUnit.SECONDS.sleep(2);
-                                }
-                                catch(InterruptedException ex)
-                                {
-                                    Thread.currentThread().interrupt();
-                                }
                             }
                             else{
                                 players = scan.nextInt();
@@ -725,13 +672,6 @@ public class BANG {
                                         players = (random.nextInt(10000000)%list.size());
                                         players = list.get(players);
                                         System.out.println(players);
-                                        try{
-                                            TimeUnit.SECONDS.sleep(2);
-                                        }
-                                        catch(InterruptedException ex)
-                                        {
-                                            Thread.currentThread().interrupt();
-                                        }
                                     }
                                     else{
                                         players = scan.nextInt();
@@ -760,13 +700,6 @@ public class BANG {
                                             answer = "y";
                                         }
                                         System.out.println(answer);
-                                        try{
-                                            TimeUnit.SECONDS.sleep(2);
-                                        }
-                                        catch(InterruptedException ex)
-                                        {
-                                            Thread.currentThread().interrupt();
-                                        }
                                     }
                                     else{
                                         answer = scan.next();
@@ -805,13 +738,6 @@ public class BANG {
                                         players = (random.nextInt(10000000)%list.size());
                                         players = list.get(players);
                                         System.out.println(players);
-                                        try{
-                                            TimeUnit.SECONDS.sleep(2);
-                                        }
-                                        catch(InterruptedException ex)
-                                        {
-                                            Thread.currentThread().interrupt();
-                                        }
                                     }
                                     else{
                                         players = scan.nextInt();
@@ -864,13 +790,6 @@ public class BANG {
                                         players = (random.nextInt(10000000)%list.size());
                                         players = list.get(players);
                                         System.out.println(players);
-                                        try{
-                                            TimeUnit.SECONDS.sleep(2);
-                                        }
-                                        catch(InterruptedException ex)
-                                        {
-                                            Thread.currentThread().interrupt();
-                                        }
                                     }
                                     else{
                                         players = scan.nextInt();
@@ -912,13 +831,6 @@ public class BANG {
                                         players = (random.nextInt(10000000)%list.size());
                                         players = list.get(players);
                                         System.out.println(players);
-                                        try{
-                                            TimeUnit.SECONDS.sleep(2);
-                                        }
-                                        catch(InterruptedException ex)
-                                        {
-                                            Thread.currentThread().interrupt();
-                                        }
                                     }
                                     else{
                                         players = scan.nextInt();
@@ -947,13 +859,6 @@ public class BANG {
                                             answer = "y";
                                         }
                                         System.out.println(answer);
-                                        try{
-                                            TimeUnit.SECONDS.sleep(2);
-                                        }
-                                        catch(InterruptedException ex)
-                                        {
-                                            Thread.currentThread().interrupt();
-                                        }
                                     }
                                     else{
                                         answer = scan.next();
@@ -1007,13 +912,6 @@ public class BANG {
                                     players = (random.nextInt(10000000)%list.size());
                                     players = list.get(players);
                                     System.out.println(players);
-                                    try{
-                                        TimeUnit.SECONDS.sleep(2);
-                                    }
-                                    catch(InterruptedException ex)
-                                    {
-                                        Thread.currentThread().interrupt();
-                                    }
                                 }
                                 else{
                                     players = scan.nextInt();
@@ -1042,13 +940,6 @@ public class BANG {
                                         answer = "y";
                                     }
                                     System.out.println(answer);
-                                    try{
-                                        TimeUnit.SECONDS.sleep(2);
-                                    }
-                                    catch(InterruptedException ex)
-                                    {
-                                        Thread.currentThread().interrupt();
-                                    }
                                 }
                                 else{
                                     answer = scan.next();
@@ -1089,13 +980,6 @@ public class BANG {
                                     players = (random.nextInt(10000000)%list.size());
                                     players = list.get(players);
                                     System.out.println(players);
-                                    try{
-                                        TimeUnit.SECONDS.sleep(2);
-                                    }
-                                    catch(InterruptedException ex)
-                                    {
-                                        Thread.currentThread().interrupt();
-                                    }
                                 }
                                 else{
                                     players = scan.nextInt();
@@ -1148,13 +1032,6 @@ public class BANG {
                                     players = (random.nextInt(10000000)%list.size());
                                     players = list.get(players);
                                     System.out.println(players);
-                                    try{
-                                        TimeUnit.SECONDS.sleep(2);
-                                    }
-                                    catch(InterruptedException ex)
-                                    {
-                                        Thread.currentThread().interrupt();
-                                    }
                                 }
                                 else{
                                     players = scan.nextInt();
@@ -1196,13 +1073,6 @@ public class BANG {
                                     players = (random.nextInt(10000000)%list.size());
                                     players = list.get(players);
                                     System.out.println(players);
-                                    try{
-                                        TimeUnit.SECONDS.sleep(2);
-                                    }
-                                    catch(InterruptedException ex)
-                                    {
-                                        Thread.currentThread().interrupt();
-                                    }
                                 }
                                 else{
                                     players = scan.nextInt();
@@ -1231,13 +1101,6 @@ public class BANG {
                                         answer = "y";
                                     }
                                     System.out.println(answer);
-                                    try{
-                                        TimeUnit.SECONDS.sleep(2);
-                                    }
-                                    catch(InterruptedException ex)
-                                    {
-                                        Thread.currentThread().interrupt();
-                                    }
                                 }
                                 else{
                                     answer = scan.next();
@@ -1285,13 +1148,6 @@ public class BANG {
                                 Random random = new Random();  
                                 players = ((random.nextInt(10000000)%duelList.size()) + 1);
                                 System.out.println(players);
-                                try{
-                                    TimeUnit.SECONDS.sleep(2);
-                                }
-                                catch(InterruptedException ex)
-                                {
-                                    Thread.currentThread().interrupt();
-                                }
                             }
                             else{
                                 players = scan.nextInt();
@@ -1313,13 +1169,6 @@ public class BANG {
                             answer = "y";
                         }
                         System.out.println(answer);
-                        try{
-                            TimeUnit.SECONDS.sleep(2);
-                        }
-                        catch(InterruptedException ex)
-                        {
-                            Thread.currentThread().interrupt();
-                        }
                     }
                     else{
                         answer = scan.next();
@@ -1386,13 +1235,6 @@ public class BANG {
                 answer = "y";
             }
             System.out.println(answer);
-            try{
-                TimeUnit.SECONDS.sleep(2);
-            }
-            catch(InterruptedException ex)
-            {
-                Thread.currentThread().interrupt();
-            }
         }
         else{
             answer = scan.next();
@@ -1528,10 +1370,10 @@ public class BANG {
         System.exit(0);
     }
     
-    public static void setPlayers(int players){
+    public static void setPlayers(int players, Text text){
         BANG.players = players;
         System.out.println(BANG.players);
-        main();
+        main(text);
     }
     
     public static void arrowTakeAction(ArrayList <Player> play_order, int order){
@@ -1546,13 +1388,6 @@ public class BANG {
                     answer = "y";
                 }
                 System.out.println(answer);
-                try{
-                    TimeUnit.SECONDS.sleep(2);
-                }
-                catch(InterruptedException ex)
-                {
-                    Thread.currentThread().interrupt();
-                }
             }
             else{
                 answer = scan.next();

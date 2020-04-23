@@ -24,12 +24,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class Bang_fxGUI extends Application
 {
+    public String textField;
+    public Text Updates = new Text(textField);
     Stage window;
     Scene scene1, scene2;
     //Scene scene1 = new Scene(group1, 1280, 720, Color.BEIGE);
@@ -67,6 +70,12 @@ public class Bang_fxGUI extends Application
         logo.setFitWidth(540);
         logo.setFitHeight(260);
         
+        //Text for new scene
+        Updates.setText("Starting");
+        Updates.setLayoutX(540);
+        Updates.setLayoutY(720/4);
+        Updates.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+        
         //set position of table image within window
         table.setX(5.75);
         table.setY(5.75);
@@ -81,7 +90,7 @@ public class Bang_fxGUI extends Application
         playerName.setLayoutX(700);
         playerName.setLayoutY(350);
         
-        // label and dropdown menu for selecting number of players (defaults to 3)
+        // label and dropdown menu for selecting number of players (defaults to 4)
         Label label_numPlayers = new Label("Number of Players: ");
         label_numPlayers.setAlignment(Pos.CENTER);
         label_numPlayers.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
@@ -117,7 +126,7 @@ public class Bang_fxGUI extends Application
             }
             window.setScene(scene2);
             window.show();
-            BANG.setPlayers(((int) numPlayers.getValue()) - 1);
+            BANG.setPlayers(((int) numPlayers.getValue()) - 1, Updates);
             //System.out.println(playerName.getText());
             //System.out.println(numPlayers.getValue());
         });
@@ -131,7 +140,7 @@ public class Bang_fxGUI extends Application
         // group all the above together
         Group group2 = new Group();
         group2.getChildren()
-                .addAll(table2);
+                .addAll(table2, Updates);
         
         
         // display the stuff; window size, icon, title
@@ -145,8 +154,12 @@ public class Bang_fxGUI extends Application
         
         //Scene2
         scene2 = new Scene(group2, 1280, 720, Color.BEIGE);
-
- 
         
+    }
+    
+    
+    public static void update(Text text, String textField){
+        text.setText(textField);
+
     }
 }
