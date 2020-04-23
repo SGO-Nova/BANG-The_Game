@@ -19,9 +19,26 @@ public class BANG {
     static int arrow = 10;
     static boolean chiefArrow = true;
     static Scanner scan;
-    static int players;
     
-    public static void main(Text text) {
+    public static void main(String[] args) {
+        System.out.println("How many players: ");
+        int players = 0;
+        scan = new Scanner(System.in);
+        
+        do{
+            try{
+                    players = scan.nextInt();
+            }
+            catch (Exception a){
+                System.out.println("Please give a number");
+            }
+        }while(players < 4 || players > 8);
+        
+        players--;
+        
+        
+        
+        
         //Create character cards, dice, and role cards
         ArrayList<Character_Cards> char_cards = new ArrayList();
         char_cards.add(new Character_Cards("Bart Cassidy", 8));
@@ -205,7 +222,6 @@ public class BANG {
         
         
         while(true){
-            Bang_fxGUI.update(text, "Test");
             int Gat = 0;
             int BE1 = 0;
             int BE2 = 0;
@@ -1369,12 +1385,7 @@ public class BANG {
         }
         System.exit(0);
     }
-    
-    public static void setPlayers(int players, Text text){
-        BANG.players = players;
-        System.out.println(BANG.players);
-        main(text);
-    }
+
     
     public static void arrowTakeAction(ArrayList <Player> play_order, int order){
         String answer; 
