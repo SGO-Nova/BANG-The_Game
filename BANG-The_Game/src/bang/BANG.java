@@ -75,86 +75,36 @@ public class BANG {
         ArrayList<Player> temp_play_order = new ArrayList();
         
 
-
             switch(players){
+                case 7:
+                    role_cards.add(new Role_Cards("Renegade"));
+                case 6:
+                    role_cards.add(new Role_Cards("Deputy"));
+                case 5:
+                    role_cards.add(new Role_Cards("Outlaw"));
+                case 4:
+                    role_cards.add(new Role_Cards("Deputy"));
                 case 3:
                     role_cards.add(new Role_Cards("Sheriff"));
                     role_cards.add(new Role_Cards("Renegade"));
                     role_cards.add(new Role_Cards("Outlaw"));
                     role_cards.add(new Role_Cards("Outlaw"));
                     Collections.shuffle(role_cards);
-                    human = new Player(char_cards.get(0).name, char_cards.get(0).hp, role_cards.get(0).role, false);
-                    ai1 = new Player(char_cards.get(1).name, char_cards.get(1).hp, role_cards.get(1).role, true);
-                    ai2 = new Player(char_cards.get(2).name, char_cards.get(2).hp, role_cards.get(2).role, true);
-                    ai3 = new Player(char_cards.get(3).name, char_cards.get(3).hp, role_cards.get(3).role, true);
-                    break;
-                case 4:
-                    role_cards.add(new Role_Cards("Sheriff"));
-                    role_cards.add(new Role_Cards("Renegade"));
-                    role_cards.add(new Role_Cards("Outlaw"));
-                    role_cards.add(new Role_Cards("Outlaw"));
-                    role_cards.add(new Role_Cards("Deputy"));
-                    Collections.shuffle(role_cards);
-                    human = new Player(char_cards.get(0).name, char_cards.get(0).hp, role_cards.get(0).role, false);
-                    ai1 = new Player(char_cards.get(1).name, char_cards.get(1).hp, role_cards.get(1).role, true);
-                    ai2 = new Player(char_cards.get(2).name, char_cards.get(2).hp, role_cards.get(2).role, true);
-                    ai3 = new Player(char_cards.get(3).name, char_cards.get(3).hp, role_cards.get(3).role, true);
-                    ai4 = new Player(char_cards.get(4).name, char_cards.get(4).hp, role_cards.get(4).role, true);
-                    break;
-                case 5:
-                    role_cards.add(new Role_Cards("Sheriff"));
-                    role_cards.add(new Role_Cards("Renegade"));
-                    role_cards.add(new Role_Cards("Outlaw"));
-                    role_cards.add(new Role_Cards("Outlaw"));
-                    role_cards.add(new Role_Cards("Deputy"));
-                    role_cards.add(new Role_Cards("Outlaw"));
-                    Collections.shuffle(role_cards);
-                    human = new Player(char_cards.get(0).name, char_cards.get(0).hp, role_cards.get(0).role, false);
-                    ai1 = new Player(char_cards.get(1).name, char_cards.get(1).hp, role_cards.get(1).role, true);
-                    ai2 = new Player(char_cards.get(2).name, char_cards.get(2).hp, role_cards.get(2).role, true);
-                    ai3 = new Player(char_cards.get(3).name, char_cards.get(3).hp, role_cards.get(3).role, true);
-                    ai4 = new Player(char_cards.get(4).name, char_cards.get(4).hp, role_cards.get(4).role, true);
-                    ai5 = new Player(char_cards.get(5).name, char_cards.get(5).hp, role_cards.get(5).role, true);
-                    break;
-                case 6:
-                    role_cards.add(new Role_Cards("Sheriff"));
-                    role_cards.add(new Role_Cards("Renegade"));
-                    role_cards.add(new Role_Cards("Outlaw"));
-                    role_cards.add(new Role_Cards("Outlaw"));
-                    role_cards.add(new Role_Cards("Deputy"));
-                    role_cards.add(new Role_Cards("Outlaw"));
-                    role_cards.add(new Role_Cards("Deputy"));
-                    Collections.shuffle(role_cards);
-                    human = new Player(char_cards.get(0).name, char_cards.get(0).hp, role_cards.get(0).role, false);
-                    ai1 = new Player(char_cards.get(1).name, char_cards.get(1).hp, role_cards.get(1).role, true);
-                    ai2 = new Player(char_cards.get(2).name, char_cards.get(2).hp, role_cards.get(2).role, true);
-                    ai3 = new Player(char_cards.get(3).name, char_cards.get(3).hp, role_cards.get(3).role, true);
-                    ai4 = new Player(char_cards.get(4).name, char_cards.get(4).hp, role_cards.get(4).role, true);
-                    ai5 = new Player(char_cards.get(5).name, char_cards.get(5).hp, role_cards.get(5).role, true);
-                    ai6 = new Player(char_cards.get(6).name, char_cards.get(6).hp, role_cards.get(6).role, true);
-                    break;
+            }
+            switch(players){
                 case 7:
-                    role_cards.add(new Role_Cards("Sheriff"));
-                    role_cards.add(new Role_Cards("Renegade"));
-                    role_cards.add(new Role_Cards("Outlaw"));
-                    role_cards.add(new Role_Cards("Outlaw"));
-                    role_cards.add(new Role_Cards("Deputy"));
-                    role_cards.add(new Role_Cards("Outlaw"));
-                    role_cards.add(new Role_Cards("Deputy"));
-                    role_cards.add(new Role_Cards("Renegade"));
-                    Collections.shuffle(role_cards);
-                    human = new Player(char_cards.get(0).name, char_cards.get(0).hp, role_cards.get(0).role, false);
+                    ai7 = new Player(char_cards.get(7).name, char_cards.get(7).hp, role_cards.get(7).role, true);
+                case 6:
+                    ai6 = new Player(char_cards.get(6).name, char_cards.get(6).hp, role_cards.get(6).role, true);
+                case 5:
+                    ai5 = new Player(char_cards.get(5).name, char_cards.get(5).hp, role_cards.get(5).role, true);
+                case 4:
+                    ai4 = new Player(char_cards.get(4).name, char_cards.get(4).hp, role_cards.get(4).role, true);
+                case 3:
+                    human = new Player(char_cards.get(0).name, char_cards.get(0).hp, role_cards.get(0).role, true); //MAKE THIS TRUE TO LET AI DO ALL THE PLAYING
                     ai1 = new Player(char_cards.get(1).name, char_cards.get(1).hp, role_cards.get(1).role, true);
                     ai2 = new Player(char_cards.get(2).name, char_cards.get(2).hp, role_cards.get(2).role, true);
                     ai3 = new Player(char_cards.get(3).name, char_cards.get(3).hp, role_cards.get(3).role, true);
-                    ai4 = new Player(char_cards.get(4).name, char_cards.get(4).hp, role_cards.get(4).role, true);
-                    ai5 = new Player(char_cards.get(5).name, char_cards.get(5).hp, role_cards.get(5).role, true);
-                    ai6 = new Player(char_cards.get(6).name, char_cards.get(6).hp, role_cards.get(6).role, true);
-                    ai7 = new Player(char_cards.get(7).name, char_cards.get(7).hp, role_cards.get(7).role, true);
-                    break;
-                default:
-                    System.out.println("Please pick a number between 3 and 7!");
-                    break;
             }
 
         System.out.println("_________________________________________________________");
@@ -265,11 +215,36 @@ public class BANG {
             boolean gringo = false;
             boolean gatAttack = false;
             Player left1 = play_order.get(1);
-            Player right1 = play_order.get(play_order.size() - 1);
-            Player left2 = play_order.get(2);
-            Player right2 = play_order.get(play_order.size() - 2);
-            Player left3 = play_order.get(3);
-            Player right3 = play_order.get(play_order.size() - 3);
+            Player right1 = play_order.get(play_order.size()-1);
+            Player left2;
+            Player right2;
+            Player left3;
+            Player right3;
+            try{
+                left2 = play_order.get(2);
+            }
+            catch (Exception a){
+                left2 = play_order.get(0);
+            }
+            try{
+                left3 = play_order.get(3);
+            }
+            catch (Exception a){
+                left3 = play_order.get(0);
+            }
+            try{
+                right2 = play_order.get(play_order.size()-2);
+            }
+            catch (Exception a){
+                right2 = play_order.get(0);
+            }
+            try{
+                right3 = play_order.get(play_order.size()-3);
+            }
+            catch (Exception a){
+                right3 = play_order.get(0);
+            }
+            
             
             System.out.println("_________________________________________________________");
             for(int i = 0; i < total_players; i++){
@@ -283,6 +258,18 @@ public class BANG {
               }
             }
             System.out.println("Arrows in the middle: " + arrow);
+            System.out.print("Chief arrow: ");
+            if(chiefArrow == true){
+                System.out.println("Middle");
+            }
+            else{
+                for(int i = 0; i < play_order.size(); i++){
+                    if(play_order.get(i).chiefArrow){
+                        System.out.println(play_order.get(i).name);
+                        break;
+                    }
+                }
+            }
             
             System.out.println("_________________________________________________________");
             String answer;
@@ -385,14 +372,20 @@ public class BANG {
                     }
                 }while(!test);
                 if(answer.equalsIgnoreCase("y") || answer.equalsIgnoreCase("yes")){
+                    dice.remove(d5);
                     d5 = new Dice(1, 0, "Broken Indian Arrow", "Dynamite", "Bull's Eye 1", "Indian Arrow", "Double Beer", "Beer"); //COWARD
+                    dice.add(d5);
                 }
                 else{
+                    dice.remove(d5);
                     d5 = new Dice(1, 0, "Indian Arrow", "Dynamite", "Double Bull's Eye 1", "Double Bull's Eye 2", "Bullet", "Double Gatling"); //LOUDMOUTH
+                    dice.add(d5);
                 }
             }
             else{
+                dice.remove(d5);
                 d5 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling");
+                dice.add(d5);
             }
             
             
@@ -490,7 +483,8 @@ public class BANG {
                         }
                     }
                     else{
-                        System.out.println("Wtf?");
+                        //Testing purposes
+                        System.out.println((roll + 1) + ") "+ dice.get(roll).sides[dice.get(roll).side]);
                     }
                     
                 }
@@ -565,7 +559,7 @@ public class BANG {
                             try{
                                 if(play_order.get(0).computer == true){
                                     Random random = new Random();  
-                                    players = (random.nextInt(10000000)%list.size());
+                                    players = ((random.nextInt(10000000)%list.size()) + 1);
                                     players = list.get(players);
                                     System.out.println(players);
                                     try{
@@ -624,8 +618,8 @@ public class BANG {
                 play_order.get(0).damage(1);
                 if(play_order.get(0).health <= 0){
                     deathSeq(play_order, 0);
+                    continue;
                 }
-                continue;
             }
             if(gatAttack == true){
                 for(int i = 1; i < play_order.size(); i++){
@@ -972,6 +966,7 @@ public class BANG {
                                         notBart(play_order, arr[j], gringo, 1);
                                         if(play_order.get(arr[j]).health <= 0){
                                             deathSeq(play_order, arr[j]);
+                                            
                                         }
                                     }
                                 }
@@ -1272,13 +1267,14 @@ public class BANG {
             if(duel > 0){
                 ArrayList<Player> duelList = new ArrayList();
                 for(int i = 1; i < play_order.size(); i++){
+                    
                     duelList.add(play_order.get(i));
                 }
-                while(duel > 0){
+                while(duel > 0 && duelList.size() > 0){
                     Player turn;
                     turn = play_order.get(0);
                     for(int j = 0; j < duelList.size(); j++){
-                        System.out.println(j + ") " + duelList.get(j).name);
+                        System.out.println((j+1) + ") " + duelList.get(j).name);
                     }
                     System.out.println("Who do you want to duel?");
                     System.out.print("> ");
@@ -1287,7 +1283,7 @@ public class BANG {
                         try{
                             if(play_order.get(0).computer == true){
                                 Random random = new Random();  
-                                players = (random.nextInt(10000000)%duelList.size());
+                                players = ((random.nextInt(10000000)%duelList.size()) + 1);
                                 System.out.println(players);
                                 try{
                                     TimeUnit.SECONDS.sleep(2);
@@ -1333,7 +1329,7 @@ public class BANG {
                         dice.get(0).roll();
                         if(dice.get(0).sides[dice.get(0).side].equals("Duel")){
                             while(dice.get(0).sides[dice.get(0).side].equals("Duel")){
-                                turn = duelList.get(players);
+                                turn = duelList.get((players-1));
                                 dice.get(0).roll();
                                 if(!(dice.get(0).sides[dice.get(0).side].equals("Duel"))){
                                     break;
@@ -1345,7 +1341,7 @@ public class BANG {
                     }
                     else{
                         while(dice.get(0).sides[dice.get(0).side].equals("Duel")){
-                            turn = duelList.get(players);
+                            turn = duelList.get((players-1));
                             dice.get(0).roll();
                             if(!(dice.get(0).sides[dice.get(0).side].equals("Duel"))){
                                 break;
@@ -1354,9 +1350,12 @@ public class BANG {
                             dice.get(0).roll();
                         }
                     }
-                    duelList.remove(duelList.get(players));
+                    duelList.remove(duelList.get((players-1)));
                     turn.damage(1);
                     System.out.println(turn.name + " has lost the duel and has picked up a duel wound card and lost 1 health!");
+                    if(turn.health <= 0){
+                        deathSeq(play_order, players);
+                    }  
                     //turn (player), gains duel fail card
                     
                     duel--;
@@ -1370,7 +1369,6 @@ public class BANG {
             
             play_order.add(play_order.get(0));
             play_order.remove(play_order.get(0));
-            d5 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling");
         }
         
         
@@ -1484,7 +1482,7 @@ public class BANG {
         else if(t1 == 0 && t2 == 0){
             endGame(0);
         }
-
+        
         
     }
     
