@@ -39,7 +39,7 @@ public class Bang_fxGUI extends Application
     public String textField;
     
     Stage window;
-    Scene scene1, scene2;
+    Scene scene1, scene2, scene3, scene4, scene5, scene6, scene7, scene8, scene9;
     static int arrow = 10;
     static boolean chiefArrow = true;
     static Scanner scan;
@@ -206,14 +206,57 @@ public class Bang_fxGUI extends Application
             //System.out.println(numPlayers.getValue());
         });
         
-        // start button & Action
+        // button & Action
         Button nextButton = new Button("Next");
         nextButton.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
         nextButton.setLayoutX(1100);
         nextButton.setLayoutY(600);
-        nextButton.setOnAction(e -> {
+        nextButton.setOnAction(d -> {
+             // button & Action
+            Button Button1 = new Button("Next");
+            Button1.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+            Button1.setLayoutX(1100);
+            Button1.setLayoutY(600);
+            Button1.setOnAction(e -> {
+                // button & Action
+                Button Button2 = new Button("Next");
+                Button2.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+                Button2.setLayoutX(1100);
+                Button2.setLayoutY(600);
+                Button2.setOnAction(f -> {
+
+                     // group all the above together
+                    Group group = new Group();
+                    group.getChildren()
+                            .addAll(table2, nextButton, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9);
+                    scene5 = new Scene(group, 1280, 720, Color.BEIGE);
+                    window.setScene(scene5);
+                    window.show();
+                    Line1.setText("AND GET THIS FINISHED!");
+
+                });
+                 // group all the above together
+                Group group = new Group();
+                group.getChildren()
+                        .addAll(table2, Button2, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9);
+                scene4 = new Scene(group, 1280, 720, Color.BEIGE);
+                window.setScene(scene4);
+                window.show();
+                Line1.setText("We just got to get started coding and shit!");
+
+            });
+             // group all the above together
+            Group group3 = new Group();
+            group3.getChildren()
+                    .addAll(table2, Button1, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9);
+            scene3 = new Scene(group3, 1280, 720, Color.BEIGE);
+            window.setScene(scene3);
+            window.show();
+            Line1.setText("We did it bois!");
             
         });
+        
+       
         
         
         // group all the above together
@@ -226,6 +269,9 @@ public class Bang_fxGUI extends Application
         Group group2 = new Group();
         group2.getChildren()
                 .addAll(table2, nextButton, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9);
+       
+
+        
         
         
         // display the stuff; window size, icon, title
@@ -239,6 +285,8 @@ public class Bang_fxGUI extends Application
         
         //Scene2
         scene2 = new Scene(group2, 1280, 720, Color.BEIGE);
+        
+
         
     }
     
