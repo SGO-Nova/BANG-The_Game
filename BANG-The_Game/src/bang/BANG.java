@@ -1303,8 +1303,8 @@ public class BANG {
                 play_order.get(j).chiefArrow = false;
             }
         }
-        arrow = 10;
-        chiefArrow = true;
+        Bang_fxGUI.arrow = 10;
+        Bang_fxGUI.chiefArrow = true;
     }
     
     public static void deathSeq(ArrayList<Player> play_order, int i){
