@@ -8,6 +8,7 @@ public class Dice {
     String sides[] = new String[6];
     int side;
     int dice;
+    boolean canRoll;
     
     public Dice(int dice, int side, String s1, String s2, String s3, String s4, String s5, String s6){
         this.side = side;
@@ -18,6 +19,7 @@ public class Dice {
         sides[3] = s4;
         sides[4] = s5;
         sides[5] = s6;
+        canRoll = true;
     }
     
     public String keep(){
