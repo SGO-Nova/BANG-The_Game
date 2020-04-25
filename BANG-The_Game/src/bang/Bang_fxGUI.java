@@ -36,6 +36,11 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.event.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.*;
+import java.util.function.UnaryOperator;
 
 public class Bang_fxGUI extends Application
 {
@@ -68,7 +73,20 @@ public class Bang_fxGUI extends Application
     ImageView dice3;
     ImageView dice4;
     ImageView dice5;
+    Image Img_Loud;
+    Image Img_Coward;
+    Image Img_Reg;
+    Image Img_Black;
+    ImageView dice01;
+    ImageView dice02;
+    ImageView dice03;
+    ImageView dice04;
+    ImageView dice05;
+    ImageView dice06;
+    ImageView dice07;
     ArrayList<ImageView> IV = new ArrayList();
+    Media media;
+    MediaPlayer music;
     
     
     //Global creation of lines and UI elements
@@ -81,7 +99,7 @@ public class Bang_fxGUI extends Application
     Label Line6 = new Label(textField);
     Label Line7 = new Label(textField);
     Label Line8 = new Label(textField);
-    Label Line9 = new Label(textField);
+    Label Line9 = new Label("Volume: ");
     Label main1 = new Label(textField);
     Label main2 = new Label(textField);
     Label main3 = new Label(textField);
@@ -90,6 +108,7 @@ public class Bang_fxGUI extends Application
     Label main6 = new Label(textField);
     Label main7 = new Label(textField);
     Label main8 = new Label(textField);
+    Label volumeText = new Label(textField);
     ArrayList<Label> lines = new ArrayList();
     TextField playerName = new TextField("Enter Name");
     ComboBox numPlayers = new ComboBox();
@@ -127,6 +146,7 @@ public class Bang_fxGUI extends Application
     Button Button13 = new Button("Next");
     Button Button14 = new Button("Next");
     Button Button15 = new Button("Next");
+    Slider musicSlider;
     
     
     //Global creation of game variables 
@@ -209,17 +229,43 @@ public class Bang_fxGUI extends Application
         Img_Dynamite = new Image(new FileInputStream("src/bang/media/Dice/Dynamite.PNG"));
         Img_Gatling = new Image(new FileInputStream("src/bang/media/Dice/Gatling.PNG"));
         Img_Whiskey = new Image(new FileInputStream("src/bang/media/Dice/Whiskey.PNG"));
+        Img_Black = new Image(new FileInputStream("src/bang/media/Dice/B1.PNG"));
+        Img_Reg = new Image(new FileInputStream("src/bang/media/Dice/d1.PNG"));
+        Img_Loud = new Image(new FileInputStream("src/bang/media/Dice/Loud.PNG"));
+        Img_Coward = new Image(new FileInputStream("src/bang/media/Dice/Coward.PNG"));
         dice1 = new ImageView(Img_arrow);
         dice2 = new ImageView(Img_BE1);
         dice3 = new ImageView(Img_BE2);
         dice4 = new ImageView(Img_Beer);
         dice5 = new ImageView(Img_BrokenArrow);
+        dice01 = new ImageView(Img_Black);
+        dice02 = new ImageView(Img_Black);
+        dice03 = new ImageView(Img_Reg);
+        dice04 = new ImageView(Img_Reg);
+        dice05 = new ImageView(Img_Reg);
+        dice06 = new ImageView(Img_Loud);
+        dice07 = new ImageView(Img_Coward);
+        
         
         //Music
-        Media media = new Media(this.getClass().getResource("/bang/media/background.mp3").toString());
-        MediaPlayer music = new MediaPlayer(media);
-        music.setVolume(.5);
-        music.setAutoPlay(false);
+        media = new Media(this.getClass().getResource("/bang/media/background.mp3").toString());
+        music = new MediaPlayer(media);
+        music.setAutoPlay(true);
+        musicSlider = new Slider(0, 1, .5);
+        music.setVolume(musicSlider.getValue());
+        musicSlider.setLayoutX(700);
+        musicSlider.setLayoutY(525);
+        musicSlider.setMinWidth(350);
+        musicSlider.setMaxWidth(350);
+        musicSlider.valueProperty().addListener(new ChangeListener<Number>(){
+            @Override
+            public void changed(
+            ObservableValue<? extends Number> observableValue, 
+            Number oldValue, 
+            Number newValue){ 
+               music.setVolume(musicSlider.getValue());
+            }
+        });
         
         //set height and width of images
         table.setFitWidth(1280);
@@ -238,7 +284,6 @@ public class Bang_fxGUI extends Application
         textMove(Line6, "", 400, 300, 24);
         textMove(Line7, "", 400, 340, 24);
         textMove(Line8, "", 400, 380, 24);
-        textMove(Line9, "", 400, 420, 24);
 
         
         
@@ -255,6 +300,22 @@ public class Bang_fxGUI extends Application
         playerName.setAlignment(Pos.CENTER);
         playerName.setLayoutX(700);
         playerName.setLayoutY(350);
+        UnaryOperator<Change> modifyChange = c -> {
+            if (c.isContentChange()) {
+                int newLength = c.getControlNewText().length();
+                if (newLength > 16) {
+                    // replace the input text with the last len chars
+                    String tail = c.getControlNewText().substring(0, 16);
+                    c.setText(tail);
+                    // replace the range to complete text
+                    // valid coordinates for range is in terms of old text
+                    int oldLength = c.getControlText().length();
+                    c.setRange(0, oldLength);
+                }
+            }
+            return c;
+        };
+        playerName.setTextFormatter(new TextFormatter(modifyChange));
         
         // label and dropdown menu for selecting number of players (defaults to 4)
         Label label_numPlayers = new Label("Number of Players: ");
@@ -279,14 +340,23 @@ public class Bang_fxGUI extends Application
         cb1.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
         cb1.setLayoutX(700);
         cb1.setLayoutY(460);
+        cb1.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                music.setMute(!cb1.isSelected());
+            }
+        });
         
         
         // start button & Action
         Button startButton = new Button("Start!");
         startButton.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
-        startButton.setLayoutX(850);
-        startButton.setLayoutY(490);
+        startButton.setLayoutX(700);
+        startButton.setLayoutY(550);
+        startButton.setMinWidth(350);
+        startButton.setMaxWidth(350);
         startButton.setOnAction(e -> {
+            textMove(Line9, "", 400, 420, 24);
             lines.add(Line2);
             lines.add(Line3);
             lines.add(Line4);
@@ -325,9 +395,7 @@ public class Bang_fxGUI extends Application
             IV.add(dice5);
             
             
-            if(cb1.isSelected()){
-                music.setAutoPlay(true);
-            }
+            
             window.setScene(scene2);
             window.show();
                
@@ -357,12 +425,12 @@ public class Bang_fxGUI extends Application
                     
                     if((i < (players+1)*2) && temp_play_order.get((i+1)/2).shown && (i+1)%2 == 1)
                     {
-                        lines.get(i).setText(temp_play_order.get((i+1)/2).name + "(" + temp_play_order.get((i+1)/2).role + ")");
+                        lines.get(i).setText(temp_play_order.get((i+1)/2).displayName + "(" + temp_play_order.get((i+1)/2).role + ")");
                         lines.get(i+1).setText("HP: " + temp_play_order.get((i+1)/2).health + " Arrows: " + temp_play_order.get((i+1)/2).arrows);
                     }
                     else if(i < ((players+1)*2) && (i+1)%2 == 1)
                     {
-                        lines.get(i).setText(temp_play_order.get((i+1)/2).name + "(Unknown)");
+                        lines.get(i).setText(temp_play_order.get((i+1)/2).displayName + "(Unknown)");
                         lines.get(i+1).setText("HP: " + temp_play_order.get((i+1)/2).health + " Arrows: " + temp_play_order.get((i+1)/2).arrows);
                     }
                 } 
@@ -441,26 +509,41 @@ public class Bang_fxGUI extends Application
             Group group = new Group();
             group.getChildren()
                     .addAll(table2, Button4, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8, 
-                            c1, c2, c3, c4, c5, c6, c7);
+                            c1, c2, c3, c4, c5, c6, c7, dice01, dice02, dice03, dice04, dice05, dice06, dice07);
             scene5 = new Scene(group, 1280, 720, Color.BEIGE);
             window.setScene(scene5);
             window.show();
             Line1.setText("Pick the dice you want to use: ");
-            c1.setText("Old Saloon");
-            c2.setText("Old Saloon");
-            c3.setText("Regular");
-            c4.setText("Regular");
-            c5.setText("Regular");
-            c6.setText("Loudmouth");
-            c7.setText("Coawrd");
+            
             for(int i = 0; i < 7; i++){
-                checkBoxes.get(i).setLayoutX((i*100) + 450);
+                checkBoxes.get(i).setLayoutX((i*100) + 375);
                 checkBoxes.get(i).setLayoutY(400);
                 if(i < 4){
                     checkBoxes.get(i).setSelected(true);
                     checkBoxes.get(i).setDisable(true);
                 }
             }
+            c1.setText("Old Saloon");
+            imageSet(dice01, 90, 90, Img_Black);
+            imageMove(dice01, (int)c1.getLayoutX(),(int)c1.getLayoutY() - 95);
+            c2.setText("Old Saloon");
+            imageSet(dice02, 90, 90, Img_Black);
+            imageMove(dice02, (int)c2.getLayoutX(),(int)c2.getLayoutY() - 95);
+            c3.setText("Regular");
+            imageSet(dice03, 75, 75, Img_Reg);
+            imageMove(dice03, (int)c3.getLayoutX(),(int)c3.getLayoutY() - 90);
+            c4.setText("Regular");
+            imageSet(dice04, 75, 75, Img_Reg);
+            imageMove(dice04, (int)c4.getLayoutX(),(int)c4.getLayoutY() - 90);
+            c5.setText("Regular");
+            imageSet(dice05, 75, 75, Img_Reg);
+            imageMove(dice05, (int)c5.getLayoutX(),(int)c5.getLayoutY() - 90);
+            c6.setText("Loudmouth");
+            imageSet(dice06, 75, 75, Img_Loud);
+            imageMove(dice06, (int)c6.getLayoutX(),(int)c6.getLayoutY() - 92);
+            c7.setText("Coawrd");
+            imageSet(dice07, 75, 75, Img_Coward);
+            imageMove(dice07, (int)c7.getLayoutX(),(int)c7.getLayoutY() - 92);
             c5.setOnAction(eh);
             c6.setOnAction(eh);
             c7.setOnAction(eh);
@@ -595,11 +678,13 @@ public class Bang_fxGUI extends Application
        
         
         
+        volumeText.setText("Volume: ");
+        textMove(volumeText, "Volume: ", 700, 495, 22);
         // group all the above together
         Group group1 = new Group();
         group1.getChildren()
                 .addAll(table, logo, playerName, numPlayers, label_numPlayers,
-                        startButton, cb1);
+                        startButton, cb1, musicSlider, volumeText);
         
         // group all the above together
         Group group2 = new Group();
@@ -709,6 +794,27 @@ public class Bang_fxGUI extends Application
     }
     };
     
+    EventHandler eh3 = new EventHandler<ActionEvent>() {    
+    @Override
+    public void handle(ActionEvent event) {
+        if (event.getSource() instanceof CheckBox) {
+            if (cb1.isSelected()) {
+               music.setAutoPlay(true); 
+            } 
+            else {
+               music.setAutoPlay(true); 
+            }
+        }
+        if (event.getSource() instanceof Slider) {
+            music.setVolume(musicSlider.getValue());
+        }
+        System.out.println("ACTION");
+    }
+    };
+    
+    
+    
+    
     public void go1(){
         players = (int)numPlayers.getValue() - 1; 
             //Create character cards, dice, and role cards
@@ -777,9 +883,7 @@ public class Bang_fxGUI extends Application
                 case 4:
                     ai4 = new Player(char_cards.get(4).name, char_cards.get(4).hp, role_cards.get(4).role, true);
                 case 3:
-                    //MAKE THIS TRUE TO LET AI DO ALL THE PLAYING
-                    human = new Player(char_cards.get(0).name, char_cards.get(0).hp, role_cards.get(0).role, false);
-                    //
+                    human = new Player(char_cards.get(0).name, char_cards.get(0).hp, role_cards.get(0).role, false);//MAKE THIS TRUE TO LET AI DO ALL THE PLAYING
                     ai1 = new Player(char_cards.get(1).name, char_cards.get(1).hp, role_cards.get(1).role, true);
                     ai2 = new Player(char_cards.get(2).name, char_cards.get(2).hp, role_cards.get(2).role, true);
                     ai3 = new Player(char_cards.get(3).name, char_cards.get(3).hp, role_cards.get(3).role, true);
@@ -885,29 +989,32 @@ public class Bang_fxGUI extends Application
         {
             if(play_order.get(i).computer == false)
             {
-                play_order.get(i).name = playerName.getText();
+                play_order.get(i).displayName = playerName.getText();
+                play_order.get(i).displayName = play_order.get(i).displayName.concat(" (");
+                play_order.get(i).displayName = play_order.get(i).displayName.concat(play_order.get(i).name);
+                play_order.get(i).displayName = play_order.get(i).displayName.concat(")");
             }
         }
             Line1.setText("Playing turn:");
-            Line2.setText("1) " + play_order.get(0).name);
-            Line3.setText("2) " + play_order.get(1).name);
-            Line4.setText("3) " + play_order.get(2).name);
-            Line5.setText("4) " + play_order.get(3).name);
+            Line2.setText("1) " + play_order.get(0).displayName);
+            Line3.setText("2) " + play_order.get(1).displayName);
+            Line4.setText("3) " + play_order.get(2).displayName);
+            Line5.setText("4) " + play_order.get(3).displayName);
             if(play_order.size() > 4)
             {
-                Line6.setText("5) " + play_order.get(4).name);
+                Line6.setText("5) " + play_order.get(4).displayName);
             }
             if(play_order.size() > 5)
             {
-                Line7.setText("6) " + play_order.get(5).name);
+                Line7.setText("6) " + play_order.get(5).displayName);
             }
             if(play_order.size() > 6)
             {
-                Line8.setText("7) " + play_order.get(6).name);
+                Line8.setText("7) " + play_order.get(6).displayName);
             }
             if(play_order.size() > 7)
             {
-                Line9.setText("8) " + play_order.get(7).name);
+                Line9.setText("8) " + play_order.get(7).displayName);
             }
     }
     

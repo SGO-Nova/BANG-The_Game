@@ -2,6 +2,7 @@
 package bang;
 public class Player {
     String name;
+    String displayName;
     int health;
     int maxHealth;
     String role;
@@ -19,6 +20,7 @@ public class Player {
     Character_Cards c; //team assign
     public Player(String name, int health, String role, boolean comp){
         this.name = name;
+        this.displayName = name;
         this.health = health;
         this.maxHealth = health;
         this.role = role;
