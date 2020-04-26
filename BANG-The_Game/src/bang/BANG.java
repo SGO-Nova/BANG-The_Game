@@ -544,6 +544,11 @@ public class BANG {
                     continue;
                 }
             }
+            
+            
+            //////CURRENT LINE FOR GUI///////////
+            
+            
             if (gatAttack == true) {
                 for (int i = 1; i < play_order.size(); i++) {
                     if (!(play_order.get(i).name.equals("Paul Regret"))) {
