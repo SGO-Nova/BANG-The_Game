@@ -53,6 +53,16 @@ public class Player {
     public Character_Cards getCharacter() { //calling characters class from bang.java
         return this.c;
     }
+    
+     //Assigning health of each characters
+    public void setHealth(int health1) {
+        health = health1;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+    
 
     public void bulletUpdate() {
         this.s_bul = this.health % 3;
@@ -87,6 +97,11 @@ public class Player {
 //AI assigning  each character roles according to their abilties
  
 if (this.getcharacter().name == " bart cassidy "){
+    this.setHealth(8);
+            int playerChoice;
+            System.out.print("You want to choose arrow instead of losing a life point? (except to indians or dynamite) ");
+            Scanner object = new Scanner(System.in);
+            playerChoice = object.nextInt();
 // (8) you may take an arrow instead of losing a life point (except to indians or dynamite). 
 // you cannot use this ability if you lose a life point to indian or dynamite, only for , , or gatling guns. 
 //you may not use this ability to take the last arrow remaining in the pile.
@@ -102,6 +117,21 @@ if (this.getcharacter().name == " black once "){
 }
 
 if (this.getcharacter().name == "pedro ramirez"){
+     this.setHealth(8);
+        if (setHealth(getHealth - 1)) {
+
+            System.out.print("Do you want to discard one of your arrows? If Yes enter 1 :");
+            Scanner object = new Scanner(System.in);
+            int playerChoice = object.nextInt();
+
+            switch (playerChoice) {
+                case 1: {
+                    this.removeArrow(1);
+                }
+              
+                }
+
+           
 //8) each time you lose a life point, you may discard one of your arrows. you still lose the life 
 //point when you use this ability
 }
