@@ -72,6 +72,7 @@ public class Bang_fxGUI extends Application {
     ImageView dice3;
     ImageView dice4;
     ImageView dice5;
+    ImageView dice6;
     Image Img_Loud;
     Image Img_Coward;
     Image Img_Reg;
@@ -118,6 +119,12 @@ public class Bang_fxGUI extends Application {
     CheckBox c5 = new CheckBox("Regular Die");
     CheckBox c6 = new CheckBox("Loudmouth Die");
     CheckBox c7 = new CheckBox("Coawrd Die");
+    CheckBox cd1 = new CheckBox();
+    CheckBox cd2 = new CheckBox();
+    CheckBox cd3 = new CheckBox();
+    CheckBox cd4 = new CheckBox();
+    CheckBox cd5 = new CheckBox();
+    CheckBox cd6 = new CheckBox();
     CheckBox nc1 = new CheckBox("");
     CheckBox nc2 = new CheckBox("");
     CheckBox nc3 = new CheckBox("");
@@ -127,6 +134,7 @@ public class Bang_fxGUI extends Application {
     CheckBox nc7 = new CheckBox("");
     CheckBox nc8 = new CheckBox("");
     ArrayList<CheckBox> checkBoxes = new ArrayList();
+    ArrayList<CheckBox> checkBoxes2 = new ArrayList();
     ArrayList<CheckBox> nameCheckBoxes = new ArrayList();
     ArrayList<Integer> list = new ArrayList();
     Button nextButton = new Button("Next");
@@ -178,6 +186,7 @@ public class Bang_fxGUI extends Application {
     Dice d3 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling");
     Dice d4 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling");
     Dice d5 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling");
+    Dice d6 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling");
     Player human = new Player("NULL", 0, "NULL", false);
     Player ai1 = new Player("NULL", 0, "NULL", true);
     Player ai2 = new Player("NULL", 0, "NULL", true);
@@ -232,6 +241,7 @@ public class Bang_fxGUI extends Application {
         dice3 = new ImageView(Img_BE2);
         dice4 = new ImageView(Img_Beer);
         dice5 = new ImageView(Img_BrokenArrow);
+        dice6 = new ImageView(Img_Bullet);
         dice01 = new ImageView(Img_Black);
         dice02 = new ImageView(Img_Black);
         dice03 = new ImageView(Img_Reg);
@@ -245,7 +255,7 @@ public class Bang_fxGUI extends Application {
         media = new Media(this.getClass().getResource("/bang/media/background.mp3").toString());
         music = new MediaPlayer(media);
         music.setAutoPlay(true);
-        musicSlider = new Slider(0, 1, .5);
+        musicSlider = new Slider(0, 1, .2);
         music.setVolume(musicSlider.getValue());
         musicSlider.setLayoutX(700);
         musicSlider.setLayoutY(525);
@@ -378,6 +388,12 @@ public class Bang_fxGUI extends Application {
             checkBoxes.add(c5);
             checkBoxes.add(c6);
             checkBoxes.add(c7);
+            checkBoxes2.add(cd1);
+            checkBoxes2.add(cd2);
+            checkBoxes2.add(cd3);
+            checkBoxes2.add(cd4);
+            checkBoxes2.add(cd5);
+            checkBoxes2.add(cd6);
             nameCheckBoxes.add(nc1);
             nameCheckBoxes.add(nc2);
             nameCheckBoxes.add(nc3);
@@ -391,6 +407,7 @@ public class Bang_fxGUI extends Application {
             IV.add(dice3);
             IV.add(dice4);
             IV.add(dice5);
+            IV.add(dice6);
 
             window.setScene(scene2);
             window.show();
@@ -541,9 +558,155 @@ public class Bang_fxGUI extends Application {
             c7.setText("Coawrd");
             imageSet(dice07, 75, 75, Img_Coward);
             imageMove(dice07, (int)c7.getLayoutX(),(int)c7.getLayoutY() - 92);
-            c5.setOnAction(eh);
-            c6.setOnAction(eh);
-            c7.setOnAction(eh);
+            total = 0;
+            switch (play_order.get(0).name) {
+                case "Jose Delgado":
+                    c5.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                        if(c5.isSelected()){
+                            c7.setDisable(true);
+                            dice.remove(d5);
+                            d5 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling"); //regular die
+                            dice.add(d5);
+                            total++;
+                        }
+                        else{
+                            if(!c6.isSelected()){
+                                c7.setDisable(false);
+                            }
+                            total--;
+                        }
+                    }); 
+                    c7.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                        if(c7.isSelected()){
+                            c5.setDisable(true);
+                            c6.setDisable(true);
+                            dice.remove(d5);
+                            d5 = new Dice(1, 0, "Indian Arrow", "Dynamite", "Double Bull's Eye 1", "Double Bull's Eye 2", "Bullet", "Double Gatling"); //LOUDMOUTH
+                            dice.add(d5);
+                            total++;
+                        }
+                        else{
+                            c5.setDisable(false);
+                            c6.setDisable(false);
+                            total--;
+                        }
+                    }); 
+                    c6.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                        if(c6.isSelected()){
+                            if(dice.contains(d6)){
+                                dice.remove(d6);
+                            }
+                            d6 = new Dice(1, 0, "Broken Indian Arrow", "Dynamite", "Bull's Eye 1", "Indian Arrow", "Double Beer", "Beer");
+                            dice.add(d6);
+                            c7.setDisable(true);
+                            total++;
+                        }
+                        else{
+                            if(!c5.isSelected()){
+                                c7.setDisable(false);
+                            }
+                            if(dice.contains(d6)){
+                                dice.remove(d6);
+                            }
+                            total--;
+                        }
+                    }); 
+                    break;
+                case "Tequila Joe":
+                    c5.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                        if(c5.isSelected()){
+                            c6.setDisable(true);
+                            dice.remove(d5);
+                            d5 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling"); //regular die
+                            dice.add(d5);
+                            total++;
+                        }
+                        else{
+                            if(!c7.isSelected()){
+                                c6.setDisable(false);
+                            }
+                            total--;
+                        }
+                    }); 
+                    c6.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                        if(c6.isSelected()){
+                            c5.setDisable(true);
+                            c7.setDisable(true);
+                            dice.remove(d5);
+                            d5 = new Dice(1, 0, "Indian Arrow", "Dynamite", "Double Bull's Eye 1", "Double Bull's Eye 2", "Bullet", "Double Gatling"); //LOUDMOUTH
+                            dice.add(d5);
+                            total++;
+                        }
+                        else{
+                            c5.setDisable(false);
+                            c7.setDisable(false);
+                            total--;
+                        }
+                    }); 
+                    c7.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                        if(c7.isSelected()){
+                            if(dice.contains(d6)){
+                                dice.remove(d6);
+                            }
+                            d6 = new Dice(1, 0, "Broken Indian Arrow", "Dynamite", "Bull's Eye 1", "Indian Arrow", "Double Beer", "Beer");
+                            dice.add(d6);
+                            c6.setDisable(true);
+                            total++;
+                        }
+                        else{
+                            if(!c5.isSelected()){
+                                c6.setDisable(false);
+                            }
+                            if(dice.contains(d6)){
+                                dice.remove(d6);
+                            }
+                            total--;
+                            
+                        }
+                    }); 
+                    break;
+                default:
+                    c5.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                        if(c5.isSelected()){
+                            c6.setDisable(true);
+                            c7.setDisable(true);
+                            dice.remove(d5);
+                            d5 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling"); //regular die
+                            dice.add(d5);
+                        }
+                        else{
+                            c6.setDisable(false);
+                            c7.setDisable(false);
+                        }
+                    }); 
+                    c6.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                        if(c6.isSelected()){
+                            c5.setDisable(true);
+                            c7.setDisable(true);
+                            dice.remove(d5);
+                            d5 = new Dice(1, 0, "Indian Arrow", "Dynamite", "Double Bull's Eye 1", "Double Bull's Eye 2", "Bullet", "Double Gatling"); //LOUDMOUTH
+                            dice.add(d5);
+                        }
+                        else{
+                            c5.setDisable(false);
+                            c7.setDisable(false);
+                        }
+                    }); 
+                    c7.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                        if(c7.isSelected()){
+                            c6.setDisable(true);
+                            c5.setDisable(true);
+                            dice.remove(d5);
+                            d5 = new Dice(1, 0, "Broken Indian Arrow", "Dynamite", "Bull's Eye 1", "Indian Arrow", "Double Beer", "Beer"); //COWARD
+                            dice.add(d5);
+                        }
+                        else{
+                            c5.setDisable(false);
+                            c6.setDisable(false);
+                        }
+                    });
+                    break;
+            }
         });
         // REROLL SCENE
         Button4 = new Button("ROLL");
@@ -551,83 +714,106 @@ public class Bang_fxGUI extends Application {
         Button4.setLayoutX(1000);
         Button4.setLayoutY(600);
         Button4.setOnAction(f -> {
+            if(total == 1 && dice.contains(d6)){
+                dice.remove(d6);
+                dice.remove(d5);
+                d5 = d6;
+                dice.add(d5);
+            }
             if (rolls >= 2) {
                 Button4.setDisable(true);
             }
             go3();
             // group all the above together
-            Group group = new Group();
-            group.getChildren()
-                    .addAll(table2, dice1, dice2, dice3, dice4, dice5,
-                            Button4, Button5, Line1, Line2, Line3, Line4, Line5,
-                            Line6, Line7, Line8, Line9, main1, main2, main3,
-                            main4, main5, main6, main7, main8,
-                            c1, c2, c3, c4, c5);
-            scene5 = new Scene(group, 1280, 720, Color.BEIGE);
-            window.setScene(scene5);
-            window.show();
-            Line1.setText("Pick the dice you want to Re-Roll: ");
-            for (int i = 0; i < 5; i++) {
-                checkBoxes.get(i).setLayoutX((i * 100) + 450);
-                checkBoxes.get(i).setLayoutY(400);
-                checkBoxes.get(i).setText("");
-                if (dice.get(i).sides[dice.get(i).side].equals("Dynamite") && play_order.get(0).dynamiteReroll == false) {
-                    checkBoxes.get(i).setSelected(false);
-                    checkBoxes.get(i).setDisable(true);
-                    imageSet(IV.get(i), 90, 90, Img_Dynamite);
-                    dice.get(i).canRoll = false;
-                } else {
-                    checkBoxes.get(i).setSelected(false);
-                    checkBoxes.get(i).setDisable(false);
-                    switch (dice.get(i).sides[dice.get(i).side]) {
-                        case "Indian Arrow":
-                            imageSet(IV.get(i), 90, 90, Img_arrow);
-                            break;
-                        case "Duel":
-                            imageSet(IV.get(i), 90, 90, Img_Duel);
-                            break;
-                        case "Whiskey":
-                            imageSet(IV.get(i), 90, 90, Img_Whiskey);
-                            break;
-                        case "Gatling":
-                            imageSet(IV.get(i), 90, 90, Img_Gatling);
-                            break;
-                        case "Bull's Eye 1":
-                            imageSet(IV.get(i), 90, 90, Img_BE1);
-                            break;
-                        case "Bull's Eye 2":
-                            imageSet(IV.get(i), 90, 90, Img_BE2);
-                            break;
-                        case "Beer":
-                            imageSet(IV.get(i), 90, 90, Img_Beer);
-                            break;
-                        case "Bullet":
-                            imageSet(IV.get(i), 90, 90, Img_Bullet);
-                            break;
-                        case "Broken Indian Arrow":
-                            imageSet(IV.get(i), 90, 90, Img_BrokenArrow);
-                            break;
-                        case "Double Bull's Eye 1":
-                            imageSet(IV.get(i), 90, 90, Img_DBE1);
-                            break;
-                        case "Double Bull's Eye 2":
-                            imageSet(IV.get(i), 90, 90, Img_DBE2);
-                            break;
-                        case "Double Beer":
-                            imageSet(IV.get(i), 90, 90, Img_DBeer);
-                            break;
-                        case "Double Gatling":
-                            imageSet(IV.get(i), 90, 90, Img_DGatling);
-                            break;
-                        case "Dynamite":
-                            imageSet(IV.get(i), 90, 90, Img_Dynamite);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                imageMove(IV.get(i), (i * 100) + 410, 300);
+            if(dice.size() == 5){
+                Group group = new Group();
+                group.getChildren()
+                        .addAll(table2, dice1, dice2, dice3, dice4, dice5,
+                                Button4, Button5, Line1, Line2, Line3, Line4, Line5,
+                                Line6, Line7, Line8, Line9, main1, main2, main3,
+                                main4, main5, main6, main7, main8,
+                                cd1, cd2, cd3, cd4, cd5);
+                scene5 = new Scene(group, 1280, 720, Color.BEIGE);
+                window.setScene(scene5);
+                window.show();
             }
+            else{
+                
+                Group group = new Group();
+                group.getChildren()
+                        .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
+                                Button4, Button5, Line1, Line2, Line3, Line4, Line5,
+                                Line6, Line7, Line8, Line9, main1, main2, main3,
+                                main4, main5, main6, main7, main8,
+                                cd1, cd2, cd3, cd4, cd5, cd6);
+                scene5 = new Scene(group, 1280, 720, Color.BEIGE);
+                window.setScene(scene5);
+                window.show();
+            }
+                Line1.setText("Pick the dice you want to Re-Roll: ");
+                System.out.println(dice.size());
+                for (int i = 0; i < dice.size(); i++) {
+                    checkBoxes2.get(i).setLayoutX((i * 100) + 450);
+                    checkBoxes2.get(i).setLayoutY(400);
+                    checkBoxes2.get(i).setText("");
+                    if (dice.get(i).sides[dice.get(i).side].equals("Dynamite") && play_order.get(0).dynamiteReroll == false) {
+                        checkBoxes2.get(i).setSelected(false);
+                        checkBoxes2.get(i).setDisable(true);
+                        imageSet(IV.get(i), 90, 90, Img_Dynamite);
+                        dice.get(i).canRoll = false;
+                    } else {
+                        checkBoxes2.get(i).setSelected(false);
+                        checkBoxes2.get(i).setDisable(false);
+                        switch (dice.get(i).sides[dice.get(i).side]) {
+                            case "Indian Arrow":
+                                imageSet(IV.get(i), 90, 90, Img_arrow);
+                                break;
+                            case "Duel":
+                                imageSet(IV.get(i), 90, 90, Img_Duel);
+                                break;
+                            case "Whiskey":
+                                imageSet(IV.get(i), 90, 90, Img_Whiskey);
+                                break;
+                            case "Gatling":
+                                imageSet(IV.get(i), 90, 90, Img_Gatling);
+                                break;
+                            case "Bull's Eye 1":
+                                imageSet(IV.get(i), 90, 90, Img_BE1);
+                                break;
+                            case "Bull's Eye 2":
+                                imageSet(IV.get(i), 90, 90, Img_BE2);
+                                break;
+                            case "Beer":
+                                imageSet(IV.get(i), 90, 90, Img_Beer);
+                                break;
+                            case "Bullet":
+                                imageSet(IV.get(i), 90, 90, Img_Bullet);
+                                break;
+                            case "Broken Indian Arrow":
+                                imageSet(IV.get(i), 90, 90, Img_BrokenArrow);
+                                break;
+                            case "Double Bull's Eye 1":
+                                imageSet(IV.get(i), 90, 90, Img_DBE1);
+                                break;
+                            case "Double Bull's Eye 2":
+                                imageSet(IV.get(i), 90, 90, Img_DBE2);
+                                break;
+                            case "Double Beer":
+                                imageSet(IV.get(i), 90, 90, Img_DBeer);
+                                break;
+                            case "Double Gatling":
+                                imageSet(IV.get(i), 90, 90, Img_DGatling);
+                                break;
+                            case "Dynamite":
+                                imageSet(IV.get(i), 90, 90, Img_Dynamite);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    imageMove(IV.get(i), (i * 100) + 410, 300);
+                }
+                
 
         });
         // FINAL DICE SCENE
@@ -638,14 +824,27 @@ public class Bang_fxGUI extends Application {
         Button5.setOnAction(f -> {
             go3();
             // group all the above together
-            Group group = new Group();
-            group.getChildren()
-                    .addAll(table2, dice1, dice2, dice3, dice4, dice5,
-                            Button6, Line1, Line2, Line3, Line4, Line5, Line6,
-                            Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8);
-            scene5 = new Scene(group, 1280, 720, Color.BEIGE);
-            window.setScene(scene5);
-            window.show();
+            if(dice.contains(d6)){
+               Group group = new Group();
+                group.getChildren()
+                        .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
+                                Button6, Line1, Line2, Line3, Line4, Line5, Line6,
+                                Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8);
+                scene5 = new Scene(group, 1280, 720, Color.BEIGE);
+                window.setScene(scene5);
+                window.show(); 
+            }
+            else{
+               Group group = new Group();
+                group.getChildren()
+                        .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
+                                Button6, Line1, Line2, Line3, Line4, Line5, Line6,
+                                Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8);
+                scene5 = new Scene(group, 1280, 720, Color.BEIGE);
+                window.setScene(scene5);
+                window.show();  
+            }
+            
             Line1.setText("Final Results: ");
         });
         // after FINAL DICE SCENE
@@ -714,41 +913,6 @@ public class Bang_fxGUI extends Application {
         img.setLayoutY(y);
     }
 
-    EventHandler eh = new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-            if (event.getSource() instanceof CheckBox) {
-                if (c5.isSelected()) {
-                    c7.setDisable(true);
-                    c6.setDisable(true);
-                    dice.remove(d5);
-                    d5 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling"); //regular die
-                    dice.add(d5);
-                } else if (c6.isSelected()) {
-                    c7.setDisable(true);
-                    c5.setDisable(true);
-                    dice.remove(d5);
-                    d5 = new Dice(1, 0, "Indian Arrow", "Dynamite", "Double Bull's Eye 1", "Double Bull's Eye 2", "Bullet", "Double Gatling"); //LOUDMOUTH
-                    dice.add(d5);
-                } else if (c7.isSelected()) {
-                    c5.setDisable(true);
-                    c6.setDisable(true);
-                    dice.remove(d5);
-                    d5 = new Dice(1, 0, "Broken Indian Arrow", "Dynamite", "Bull's Eye 1", "Indian Arrow", "Double Beer", "Beer"); //COWARD
-                    dice.add(d5);
-                } else {
-                    for (int i = 0; i < 3; i++) {
-                        checkBoxes.get(i + 4).setDisable(false);
-                    }
-                    dice.remove(d5);
-                    d5 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling"); //regular die
-                    dice.add(d5);
-                }
-
-            }
-        }
-    };
-
     EventHandler eh2 = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -815,6 +979,8 @@ public class Bang_fxGUI extends Application {
         char_cards.add(new Character_Cards("Willy The Kid", 8));
         char_cards.add(new Character_Cards("Belle Star", 8));
         char_cards.add(new Character_Cards("Greg Digger", 7));
+        char_cards.add(new Character_Cards("Jose Delgado", 7));
+        char_cards.add(new Character_Cards("Tequila Joe", 7));
         Collections.shuffle(char_cards);
 
         dice.add(d1);
@@ -1007,12 +1173,12 @@ public class Bang_fxGUI extends Application {
     }
 
     public void go3() {
-        for (int roll = 0; roll < 5; roll++) {
+        for (int roll = 0; roll < dice.size(); roll++) {
             if (dice.get(roll).canRoll == true) {
                 if (rolls == 0) {
                     dice.get(roll).roll();
                 } else {
-                    if (checkBoxes.get(roll).isSelected()) {
+                    if (checkBoxes2.get(roll).isSelected()) {
                         dice.get(roll).roll();
                     }
                 }
@@ -1056,8 +1222,9 @@ public class Bang_fxGUI extends Application {
     }
 
     public void go4() {
+        total = 0;
         System.out.println("Final results: ");
-        for (int count = 0; count < 5; count++) {
+        for (int count = 0; count < dice.size(); count++) {
             System.out.println("Dice " + (count + 1) + ": " + dice.get(count).sides[dice.get(count).side]);
             if (dice.get(count).sides[dice.get(count).side].equals("Double Gat")) {
                 Gat += 2;
