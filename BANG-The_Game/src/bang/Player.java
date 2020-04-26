@@ -96,7 +96,7 @@ public class Player {
 
 //AI assigning  each character roles according to their abilties
  
-if (this.ggetCharacter().name == " bart cassidy "){
+if (this.getCharacter().name == " bart cassidy "){
     this.setHealth(8);
             int playerChoice;
             System.out.print("You want to choose arrow instead of losing a life point? (except to indians or dynamite) ");
