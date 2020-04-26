@@ -80,13 +80,13 @@ public class BANG {
         boolean test = false;
         Random rand = new Random();
         Player human = new Player("NULL",0,"NULL",false);
-        Player ai1 = new Player("NLUL", 0, "NULL", true);
-        Player ai2 = new Player("NLUL", 0, "NULL", true);
-        Player ai3 = new Player("NLUL", 0, "NULL", true);
-        Player ai4 = new Player("NLUL", 0, "NULL", true);
-        Player ai5 = new Player("NLUL", 0, "NULL", true);
-        Player ai6 = new Player("NLUL", 0, "NULL", true);
-        Player ai7 = new Player("NLUL", 0, "NULL", true);
+        Player ai1 = new Player("NULL", 0, "NULL", true);
+        Player ai2 = new Player("NULL", 0, "NULL", true);
+        Player ai3 = new Player("NULL", 0, "NULL", true);
+        Player ai4 = new Player("NULL", 0, "NULL", true);
+        Player ai5 = new Player("NULL", 0, "NULL", true);
+        Player ai6 = new Player("NULL", 0, "NULL", true);
+        Player ai7 = new Player("NULL", 0, "NULL", true);
 
         
         ArrayList<Player> play_order = new ArrayList();
