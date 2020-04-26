@@ -10,6 +10,7 @@
 package bang;
 
 // imports galore
+import java.util.*;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -166,6 +167,7 @@ public class Bang_fxGUI extends Application {
     int Beer = 0;
     int rolls = 0;
     int dynamite = 0;
+    Dictionary diceOutcome= new Hashtable<String,Integer>();
     boolean gringo = false;
     boolean gatAttack = false;
     boolean reroll;
@@ -408,6 +410,21 @@ public class Bang_fxGUI extends Application {
             IV.add(dice4);
             IV.add(dice5);
             IV.add(dice6);
+            diceOutcome.put("Indian Arrow", 0);
+            diceOutcome.put("Dynamite", 0);
+            diceOutcome.put("Duel", 0);
+            diceOutcome.put("Whiskey", 0);
+            diceOutcome.put("Gatling", 0);
+            diceOutcome.put("Bull's Eye 1", 0);
+            diceOutcome.put("Bull's Eye 2", 0);
+            diceOutcome.put("Beer", 0);
+            diceOutcome.put("Double Bull's Eye 1", 0);
+            diceOutcome.put("Double Bull's Eye 2", 0);
+            diceOutcome.put("Double Gatling", 0);
+            diceOutcome.put("Bullet", 0);
+            diceOutcome.put("Broken Indian Arrow", 0);
+            diceOutcome.put("Double Beer", 0);
+            
 
             window.setScene(scene2);
             window.show();
@@ -751,7 +768,6 @@ public class Bang_fxGUI extends Application {
                 window.show();
             }
                 Line1.setText("Pick the dice you want to Re-Roll: ");
-                System.out.println(dice.size());
                 for (int i = 0; i < dice.size(); i++) {
                     checkBoxes2.get(i).setLayoutX((i * 100) + 450);
                     checkBoxes2.get(i).setLayoutY(400);
@@ -837,7 +853,7 @@ public class Bang_fxGUI extends Application {
             else{
                Group group = new Group();
                 group.getChildren()
-                        .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
+                        .addAll(table2, dice1, dice2, dice3, dice4, dice5,
                                 Button6, Line1, Line2, Line3, Line4, Line5, Line6,
                                 Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8);
                 scene5 = new Scene(group, 1280, 720, Color.BEIGE);
@@ -895,6 +911,23 @@ public class Bang_fxGUI extends Application {
 
     }
 
+    public void resetDictionary(){
+        diceOutcome.put("Indian Arrow", 0);
+        diceOutcome.put("Dynamite", 0);
+        diceOutcome.put("Duel", 0);
+        diceOutcome.put("Whiskey", 0);
+        diceOutcome.put("Gatling", 0);
+        diceOutcome.put("Bull's Eye 1", 0);
+        diceOutcome.put("Bull's Eye 2", 0);
+        diceOutcome.put("Beer", 0);
+        diceOutcome.put("Double Bull's Eye 1", 0);
+        diceOutcome.put("Double Bull's Eye 2", 0);
+        diceOutcome.put("Double Gatling", 0);
+        diceOutcome.put("Bullet", 0);
+        diceOutcome.put("Broken Indian Arrow", 0);
+        diceOutcome.put("Double Beer", 0);
+    }
+    
     public void textMove(Label line, String text, int x, int y, int fontSize) {
         line.setText(text);
         line.setLayoutX(x);
@@ -981,6 +1014,8 @@ public class Bang_fxGUI extends Application {
         char_cards.add(new Character_Cards("Greg Digger", 7));
         char_cards.add(new Character_Cards("Jose Delgado", 7));
         char_cards.add(new Character_Cards("Tequila Joe", 7));
+        char_cards.add(new Character_Cards("Apache Kid", 9));
+        char_cards.add(new Character_Cards("Bill Noface", 9));
         Collections.shuffle(char_cards);
 
         dice.add(d1);
@@ -1185,17 +1220,22 @@ public class Bang_fxGUI extends Application {
             }
         }
         dynamite = 0;
-        reroll = false;
+        reroll = false; 
         System.out.println("Roll results:");
         System.out.println("Dice 1 : " + d1.sides[d1.side]);
         System.out.println("Dice 2 : " + d2.sides[d2.side]);
         System.out.println("Dice 3 : " + d3.sides[d3.side]);
         System.out.println("Dice 4 : " + d4.sides[d4.side]);
         System.out.println("Dice 5 : " + d5.sides[d5.side]);
-        for (int i = 0; i < 5; i++) {
+        resetDictionary();
+        for (int i = 0; i < dice.size(); i++) {
+            String side = dice.get(i).sides[dice.get(i).side];
+            diceOutcome.put(side, ((int)diceOutcome.get(side))+1);
+            System.out.println(side + " - " + diceOutcome.get(side));
             if (dice.get(i).sides[dice.get(i).side].equals("Dynamite")) {
                 dynamite++;
             }
+            
             if (dice.get(i).sides[dice.get(i).side].equals("Indian Arrow")) {
                 //ADD ARROW PICS HERE AND ALLOW USER TO CHOOSE WHICH ARROW THEY WANT!
                 play_order.get(0).addArrow(1);
