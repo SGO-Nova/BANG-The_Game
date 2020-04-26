@@ -210,6 +210,8 @@ public class BANG {
             int total = 0;
             int Beer = 0;
             int dynamite = 0;
+            int sheriff = 0;
+
             boolean gringo = false;
             boolean gatAttack = false;
             Player left1 = play_order.get(1);
@@ -296,6 +298,8 @@ public class BANG {
             System.out.println("Do you want to change out one of your dice for the COWARD die or LOUDMOUTH die?");
             System.out.print("> ");
             answer = "n";
+            
+            
             do {
                 try {
                     if (play_order.get(0).computer == true) {
@@ -388,6 +392,7 @@ public class BANG {
                     if (dice.get(roll).sides[dice.get(roll).side].equals("Dynamite") && play_order.get(0).name.equals("Belle Star")) {
                         System.out.println("Do you want to change dice" + (roll + 1) + " to a gatling gun? (y/n)");
                         answer = "n";
+                        
                         if (play_order.get(0).computer == true) {
                             Random random = new Random();
                             int random_int = (random.nextInt(10000000) % 2);
@@ -406,9 +411,120 @@ public class BANG {
                                 }
                             }
                         }
+                        //If the dice side is not dynamite continue here 
                     } else if (!(dice.get(roll).sides[dice.get(roll).side].equals("Dynamite")) || play_order.get(0).dynamiteReroll == true) {
                         System.out.println("Do you want to reroll dice " + (roll + 1) + "? (y/n)");
                         answer = "n";
+                        if(play_order.get(0).role.equals("Deputy"))
+                        {
+                            //Check where the sheriff is at in the game
+                            if(play_order.get(1).shown==true)
+                            {
+                                sheriff = 1;
+                            }
+                            else if (play_order.get(2).shown==true)
+                            {
+                                sheriff = 2;
+                            }
+                            else if ((play_order.get(play_order.size()-1).shown)==true)
+                            {
+                                //1 to the opposite side 
+                                sheriff=play_order.size()-1;
+                            }
+                            else if ((play_order.get(play_order.size()-2).shown)==true)
+                            {
+                                //2 to the opposite side
+                                sheriff = play_order.size()-2;
+                            }
+                            //Reroll Gats unless you roll two
+                            
+                            //Reroll Arrows and Dynomite if blackjack
+                            //So if player is BlackJack reroll dynomite otherwise must stay 
+                            //if(play_order)
+                            if(Gat>=(play_order.get(0).gatsNeeded)-1)
+                            {
+                                answer= scan.next();
+                            }
+                                else
+                                {
+                                    //reroll= true;
+                                    answer= "y";
+                                    //dice.get(roll).roll();
+                                }
+                            //
+                            if(dice.get(roll).sides[dice.get(roll).side].equals("Indian Arrow"))
+                            {
+                                reroll=true;
+                                dice.get(roll).roll();
+                            }
+                            //keep beers if player has low health 
+                            if(dice.get(roll).sides[dice.get(roll).side].equals("Beer"))
+                            {
+                                //loop this to see all sides 
+                                int playerMaxHealth= play_order.get(0).maxHealth;
+                                //want to reroll if current health is less than max 
+                                if((play_order.get(0).health)>=playerMaxHealth-2)
+                                {
+                                    answer= "y";
+                                    //reroll=true;
+                                }
+                                else if ((play_order.get(0).health)>=playerMaxHealth-2 && (play_order.get(0).health)<=playerMaxHealth-4)
+                                {
+                                    //want to keep one beer 
+                                    answer = scan.next();
+                                
+                                }
+                                else if((play_order.get(0).health)>=playerMaxHealth-4 && (play_order.get(0).health)<=playerMaxHealth-6)
+                                {
+                                    //want to keep two beers
+                                    answer = scan.next();
+                            
+                                }
+                                else 
+                                {
+                                    //keep all beers 
+                                    //reroll= false;
+                                    answer = scan.next();
+                                }
+                            }
+                            int sheriffHealth=play_order.get(sheriff).health;
+                            //Want to heal the sherriff if they are hurt, any type of hurt they are feeling we will give them the beers
+                            if(sheriffHealth<=play_order.get(sheriff).maxHealth)
+                            {
+                                //keep beers 
+                                answer= scan.next();
+                                //reroll= false;
+                            }
+                            else
+                            {
+                                answer= "y";
+                            }
+                            //Also need to keep/reroll BE1 and BE2
+                            if(dice.get(roll).sides[dice.get(roll).side].equals("BE1"))
+                            {
+                                if(sheriff==(play_order.get().size-1))
+                                {
+                                    //Want to keep BE1 unless it will hurt Sheriff
+                                }
+                            }
+                                else if(dice.get(roll).sides[dice.get(roll).side].equals("BE2"))
+                                {
+                                    if(sheriff==(play_order.get().size-1))
+                                    {
+                                        //Want to keep BE2 unless it will hurt Sheriff
+
+                                    }                                      
+                                      
+                                }
+                                else
+                                {
+                                
+                                }
+                        }
+                        
+                        
+                        
+                        /*
                         if (play_order.get(0).computer == true) {
                             Random random = new Random();
                             int random_int = (random.nextInt(10000000) % 2);
@@ -419,6 +535,7 @@ public class BANG {
                         } else {
                             answer = scan.next();
                         }
+                        */
                         if (answer.equalsIgnoreCase("yes") || answer.equalsIgnoreCase("y")) {
                             reroll = true;
                             dice.get(roll).roll();
@@ -454,6 +571,8 @@ public class BANG {
                         System.out.print("> ");
                         do {
                             try {
+                                
+                                
                                 if (play_order.get(0).computer == true) {
                                     Random random = new Random();
                                     players = (random.nextInt(10000000) % list.size());
