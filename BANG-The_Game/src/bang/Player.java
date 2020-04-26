@@ -53,7 +53,7 @@ public class Player {
     public Character_Cards getCharacter() { //calling characters class from bang.java
         return this.c;
     }
-
+    
     public void bulletUpdate() {
         this.s_bul = this.health % 3;
         this.t_bul = (this.health - this.s_bul) / 3;
