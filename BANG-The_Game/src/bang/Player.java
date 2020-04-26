@@ -96,7 +96,7 @@ public class Player {
 
 //AI assigning  each character roles according to their abilties
  
-if (this.getcharacter().name == " bart cassidy "){
+if (this.ggetCharacter().name == " bart cassidy "){
     this.setHealth(8);
             int playerChoice;
             System.out.print("You want to choose arrow instead of losing a life point? (except to indians or dynamite) ");
@@ -107,18 +107,18 @@ if (this.getcharacter().name == " bart cassidy "){
 //you may not use this ability to take the last arrow remaining in the pile.
   }
 
-if (this.getcharacter().name == " paul regret "){
+if (this.getCharacter().name == " paul regret "){
     this.setHealth(9);
 // (9) you never lose life points to the gatling gun.
 }
 
 
-if (this.getcharacter().name == " black once "){
+if (this.getCharacter().name == " black once "){
     this.setHealth(8);
  //(or in total if you didn’t re-roll them), follow the usual rules (your turn ends, etc.)
 }
 
-if (this.getcharacter().name == "pedro ramirez"){
+if (this.getCharacter().name == "pedro ramirez"){
      this.setHealth(8);
         if (setHealth(getHealth - 1)) {
 
@@ -138,74 +138,74 @@ if (this.getcharacter().name == "pedro ramirez"){
 //point when you use this ability
 }
 
-if (this.getcharacter().name == "calamity janet"){
+if (this.getCharacter().name == "calamity janet"){
       this.setHealth(8);
 // (8) you can use as 1& 2 and vice-versa
 }
 
-if (this.getcharacter().name == " rose doolan ") {
+if (this.getCharacter().name == " rose doolan ") {
       this.setHealth(9);
 // (9) you may use or for players sitting one place further. with you may hit a player sitting up to
 //two /places away, and with you may h
 }
 
-if (this.getcharacter().name == " el gringo "){
+if (this.getCharacter().name == " el gringo "){
       this.setHealth(7);
  //(7) when a player makes you lose one or more life points, he must take an arrow. life points 
 //lost to indians or dynamite are not affected
 }
 
 
-if (this.getcharacter().name == " sid ketchum "){
+if (this.getCharacter().name == " sid ketchum "){
       this.setHealth(8);
  //(8) at the beginning of your turn, any player of your choice gains one life point. you may also 
 //choose yourself
 }
 
 
-if (this.getcharacter().name == " jesse jones "){
+if (this.getCharacter().name == " jesse jones "){
       this.setHealth(9);
  //(9) if you have four life points or less, you gain two if you use for yourself. for example, if you
  //have four life points and use two beers, you get four life points.
 }
 
 
-if (this.getcharacter().name == " slab the killer "){
+if (this.getCharacter().name == " slab the killer "){
       this.setHealth(8);
  //(8) once per turn, you can use a to double a or . the dice you double takes two life points away
  //from the same player (you can’t choose two different players). the in this case does not provide any life points.
 }
 
 
-if (this.getcharacter().name == " jourdonnais "){
+if (this.getCharacter().name == " jourdonnais "){
       this.setHealth(7);
  //(7) you never lose more than one life point to indians.
 }
 
-if (this.getcharacter().name == " suzy lafayette "){
+if (this.getCharacter().name == " suzy lafayette "){
       this.setHealth(8);
  //(8) if you didn’t roll any or , you gain two life points. this only applies at the end of your turn,  
  //not during your re-rolls.
 }
 
-if (this.getcharacter().name == " kit carlson "){
+if (this.getCharacter().name == " kit carlson "){
       this.setHealth(7);
  //(7) for each you may discard one arrow from any player. you may choose to discard your own
  //arrows. if you roll three , you discard all your own arrows, plus three from any player(s) (of 
 //course, you still deal one damage to each other player).
 }
 
-if (this.getcharacter().name == " vulture sam "){
+if (this.getCharacter().name == " vulture sam "){
       this.setHealth(9);
  //(9) each time another player is eliminated, you gain two life points.
 }
 
-if (this.getcharacter().name == " lucky duke "){
+if (this.getCharacter().name == " lucky duke "){
       this.setHealth(8);
  //(8) you may make one extra re-roll. you may roll the dice a total of four times on your turn.
 }
 
-if (this.getcharacter().name == " willy the kid "){
+if (this.getCharacter().name == " willy the kid "){
       this.setHealth(8);
 //(8) you only need to use the gatling gun. you can activate the gatling gun only once per turn,
 //even if you roll more than two results.
