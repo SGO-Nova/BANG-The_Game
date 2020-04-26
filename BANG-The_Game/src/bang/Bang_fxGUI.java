@@ -10,6 +10,7 @@
 package bang;
 
 // imports galore
+import static bang.BANG.deathSeq;
 import java.util.*;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -216,7 +217,7 @@ public class Bang_fxGUI extends Application {
 
     ArrayList<Player> play_order = new ArrayList();
     ArrayList<Player> temp_play_order = new ArrayList();
-
+    
     //Scene scene1 = new Scene(group1, 1280, 720, Color.BEIGE);
     public static void main(String[] args) {
         // lauches the whole thing
@@ -267,6 +268,9 @@ public class Bang_fxGUI extends Application {
         dice05 = new ImageView(Img_Reg);
         dice06 = new ImageView(Img_Loud);
         dice07 = new ImageView(Img_Coward);
+        
+        
+        
         
         
         //Music
@@ -489,6 +493,9 @@ public class Bang_fxGUI extends Application {
         nextButton.setLayoutX(1100);
         nextButton.setLayoutY(600);
         nextButton.setOnAction(d -> {
+            for(int i = 0; i < dice.size(); i++){
+                dice.get(i).canRoll = true;
+            }
             action();
             play_order.add(play_order.get(0));
             play_order.remove(0);
@@ -499,15 +506,13 @@ public class Bang_fxGUI extends Application {
              // group all the above together
              current = play_order.get(0);
              go2();
-             
+             Group group3 = new Group();
              if(current.name.equals("Sid Ketchum"))
              {
-                Group group3 = new Group();
                 group3.getChildren()
                         .addAll(table2, Button2, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8);
                 scene3 = new Scene(group3, 1280, 720, Color.BEIGE);
             } else {
-                Group group3 = new Group();
                 group3.getChildren()
                         .addAll(table2, Button3, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8);
                 scene3 = new Scene(group3, 1280, 720, Color.BEIGE);
@@ -529,7 +534,8 @@ public class Bang_fxGUI extends Application {
             pick = new Player("NULL", 99, "NULL", true);
             // group all the above together
             Group group = new Group();
-            group.getChildren()
+            group.getChildren().clear();
+                group.getChildren() 
                     .addAll(table2, Button3, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                             nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);
             scene4 = new Scene(group, 1280, 720, Color.BEIGE);
@@ -587,8 +593,8 @@ public class Bang_fxGUI extends Application {
             Button4.setDisable(false);
             // group all the above together
             Group group = new Group();
-            group.getChildren()
-
+            group.getChildren().clear();
+                group.getChildren() 
                     .addAll(table2, Button4, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8, 
                             c1, c2, c3, c4, c5, c6, c7, dice01, dice02, dice03, dice04, dice05, dice06, dice07);
 
@@ -800,7 +806,8 @@ public class Bang_fxGUI extends Application {
             // group all the above together
             if(dice.size() == 5){
                 Group group = new Group();
-                group.getChildren()
+                group.getChildren().clear();
+                group.getChildren()        
                         .addAll(table2, dice1, dice2, dice3, dice4, dice5,
                                 Button4, Button5, Line1, Line2, Line3, Line4, Line5,
                                 Line6, Line7, Line8, Line9, main1, main2, main3,
@@ -834,15 +841,15 @@ public class Bang_fxGUI extends Application {
                 
             }
             else{
-                
                 Group group = new Group();
+                group.getChildren().clear();
                 group.getChildren()
-                        .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
-                                Button4, Button5, Line1, Line2, Line3, Line4, Line5,
-                                Line6, Line7, Line8, Line9, main1, main2, main3,
-                                main4, main5, main6, main7, main8,
-                                cd1, cd2, cd3, cd4, cd5, cd6,
-                                ChiefArrowButton);
+                    .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
+                            Button4, Button5, Line1, Line2, Line3, Line4, Line5,
+                            Line6, Line7, Line8, Line9, main1, main2, main3,
+                            main4, main5, main6, main7, main8,
+                            cd1, cd2, cd3, cd4, cd5, cd6,
+                            ChiefArrowButton);
                 scene5 = new Scene(group, 1280, 720, Color.BEIGE);
                 window.setScene(scene5);
                 window.show();
@@ -997,9 +1004,9 @@ public class Bang_fxGUI extends Application {
         Button5.setLayoutY(600);
         Button5.setOnAction(f -> {
             go4();
-            Group group = new Group();
             // group all the above together
             resetDictionary();
+            Group group = new Group();
             if(dice.contains(d6)){
                 for(int roll = 0; roll < dice.size(); roll++){
                     String side = dice.get(roll).sides[dice.get(roll).side];
@@ -1007,6 +1014,7 @@ public class Bang_fxGUI extends Application {
                     System.out.println(side + " - " + diceOutcome.get(side));
                 }
                 if((int)diceOutcome.get("Bull's Eye 1") > 0){
+                    group.getChildren().clear();
                     group.getChildren()
                             .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
                                     Button8, Line1, Line2, Line3, Line4, Line5, Line6,
@@ -1015,6 +1023,7 @@ public class Bang_fxGUI extends Application {
                        
                 }
                 else if((int)diceOutcome.get("Double Bull's Eye 1") > 0){
+                    group.getChildren().clear();
                     group.getChildren()
                             .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
                                     Button9, Line1, Line2, Line3, Line4, Line5, Line6,
@@ -1022,6 +1031,7 @@ public class Bang_fxGUI extends Application {
                                     ChiefArrowButton);   
                 }
                 else if((int)diceOutcome.get("Bull's Eye 2") > 0){
+                    group.getChildren().clear();
                     group.getChildren()
                             .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
                                     Button10, Line1, Line2, Line3, Line4, Line5, Line6,
@@ -1029,6 +1039,7 @@ public class Bang_fxGUI extends Application {
                                     ChiefArrowButton); 
                 }
                 else if((int)diceOutcome.get("Double Bull's Eye 2") > 0){
+                    group.getChildren().clear();
                     group.getChildren()
                             .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
                                     Button11, Line1, Line2, Line3, Line4, Line5, Line6,
@@ -1036,6 +1047,7 @@ public class Bang_fxGUI extends Application {
                                     ChiefArrowButton);   
                 }
                 else if(gatAttack){
+                    group.getChildren().clear();
                     group.getChildren()
                             .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
                                     Button12, Line1, Line2, Line3, Line4, Line5, Line6,
@@ -1043,6 +1055,7 @@ public class Bang_fxGUI extends Application {
                                     ChiefArrowButton);   
                 }
                 else if((int)diceOutcome.get("Beer") + (int)diceOutcome.get("Double Beer") > 0){
+                    group.getChildren().clear();
                     group.getChildren()
                             .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
                                     Button13, Line1, Line2, Line3, Line4, Line5, Line6,
@@ -1050,6 +1063,7 @@ public class Bang_fxGUI extends Application {
                                     ChiefArrowButton);  
                 }
                 else if((int)diceOutcome.get("Duel") > 0){
+                    group.getChildren().clear();
                     group.getChildren()
                             .addAll(table2,
                                     Button14, Line1, Line2, Line3, Line4, Line5, Line6,
@@ -1115,6 +1129,7 @@ public class Bang_fxGUI extends Application {
 
                 }
                 else if((int)diceOutcome.get("Double Bull's Eye 1") > 0){
+                    group.getChildren().clear();
                     group.getChildren()
                             .addAll(table2, dice1, dice2, dice3, dice4, dice5,
                                     Button9, Line1, Line2, Line3, Line4, Line5, Line6,
@@ -1122,6 +1137,7 @@ public class Bang_fxGUI extends Application {
                                     ChiefArrowButton);   
                 }
                 else if((int)diceOutcome.get("Bull's Eye 2") > 0){
+                    group.getChildren().clear();
                     group.getChildren()
                             .addAll(table2, dice1, dice2, dice3, dice4, dice5,
                                     Button10, Line1, Line2, Line3, Line4, Line5, Line6,
@@ -1129,6 +1145,7 @@ public class Bang_fxGUI extends Application {
                                     ChiefArrowButton); 
                 }
                 else if((int)diceOutcome.get("Double Bull's Eye 2") > 0){
+                    group.getChildren().clear();
                     group.getChildren()
                             .addAll(table2, dice1, dice2, dice3, dice4, dice5,
                                     Button11, Line1, Line2, Line3, Line4, Line5, Line6,
@@ -1136,6 +1153,7 @@ public class Bang_fxGUI extends Application {
                                     ChiefArrowButton);   
                 }
                 else if(gatAttack){
+                    group.getChildren().clear();
                     group.getChildren()
                             .addAll(table2, dice1, dice2, dice3, dice4, dice5,
                                     Button12, Line1, Line2, Line3, Line4, Line5, Line6,
@@ -1143,6 +1161,7 @@ public class Bang_fxGUI extends Application {
                                     ChiefArrowButton);   
                 }
                 else if((int)diceOutcome.get("Beer") + (int)diceOutcome.get("Double Beer") > 0){
+                    group.getChildren().clear();
                     group.getChildren()
                             .addAll(table2, dice1, dice2, dice3, dice4, dice5,
                                     Button13, Line1, Line2, Line3, Line4, Line5, Line6,
@@ -1150,14 +1169,16 @@ public class Bang_fxGUI extends Application {
                                     ChiefArrowButton);  
                 }
                 else if((int)diceOutcome.get("Duel") > 0){
-                    group.getChildren()
+                    group.getChildren().clear();
+                    group.getChildren() 
                             .addAll(table2, dice1, dice2, dice3, dice4, dice5,
                                     Button14, Line1, Line2, Line3, Line4, Line5, Line6,
                                     Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                                     ChiefArrowButton);   
                 }
                 else{
-                    group.getChildren()
+                    group.getChildren().clear();
+                    group.getChildren() 
                             .addAll(table2,
                                     nextButton, Line1, Line2, Line3, Line4, Line5, Line6,
                                     Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8);  
@@ -1581,12 +1602,12 @@ public class Bang_fxGUI extends Application {
 
         // group all the above together
         Group group1 = new Group();
+        Group group2 = new Group();
         group1.getChildren()
                 .addAll(table, logo, playerName, numPlayers, label_numPlayers,
                         startButton, cb1, musicSlider, volumeText);
         
         // group all the above together
-        Group group2 = new Group();
         group2.getChildren()
                 .addAll(table2, nextButton, Line1, Line2, Line3, Line4, Line5, Line6, Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8);
 
@@ -1653,6 +1674,9 @@ public class Bang_fxGUI extends Application {
                 }
                 if(!(pick.name.equals("NULL"))){
                     pick.damage(1);
+                    if (pick.health <= 0) {
+                        deathSeq(play_order, pick);
+                    }
                     updateCharacters();
                 }
                 pick = new Player("NULL", 99, "NULL", true);
@@ -1668,6 +1692,9 @@ public class Bang_fxGUI extends Application {
                 }
                 if(!(pick.name.equals("NULL"))){
                     pick.damage(2);
+                    if (pick.health <= 0) {
+                        deathSeq(play_order, pick);
+                    }
                     updateCharacters();
                 }
                 pick = new Player("NULL", 99, "NULL", true);
@@ -1684,6 +1711,9 @@ public class Bang_fxGUI extends Application {
                 }
                 if(!(pick.name.equals("NULL"))){
                     pick.damage(1);
+                    if (pick.health <= 0) {
+                        deathSeq(play_order, pick);
+                    }
                     updateCharacters();
                 }
                 pick = new Player("NULL", 99, "NULL", true);
@@ -1699,7 +1729,9 @@ public class Bang_fxGUI extends Application {
                 }
                 if(!(pick.name.equals("NULL"))){
                     pick.damage(2);
-                    arrow++;
+                    if (pick.health <= 0) {
+                        deathSeq(play_order, pick);
+                    }
                     updateCharacters();
                 }
                 pick = new Player("NULL", 99, "NULL", true);
@@ -1715,6 +1747,9 @@ public class Bang_fxGUI extends Application {
                 }
                 if(!(pick.name.equals("NULL"))){
                     pick.damage(1);
+                    if (pick.health <= 0) {
+                        deathSeq(play_order, pick);
+                    }
                     updateCharacters();
                 }
                 pick = new Player("NULL", 99, "NULL", true);
@@ -1730,6 +1765,9 @@ public class Bang_fxGUI extends Application {
                 }
                 if(!(pick.name.equals("NULL"))){
                     pick.damage(2);
+                    if (pick.health <= 0) {
+                        deathSeq(play_order, pick);
+                    }
                     updateCharacters();
                 }
                 pick = new Player("NULL", 99, "NULL", true);
@@ -1753,6 +1791,9 @@ public class Bang_fxGUI extends Application {
                 //Gatling
                 for(int i = 1; i < play_order.size(); i++){
                     play_order.get(i).damage(1);
+                    if (play_order.get(i).health <= 0) {
+                        deathSeq(play_order, i);
+                    }
                 }
                 break;
             case 10:
@@ -1776,6 +1817,9 @@ public class Bang_fxGUI extends Application {
                         dice.get(0).roll();
                     }
                     tempP.damage(1);
+                    if (tempP.health <= 0) {
+                        deathSeq(play_order, tempP);
+                    }
                     System.out.println(tempP.name + "Lost the duel!");
                     updateCharacters();
                 }
@@ -1789,7 +1833,8 @@ public class Bang_fxGUI extends Application {
     public Group stageSet(Group group){
         System.out.println("Stage: " + stage);
         if(current.name.equals("Kit Carlson") && temp > 0 && arrow <= 8 && stage <= 1){
-            group.getChildren()
+            group.getChildren().clear();
+                group.getChildren()
                     .addAll(table2,
                             Button6, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
@@ -1797,7 +1842,8 @@ public class Bang_fxGUI extends Application {
 
         }
         else if(current.name.equals("Calamity Janet") && temp > 0 && stage <= 2){
-            group.getChildren()
+            group.getChildren().clear();
+                group.getChildren()
                     .addAll(table2,
                             Button7, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
@@ -1805,51 +1851,58 @@ public class Bang_fxGUI extends Application {
 
         }
         else if(current.name.equals("Calamity Janet") && temp2 > 0 && stage <= 3){
-            group.getChildren()
+            group.getChildren().clear();
+                group.getChildren()
                     .addAll(table2, 
                             Button15, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                             nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);
 
         }
-        else if((int)diceOutcome.get("Bull's Eye 1") > 0 && stage <= 4){
-            group.getChildren()
+        else if((int)diceOutcome.get("Bull's Eye 1") > 0 && stage <= 4 && !current.name.equals("Calamity Janet")){
+            group.getChildren().clear();
+                group.getChildren()
                     .addAll(table2, 
                             Button8, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                             nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);
 
         }
-        else if((int)diceOutcome.get("Double Bull's Eye 1") > 0 && stage < 5){
-            group.getChildren()
+        else if((int)diceOutcome.get("Double Bull's Eye 1") > 0 && stage < 5 && !current.name.equals("Calamity Janet")){
+            group.getChildren().clear();
+                group.getChildren()
                     .addAll(table2, 
                             Button9, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                             nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);  
         }
-        else if((int)diceOutcome.get("Bull's Eye 2") > 0 && stage <= 6){
-            group.getChildren()
+        else if((int)diceOutcome.get("Bull's Eye 2") > 0 && stage <= 6 && !current.name.equals("Calamity Janet")){
+            group.getChildren().clear();
+                group.getChildren()
                     .addAll(table2,
                             Button10, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                             nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8); 
         }
-        else if((int)diceOutcome.get("Double Bull's Eye 2") > 0 && stage < 7){
-            group.getChildren()
+        else if((int)diceOutcome.get("Double Bull's Eye 2") > 0 && stage < 7 && !current.name.equals("Calamity Janet")){
+            group.getChildren().clear();
+                group.getChildren()
                     .addAll(table2,
                             Button11, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                             nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);   
         }
         else if((int)diceOutcome.get("Beer") + (int)diceOutcome.get("Double Beer") > 0 && stage < 8){
-            group.getChildren()
+            group.getChildren().clear();
+                group.getChildren()
                     .addAll(table2,
                             Button12, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                             nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8); 
         }
         else if(gatAttack && stage < 9){
-            group.getChildren()
+            group.getChildren().clear();
+                group.getChildren()
                     .addAll(table2,
                             Button13, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
@@ -1857,14 +1910,16 @@ public class Bang_fxGUI extends Application {
         }
         
         else if(((int)diceOutcome.get("Duel") > 0) && stage <= 10){
-            group.getChildren()
+            group.getChildren().clear();
+                group.getChildren()
                     .addAll(table2, 
                             Button14, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                             nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);   
         }
         else{
-            group.getChildren()
+            group.getChildren().clear();
+                group.getChildren()
                     .addAll(table2,
                             nextButton, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
@@ -1921,11 +1976,10 @@ public class Bang_fxGUI extends Application {
                 for (int j = 0; j < nameCheckBoxes.size(); j++) {
                     if (nameCheckBoxes.get(j).isSelected()) {
                         for (int i = 0; i < nameCheckBoxes.size(); i++) {
+                            System.out.println("Making all disable");
                             nameCheckBoxes.get(i).setDisable(true);
-                            if (nameCheckBoxes.get(i) == nameCheckBoxes.get(j)) {
-                                nameCheckBoxes.get(i).setDisable(false);
-                            }
                         }
+                        nameCheckBoxes.get(j).setDisable(false);
                     } else {
                         for (int i = 0; i < play_order.size(); i++) {
                             nameCheckBoxes.get(i).setDisable(false);
@@ -2180,6 +2234,9 @@ public class Bang_fxGUI extends Application {
                     }
                     if (side.equals("Bullet")) {
                         current.damage(1);
+                        if (current.health <= 0) {
+                            deathSeq(play_order, current);
+                        }
                     }
                 }
                 else{
@@ -2196,6 +2253,9 @@ public class Bang_fxGUI extends Application {
         }
         if((int)diceOutcome.get("Dynamite") >= 3){
             current.damage(1);
+            if (current.health <= 0) {
+                    deathSeq(play_order, current);
+                }
             Button4.setDisable(true);
         }
         System.out.println("Roll results:");
@@ -2213,20 +2273,21 @@ public class Bang_fxGUI extends Application {
         total = 0;
         total2 = 0;
         Gat = 0;
+        gatAttack = false;
         for (int count = 0; count < dice.size(); count++) {
             String side = dice.get(count).sides[dice.get(count).side];
-            Gat = ((int)diceOutcome.get("Gatling")) + (2 * ((int)diceOutcome.get("Double Gatling")));
-            total = ((int)diceOutcome.get("Bull's Eye 1")) + ((int)diceOutcome.get("Bull's Eye 2"));
-            total2 = ((int)diceOutcome.get("Double Bull's Eye 2")) + ((int)diceOutcome.get("Double Bull's Eye 1"));
-            if (Gat >= current.gatsNeeded) {
-                gatAttack = true;
-            }
             if (side.equals("Whiskey")) {
                 current.heal(1);
                 if (current.name.equals("Greg Digger")) {
                     current.heal(1);
                 }
             }
+        }
+        Gat = ((int)diceOutcome.get("Gatling")) + (2 * ((int)diceOutcome.get("Double Gatling")));
+        total = ((int)diceOutcome.get("Bull's Eye 1")) + ((int)diceOutcome.get("Bull's Eye 2"));
+        total2 = ((int)diceOutcome.get("Double Bull's Eye 2")) + ((int)diceOutcome.get("Double Bull's Eye 1"));
+        if (Gat >= current.gatsNeeded) {
+            gatAttack = true;
         }
     }
     

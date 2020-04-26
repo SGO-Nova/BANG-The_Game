@@ -1204,11 +1204,46 @@ public class BANG {
                 play_order.get(j).arrowReset();
                 play_order.get(j).chiefArrow = false;
             }
+            System.out.println(play_order.get(j).name + ") " + play_order.get(j).arrows);
         }
+        
         Bang_fxGUI.arrow = 10;
         Bang_fxGUI.chiefArrow = true;
     }
 
+    public static void deathSeq(ArrayList<Player> play_order, Player deadMan){
+        System.out.println(deadMan + " has died!");
+        deadMan.shown = true;
+        for (int l = 0; l < play_order.size(); l++) {
+            if (play_order.get(l).name.equals("Vulture Sam") && !(deadMan.name.equals("Vulture Sam"))) {
+                play_order.get(l).heal(2);
+            }
+        }
+        play_order.remove(deadMan);
+        int t0 = 0;
+        int t1 = 0;
+        int t2 = 0;
+        for (int j = 0; j < play_order.size(); j++) {
+            int team = play_order.get(j).team;
+            if (team == 0) {
+                t0++;
+            }
+            if (team == 1) {
+                t1++;
+            }
+            if (team == 2) {
+                t2++;
+            }
+        }
+        if (t0 == 0 && t1 == 0) {
+            endGame(2);
+        } else if (t0 == 0) {
+            endGame(1);
+        } else if (t1 == 0 && t2 == 0) {
+            endGame(0);
+        }
+    }
+    
     public static void deathSeq(ArrayList<Player> play_order, int i) {
         System.out.println(play_order.get(i).name + " has died!");
         play_order.get(i).shown = true;
