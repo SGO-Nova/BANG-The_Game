@@ -211,6 +211,7 @@ public class Bang_fxGUI extends Application {
     Player ai6 = new Player("NULL", 0, "NULL", true);
     Player ai7 = new Player("NULL", 0, "NULL", true);
     Player current;
+    Player tempP;
     Player pick = new Player("NULL", 99, "NULL", true);
 
     ArrayList<Player> play_order = new ArrayList();
@@ -478,7 +479,7 @@ public class Bang_fxGUI extends Application {
             window.show();
 
             go1();
-            play_order.get(0).name = playerName.getText(); ///////////////// FOR DEBUGGING USE ONLY, DELETE ON FINAL PUSH!!!!!
+            //play_order.get(0).name = playerName.getText(); ///////////////// FOR DEBUGGING USE ONLY, DELETE ON FINAL PUSH!!!!!
             
         });
 
@@ -488,6 +489,10 @@ public class Bang_fxGUI extends Application {
         nextButton.setLayoutX(1100);
         nextButton.setLayoutY(600);
         nextButton.setOnAction(d -> {
+            action();
+            play_order.add(play_order.get(0));
+            play_order.remove(0);
+            System.out.println("Start tunr");
             stage = 0;
             //Move player texts
             updateCharacters();
@@ -595,6 +600,7 @@ public class Bang_fxGUI extends Application {
 
 
             for (int i = 0; i < 7; i++) {
+                checkBoxes.get(i).setSelected(false);
                 checkBoxes.get(i).setLayoutX((i * 100) + 450);
                 checkBoxes.get(i).setLayoutY(400);
                 if (i < 4) {
@@ -1045,10 +1051,9 @@ public class Bang_fxGUI extends Application {
                 }
                 else if((int)diceOutcome.get("Duel") > 0){
                     group.getChildren()
-                            .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
+                            .addAll(table2,
                                     Button14, Line1, Line2, Line3, Line4, Line5, Line6,
-                                    Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
-                                    ChiefArrowButton);   
+                                    Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8);   
                 }
                 
                 
@@ -1084,6 +1089,7 @@ public class Bang_fxGUI extends Application {
                 temp = (int)diceOutcome.get("Bull's Eye 1") + (int)diceOutcome.get("Bull's Eye 2");
                 temp2 = ((int)diceOutcome.get("Double Bull's Eye 1") + (int)diceOutcome.get("Double Bull's Eye 2"));
                 System.out.println(temp + " " +temp2);
+                ////// NEED TO CHANGE THIS UP, GROUPS CANNOT HAVE SAME STUFF(DUPLICATE CHILDREN)
                 if(current.name.equals("Calamity Janet") && temp > 0 || temp2 > 0){
                     if(temp > 0){
                         group.getChildren()
@@ -1155,6 +1161,8 @@ public class Bang_fxGUI extends Application {
                             .addAll(table2,
                                     nextButton, Line1, Line2, Line3, Line4, Line5, Line6,
                                     Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8);  
+                    play_order.add(play_order.get(0));
+                    play_order.remove(0);
                 }
             }
             scene5 = new Scene(group, 1280, 720, Color.BEIGE);
@@ -1276,15 +1284,293 @@ public class Bang_fxGUI extends Application {
             updateCharacters();
             stage = 3;
         });
+        // BE1
+        Button8.setOnAction(f -> {
+            action();
+            diceOutcome.put("Bull's Eye 1",(int)diceOutcome.get("Bull's Eye 1") - 1);
+            updateCharacters();
+            // group all the above together
+            Group group = new Group();
+            group = stageSet(group);
+            scene5 = new Scene(group, 1280, 720, Color.BEIGE);
+            window.setScene(scene5);
+            window.show();
+            Line1.setText(current.name + ", Who do you want to shoot: ");
+            for (int i = 0; i < nameCheckBoxes.size(); i++) {
+                nameCheckBoxes.get(i).setSelected(false);
+                if (i < play_order.size() && i != 0) {
+                    nameCheckBoxes.get(i).setLayoutX(500);
+                    nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
+                    if(current.name.equals("Rose Dulan")){
+                      if(play_order.get(i) == left1 || play_order.get(i) == right1 || play_order.get(i) == left2 || play_order.get(i) == right2){
+                           nameCheckBoxes.get(i).setDisable(false); 
+                        }
+                        else{
+                            nameCheckBoxes.get(i).setDisable(true);
+                        }  
+                    }
+                    else{
+                        if(play_order.get(i) == left1 || play_order.get(i) == right1){
+                           nameCheckBoxes.get(i).setDisable(false); 
+                        }
+                        else{
+                            nameCheckBoxes.get(i).setDisable(true);
+                        }
+                    }
+                    nameCheckBoxes.get(i).setText(play_order.get(i).name);
+                    nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+                } else {
+                    nameCheckBoxes.get(i).setLayoutX(500);
+                    nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
+                    nameCheckBoxes.get(i).setDisable(true);
+                    nameCheckBoxes.get(i).setText("");
+                    nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+                }
+            }
+            updateCharacters();
+            stage = 4;
+        });
+        // DBE1
+        Button9.setOnAction(f -> {
+            action();
+            diceOutcome.put("Double Bull's Eye 1",(int)diceOutcome.get("Double Bull's Eye 1") - 1);
+            updateCharacters();
+            // group all the above together
+            Group group = new Group();
+            group = stageSet(group);
+            scene5 = new Scene(group, 1280, 720, Color.BEIGE);
+            window.setScene(scene5);
+            window.show();
+            Line1.setText(current.name + ", Who do you want to shoot (Double damage): ");
+            for (int i = 0; i < nameCheckBoxes.size(); i++) {
+                nameCheckBoxes.get(i).setSelected(false);
+                if (i < play_order.size() && i != 0) {
+                    nameCheckBoxes.get(i).setLayoutX(500);
+                    nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
+                    if(current.name.equals("Rose Dulan")){
+                      if(play_order.get(i) == left1 || play_order.get(i) == right1 || play_order.get(i) == left2 || play_order.get(i) == right2){
+                           nameCheckBoxes.get(i).setDisable(false); 
+                        }
+                        else{
+                            nameCheckBoxes.get(i).setDisable(true);
+                        }  
+                    }
+                    else{
+                        if(play_order.get(i) == left1 || play_order.get(i) == right1){
+                           nameCheckBoxes.get(i).setDisable(false); 
+                        }
+                        else{
+                            nameCheckBoxes.get(i).setDisable(true);
+                        }
+                    }
+                    nameCheckBoxes.get(i).setText(play_order.get(i).name);
+                    nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+                } else {
+                    nameCheckBoxes.get(i).setLayoutX(500);
+                    nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
+                    nameCheckBoxes.get(i).setDisable(true);
+                    nameCheckBoxes.get(i).setText("");
+                    nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+                }
+            }
+            updateCharacters();
+            stage = 5;
+        });
+        // BE2
+        Button10.setOnAction(f -> {
+            action();
+            diceOutcome.put("Bull's Eye 2",(int)diceOutcome.get("Bull's Eye 2") - 1);
+            updateCharacters();
+            // group all the above together
+            Group group = new Group();
+            group = stageSet(group);
+            scene5 = new Scene(group, 1280, 720, Color.BEIGE);
+            window.setScene(scene5);
+            window.show();
+            Line1.setText(current.name + ", Who do you want to shoot: ");
+            for (int i = 0; i < nameCheckBoxes.size(); i++) {
+                nameCheckBoxes.get(i).setSelected(false);
+                if (i < play_order.size() && i != 0) {
+                    nameCheckBoxes.get(i).setLayoutX(500);
+                    nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
+                    if(current.name.equals("Rose Dulan")){
+                      if(play_order.get(i) == left2 || play_order.get(i) == right2 || play_order.get(i) == left3 || play_order.get(i) == right3){
+                           nameCheckBoxes.get(i).setDisable(false); 
+                        }
+                        else{
+                            nameCheckBoxes.get(i).setDisable(true);
+                        }  
+                    }
+                    else{
+                        if(play_order.get(i) == left2 || play_order.get(i) == right2){
+                           nameCheckBoxes.get(i).setDisable(false); 
+                        }
+                        else{
+                            nameCheckBoxes.get(i).setDisable(true);
+                        }
+                    }
+                    nameCheckBoxes.get(i).setText(play_order.get(i).name);
+                    nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+                } else {
+                    nameCheckBoxes.get(i).setLayoutX(500);
+                    nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
+                    nameCheckBoxes.get(i).setDisable(true);
+                    nameCheckBoxes.get(i).setText("");
+                    nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+                }
+            }
+            updateCharacters();
+            stage = 6;
+        });
+        // DBE2
+        Button11.setOnAction(f -> {
+            action();
+            diceOutcome.put("Double Bull's Eye 2",(int)diceOutcome.get("Double Bull's Eye 2") - 1);
+            updateCharacters();
+            // group all the above together
+            Group group = new Group();
+            group = stageSet(group);
+            scene5 = new Scene(group, 1280, 720, Color.BEIGE);
+            window.setScene(scene5);
+            window.show();
+            Line1.setText(current.name + ", Who do you want to shoot (Double damage): ");
+            for (int i = 0; i < nameCheckBoxes.size(); i++) {
+                nameCheckBoxes.get(i).setSelected(false);
+                if (i < play_order.size() && i != 0) {
+                    nameCheckBoxes.get(i).setLayoutX(500);
+                    nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
+                    if(current.name.equals("Rose Dulan")){
+                      if(play_order.get(i) == left2 || play_order.get(i) == right2 || play_order.get(i) == left3 || play_order.get(i) == right3){
+                           nameCheckBoxes.get(i).setDisable(false); 
+                        }
+                        else{
+                            nameCheckBoxes.get(i).setDisable(true);
+                        }  
+                    }
+                    else{
+                        if(play_order.get(i) == left2 || play_order.get(i) == right2){
+                           nameCheckBoxes.get(i).setDisable(false); 
+                        }
+                        else{
+                            nameCheckBoxes.get(i).setDisable(true);
+                        }
+                    }
+                    nameCheckBoxes.get(i).setText(play_order.get(i).name);
+                    nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+                } else {
+                    nameCheckBoxes.get(i).setLayoutX(500);
+                    nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
+                    nameCheckBoxes.get(i).setDisable(true);
+                    nameCheckBoxes.get(i).setText("");
+                    nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+                }
+            }
+            updateCharacters();
+            stage = 7;
+        });
+        // Beer
+        Button12.setOnAction(f -> {
+            action();
+            diceOutcome.put("Beer",(int)diceOutcome.get("Beer") - 1);
+            updateCharacters();
+            // group all the above together
+            Group group = new Group();
+            group = stageSet(group);
+            scene5 = new Scene(group, 1280, 720, Color.BEIGE);
+            window.setScene(scene5);
+            window.show();
+            Line1.setText(current.name + ", Who do you want to heal: ");
+            for (int i = 0; i < nameCheckBoxes.size(); i++) {
+                nameCheckBoxes.get(i).setSelected(false);
+                if (i < play_order.size()) {
+                    nameCheckBoxes.get(i).setLayoutX(500);
+                    nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
+                    if(play_order.get(i).health != play_order.get(i).maxHealth){
+                        nameCheckBoxes.get(i).setDisable(false); 
+                     }
+                     else{
+                         nameCheckBoxes.get(i).setDisable(true);
+                     }  
+                    nameCheckBoxes.get(i).setText(play_order.get(i).name);
+                    nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+                } else {
+                    nameCheckBoxes.get(i).setLayoutX(500);
+                    nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
+                    nameCheckBoxes.get(i).setDisable(true);
+                    nameCheckBoxes.get(i).setText("");
+                    nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+                }
+            }
+            updateCharacters();
+            stage = 8;
+        });
+        // GAT
+        Button13.setOnAction(f -> {
+            action();
+            gatAttack = false;
+            updateCharacters();
+            // group all the above together
+            Group group = new Group();
+            group = stageSet(group);
+            scene5 = new Scene(group, 1280, 720, Color.BEIGE);
+            window.setScene(scene5);
+            window.show();
+            for (int i = 0; i < nameCheckBoxes.size(); i++) {
+                if (i < play_order.size()) {
+                    nameCheckBoxes.get(i).setLayoutX(500);
+                    nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
+                    nameCheckBoxes.get(i).setDisable(true); 
+                    nameCheckBoxes.get(i).setText(play_order.get(i).name);
+                    nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+                } else {
+                    nameCheckBoxes.get(i).setLayoutX(500);
+                    nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
+                    nameCheckBoxes.get(i).setDisable(true);
+                    nameCheckBoxes.get(i).setText("");
+                    nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+                }
+            }
+            Line1.setText(current.name + ", You have used a Gatling Gun!");
+            updateCharacters();
+            stage = 9;
+        });
+        // Duel
+        Button14.setOnAction(f -> {
+            action();
+            diceOutcome.put("Duel",(int)diceOutcome.get("Duel") - 1);
+            updateCharacters();
+            // group all the above together
+            Group group = new Group();
+            group = stageSet(group);
+            scene5 = new Scene(group, 1280, 720, Color.BEIGE);
+            window.setScene(scene5);
+            window.show();
+            for (int i = 0; i < nameCheckBoxes.size(); i++) {
+                if (i < play_order.size()) {
+                    nameCheckBoxes.get(i).setLayoutX(500);
+                    nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
+                    if(i != 0){
+                        nameCheckBoxes.get(i).setDisable(false); 
+                     }
+                     else{
+                         nameCheckBoxes.get(i).setDisable(true);
+                     }  
+                    nameCheckBoxes.get(i).setText(play_order.get(i).name);
+                    nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+                } else {
+                    nameCheckBoxes.get(i).setLayoutX(500);
+                    nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
+                    nameCheckBoxes.get(i).setDisable(true);
+                    nameCheckBoxes.get(i).setText("");
+                    nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
+                }
+            }
+            Line1.setText(current.name + ", Who do you want to duel: ");
+            
+            updateCharacters();
+            stage = 10;
+        });
 
-        
-        
-        
-        
-        
-        
-        
-        
         
         
         
@@ -1367,7 +1653,6 @@ public class Bang_fxGUI extends Application {
                 }
                 if(!(pick.name.equals("NULL"))){
                     pick.damage(1);
-                    arrow++;
                     updateCharacters();
                 }
                 pick = new Player("NULL", 99, "NULL", true);
@@ -1383,7 +1668,6 @@ public class Bang_fxGUI extends Application {
                 }
                 if(!(pick.name.equals("NULL"))){
                     pick.damage(2);
-                    arrow++;
                     updateCharacters();
                 }
                 pick = new Player("NULL", 99, "NULL", true);
@@ -1391,24 +1675,111 @@ public class Bang_fxGUI extends Application {
                 break;
             case 4:
                 //BE1
+                for(int i = 0; i < play_order.size(); i++){
+                    if(nameCheckBoxes.get(i).isSelected()){
+                        pick = play_order.get(i);
+                        nameCheckBoxes.get(i).setSelected(false);
+                        break;
+                    }
+                }
+                if(!(pick.name.equals("NULL"))){
+                    pick.damage(1);
+                    updateCharacters();
+                }
+                pick = new Player("NULL", 99, "NULL", true);
                 break;
             case 5:
                 //DBE1
+                for(int i = 0; i < play_order.size(); i++){
+                    if(nameCheckBoxes.get(i).isSelected()){
+                        pick = play_order.get(i);
+                        nameCheckBoxes.get(i).setSelected(false);
+                        break;
+                    }
+                }
+                if(!(pick.name.equals("NULL"))){
+                    pick.damage(2);
+                    arrow++;
+                    updateCharacters();
+                }
+                pick = new Player("NULL", 99, "NULL", true);
                 break;
             case 6:
                 //BE2
+                for(int i = 0; i < play_order.size(); i++){
+                    if(nameCheckBoxes.get(i).isSelected()){
+                        pick = play_order.get(i);
+                        nameCheckBoxes.get(i).setSelected(false);
+                        break;
+                    }
+                }
+                if(!(pick.name.equals("NULL"))){
+                    pick.damage(1);
+                    updateCharacters();
+                }
+                pick = new Player("NULL", 99, "NULL", true);
                 break;
             case 7:
                 //DBE2
+                for(int i = 0; i < play_order.size(); i++){
+                    if(nameCheckBoxes.get(i).isSelected()){
+                        pick = play_order.get(i);
+                        nameCheckBoxes.get(i).setSelected(false);
+                        break;
+                    }
+                }
+                if(!(pick.name.equals("NULL"))){
+                    pick.damage(2);
+                    updateCharacters();
+                }
+                pick = new Player("NULL", 99, "NULL", true);
                 break;
             case 8:
                 //Beer
+                for(int i = 0; i < play_order.size(); i++){
+                    if(nameCheckBoxes.get(i).isSelected()){
+                        pick = play_order.get(i);
+                        nameCheckBoxes.get(i).setSelected(false);
+                        break;
+                    }
+                }
+                if(!(pick.name.equals("NULL"))){
+                    pick.heal(1);
+                    updateCharacters();
+                }
+                pick = new Player("NULL", 99, "NULL", true);
                 break;
             case 9:
                 //Gatling
+                for(int i = 1; i < play_order.size(); i++){
+                    play_order.get(i).damage(1);
+                }
                 break;
             case 10:
                 //Duel
+                for(int i = 0; i < play_order.size(); i++){
+                    if(nameCheckBoxes.get(i).isSelected()){
+                        pick = play_order.get(i);
+                        nameCheckBoxes.get(i).setSelected(false);
+                        break;
+                    }
+                }
+                if(!(pick.name.equals("NULL"))){
+                    tempP = pick;
+                    while (dice.get(0).sides[dice.get(0).side].equals("Duel")) {
+                        tempP = pick;
+                        dice.get(0).roll();
+                        if (!(dice.get(0).sides[dice.get(0).side].equals("Duel"))) {
+                            break;
+                        }
+                        tempP = play_order.get(0);
+                        dice.get(0).roll();
+                    }
+                    tempP.damage(1);
+                    System.out.println(tempP.name + "Lost the duel!");
+                    updateCharacters();
+                }
+                pick = new Player("NULL", 99, "NULL", true);
                 break;
             default:
                 System.out.println("Stage 0");
@@ -1419,10 +1790,10 @@ public class Bang_fxGUI extends Application {
         System.out.println("Stage: " + stage);
         if(current.name.equals("Kit Carlson") && temp > 0 && arrow <= 8 && stage <= 1){
             group.getChildren()
-                    .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
+                    .addAll(table2,
                             Button6, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
-                            ChiefArrowButton);
+                            nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);
 
         }
         else if(current.name.equals("Calamity Janet") && temp > 0 && stage <= 2){
@@ -1433,7 +1804,7 @@ public class Bang_fxGUI extends Application {
                             nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);
 
         }
-        else if(current.name.equals("Calamity Janet") && ((int)diceOutcome.get("Double Bull's Eye 1") + (int)diceOutcome.get("Double Bull's Eye 2")) > 0 && stage <= 3){
+        else if(current.name.equals("Calamity Janet") && temp2 > 0 && stage <= 3){
             group.getChildren()
                     .addAll(table2, 
                             Button15, Line1, Line2, Line3, Line4, Line5, Line6,
@@ -1443,61 +1814,62 @@ public class Bang_fxGUI extends Application {
         }
         else if((int)diceOutcome.get("Bull's Eye 1") > 0 && stage <= 4){
             group.getChildren()
-                    .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
+                    .addAll(table2, 
                             Button8, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
-                            ChiefArrowButton);
+                            nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);
 
         }
         else if((int)diceOutcome.get("Double Bull's Eye 1") > 0 && stage < 5){
             group.getChildren()
-                    .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
+                    .addAll(table2, 
                             Button9, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
-                            ChiefArrowButton);   
+                            nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);  
         }
         else if((int)diceOutcome.get("Bull's Eye 2") > 0 && stage <= 6){
             group.getChildren()
-                    .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
+                    .addAll(table2,
                             Button10, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
-                            ChiefArrowButton); 
+                            nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8); 
         }
         else if((int)diceOutcome.get("Double Bull's Eye 2") > 0 && stage < 7){
             group.getChildren()
-                    .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
+                    .addAll(table2,
                             Button11, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
-                            ChiefArrowButton);   
+                            nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);   
         }
         else if((int)diceOutcome.get("Beer") + (int)diceOutcome.get("Double Beer") > 0 && stage < 8){
             group.getChildren()
-                    .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
-                            Button13, Line1, Line2, Line3, Line4, Line5, Line6,
+                    .addAll(table2,
+                            Button12, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
-                            ChiefArrowButton);  
+                            nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8); 
         }
         else if(gatAttack && stage < 9){
             group.getChildren()
-                    .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
-                            Button12, Line1, Line2, Line3, Line4, Line5, Line6,
+                    .addAll(table2,
+                            Button13, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
-                            ChiefArrowButton);   
+                            nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);   
         }
         
-        else if((int)diceOutcome.get("Duel") > 0 && stage <= 10){
+        else if(((int)diceOutcome.get("Duel") > 0) && stage <= 10){
             group.getChildren()
-                    .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
+                    .addAll(table2, 
                             Button14, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
-                            ChiefArrowButton);   
+                            nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);   
         }
         else{
             group.getChildren()
-                    .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
+                    .addAll(table2,
                             nextButton, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
-                            ChiefArrowButton);  
+                            nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);
+            
         }
         return group;
     }
@@ -1790,7 +2162,7 @@ public class Bang_fxGUI extends Application {
         dynamite = 0;
         resetDictionary();
         for (int roll = 0; roll < dice.size(); roll++) { 
-            if (dice.get(roll).canRoll == true) {
+            if (dice.get(roll).canRoll == true || rolls == 0) {
                 if (checkBoxes2.get(roll).isSelected() || rolls == 0) {
                     dice.get(roll).roll();
                     String side = dice.get(roll).sides[dice.get(roll).side];
