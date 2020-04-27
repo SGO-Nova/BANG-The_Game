@@ -302,6 +302,7 @@ public class BANG {
             
             do {
                 try {
+                    //AI choice will go here choosing coward die or loudmouth die
                     if (play_order.get(0).computer == true) {
                         Random random = new Random();
                         int random_int = (random.nextInt(10000000) % 2);
@@ -393,20 +394,39 @@ public class BANG {
                         System.out.println("Do you want to change dice" + (roll + 1) + " to a gatling gun? (y/n)");
                         answer = "n";
                         
-                        if (play_order.get(0).computer == true) {
-                            Random random = new Random();
-                            int random_int = (random.nextInt(10000000) % 2);
-                            if (random_int == 1) {
-                                answer = "y";
+                        //AI choices for changing to gatling
+                        if (play_order.get(0).computer == true) 
+                        {
+                            if(Gat>=(play_order.get(0).gatsNeeded)-1)
+                            {
+                                answer="y";
                             }
+                            else
+                            {
+                             
+                             //answer = "n";
+                            }
+                            
+//                            Random random = new Random();
+//                            int random_int = (random.nextInt(10000000) % 2);
+//                            if (random_int == 1) 
+//                            {
+//                                answer = "y";
+//                            }
                             System.out.println(answer);
-                        } else {
-                            answer = scan.next();
                         }
-                        if (answer.equalsIgnoreCase("yes") || answer.equalsIgnoreCase("y")) {
-                            for (int i = 0; i < 6; i++) {
+                            else 
+                            {
+                                answer = scan.next();
+                            }
+                        if (answer.equalsIgnoreCase("yes") || answer.equalsIgnoreCase("y")) 
+                        {
+                            for (int i = 0; i < 6; i++) 
+                            {
                                 dice.get(roll).side = i;
-                                if (dice.get(roll).sides[dice.get(roll).side].equals("Gatling") || dice.get(roll).sides[dice.get(roll).side].equals("Double Gatling")) {
+                                //what's a double gatling thought this would only get the side from one side
+                                if (dice.get(roll).sides[dice.get(roll).side].equals("Gatling") || dice.get(roll).sides[dice.get(roll).side].equals("Double Gatling")) 
+                                {
                                     break;
                                 }
                             }
@@ -795,6 +815,7 @@ public class BANG {
                     System.out.print("> ");
                     do {
                         try {
+                            //AI will go here???? 
                             if (play_order.get(0).computer == true) {
                                 Random random = new Random();
                                 players = (random.nextInt(10000000) % list.size());
@@ -1209,6 +1230,7 @@ public class BANG {
                         System.out.print("> ");
                         do {
                             try {
+                                //AI possibly goes here
                                 if (play_order.get(0).computer == true) {
                                     Random random = new Random();
                                     players = (random.nextInt(10000000) % list.size());
