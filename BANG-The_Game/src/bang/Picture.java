@@ -9,6 +9,8 @@
 *Purpose: To assign pictures for each characters 
 */
 
+/*
+
 package bang;
 
 import static bang.BANG.deathSeq;
@@ -120,3 +122,4 @@ public class Picture {
         ImageView table = new ImageView(img_gregDigger);      
                         }
     
+*/
