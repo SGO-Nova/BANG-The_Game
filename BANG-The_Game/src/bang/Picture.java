@@ -1,6 +1,6 @@
 //This is just example of how I am going to upload images for each character's names 
 //@Ryan I know this is incomplete and showing bunch of errors so please don't delete it
-//Let me know if i need to make any changes or you want me to do in different way
+//Let me know if i need to make any changes or you want me to do in a different way
 
 /*
 *Sagarika KC
