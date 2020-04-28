@@ -9,8 +9,9 @@
 *Purpose: To assign pictures for each characters 
 */
 
-/*
 
+
+/*
 package bang;
 
 import static bang.BANG.deathSeq;
@@ -60,7 +61,7 @@ public class Picture {
                         }
     
     if(Character_Cards.name.contains ( "El Gringo")){
-        ImageView elGringo) = new ImageView(img_elGringo);     
+        ImageView elGringo = new ImageView(img_elGringo);     
                         }
   
     if(Character_Cards.name.contains ( "Jesse Jones")){
@@ -100,24 +101,24 @@ public class Picture {
                         }
     
     if(Character_Cards.name.contains ( "Suzy Lafayette")){
-        ImageView table = new ImageView(img_suzyLafayette);      
+        ImageView suzyLafayette = new ImageView(img_suzyLafayette);      
                         }
     
     if(Character_Cards.name.contains ( "Vulture Sam")){
-        ImageView bartCassidy = new ImageView(img_vultureSam);     
+        ImageView vultureSam = new ImageView(img_vultureSam);     
                         }
       
 
     if(Character_Cards.name.contains ( "Willy The Kid")){
-        ImageView table = new ImageView(img_willyTheKid);                 
+        ImageView willyTheKid = new ImageView(img_willyTheKid);                 
                         }
     
     if(Character_Cards.name.contains ( "Belle Star")){
-        ImageView table = new ImageView(img_belleStar);                
+        ImageView belleStar = new ImageView(img_belleStar);                
                         }
     
     if(Character_Cards.name.contains ( "Greg Digger")){
-        ImageView table = new ImageView(img_gregDigger);      
+        ImageView gregDigger = new ImageView(img_gregDigger);      
                         }
     
 */
