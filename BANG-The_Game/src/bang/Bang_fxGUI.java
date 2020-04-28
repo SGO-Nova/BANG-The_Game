@@ -220,6 +220,10 @@ public class Bang_fxGUI extends Application {
     ArrayList<Player> play_order = new ArrayList();
     ArrayList<Player> temp_play_order = new ArrayList();
     
+    Image img_logo;
+    Image img_gif;
+    ImageView logo;
+    
     //Scene scene1 = new Scene(group1, 1280, 720, Color.BEIGE);
     public static void main(String[] args) {
         // lauches the whole thing
@@ -235,8 +239,8 @@ public class Bang_fxGUI extends Application {
         ImageView table = new ImageView(img_table);
         //Image img_table2 = new Image(new FileInputStream("src/bang/media/wood_TableTop.jpg"));
         table2 = new ImageView(img_table);
-        Image img_logo = new Image(new FileInputStream("src/bang/media/bang.png"));
-        ImageView logo = new ImageView(img_logo);
+        img_gif = new Image(new FileInputStream("src/bang/media/coffin.gif"));
+        
         
         //Images
         Img_arrow = new Image(new FileInputStream("src/bang/media/Dice/arrow.PNG"));
@@ -271,8 +275,8 @@ public class Bang_fxGUI extends Application {
         dice06 = new ImageView(Img_Loud);
         dice07 = new ImageView(Img_Coward);
         
-        
-        
+        img_logo = new Image(new FileInputStream("src/bang/media/bang.png"));
+        logo = new ImageView(img_logo);
         
         
         //Music
@@ -296,11 +300,6 @@ public class Bang_fxGUI extends Application {
         });
         
 
-        //Music
-        Media media = new Media(this.getClass().getResource("/bang/media/background.mp3").toString());
-        MediaPlayer music = new MediaPlayer(media);
-        music.setVolume(.5);
-        music.setAutoPlay(false);
 
         //set height and width of images
         table.setFitWidth(1280);
@@ -335,9 +334,9 @@ public class Bang_fxGUI extends Application {
         UnaryOperator<Change> modifyChange = c -> {
             if (c.isContentChange()) {
                 int newLength = c.getControlNewText().length();
-                if (newLength > 16) {
+                if (newLength > 20) {
                     // replace the input text with the last len chars
-                    String tail = c.getControlNewText().substring(0, 16);
+                    String tail = c.getControlNewText().substring(0, 20);
                     c.setText(tail);
                     // replace the range to complete text
                     // valid coordinates for range is in terms of old text
@@ -548,7 +547,7 @@ public class Bang_fxGUI extends Application {
                 if (i < play_order.size()) {
                     nameCheckBoxes.get(i).setLayoutX(500);
                     nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
-                    nameCheckBoxes.get(i).setDisable(false);
+                    nameCheckBoxes.get(i).setDisable(play_order.get(0).computer);
                     nameCheckBoxes.get(i).setText(play_order.get(i).name);
                     nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
                 } else {
@@ -560,6 +559,9 @@ public class Bang_fxGUI extends Application {
                 }
             }
             Line1.setText(current.name + ", who do you want to heal?");
+            if(play_order.get(0).computer){
+                //AI FUNCTION HERE(people)
+            }
             nc1.setOnAction(eh2);
             nc2.setOnAction(eh2);
             nc3.setOnAction(eh2);
@@ -611,6 +613,7 @@ public class Bang_fxGUI extends Application {
                 checkBoxes.get(i).setSelected(false);
                 checkBoxes.get(i).setLayoutX((i * 100) + 450);
                 checkBoxes.get(i).setLayoutY(400);
+                checkBoxes.get(i).setDisable(play_order.get(0).computer);
                 if (i < 4) {
                     checkBoxes.get(i).setSelected(true);
                     checkBoxes.get(i).setDisable(true);
@@ -786,6 +789,9 @@ public class Bang_fxGUI extends Application {
                     });
                     break;
             }
+            if(play_order.get(0).computer){
+                //AI FUNCTION HERE(dice(last dice)) ie. regular, loudmouth, coward
+            }
         });
         // REROLL SCENE
         Button4 = new Button("ROLL");
@@ -874,7 +880,7 @@ public class Bang_fxGUI extends Application {
                     dice.get(i).canRoll = false;
                 } else {
                     checkBoxes2.get(i).setSelected(false);
-                    checkBoxes2.get(i).setDisable(false);
+                    checkBoxes2.get(i).setDisable(play_order.get(0).computer);
                     switch (dice.get(i).sides[dice.get(i).side]) {
                         case "Indian Arrow":
                             imageSet(IV.get(i), 90, 90, Img_arrow);
@@ -956,29 +962,31 @@ public class Bang_fxGUI extends Application {
                 cd4.setDisable(false);
                 dice.get(3).canRoll = true;
             });
-            if(dice.get(4).sides[4].equals("Beer")){
-                TTG5.setOnAction(g -> {
-                    imageSet(IV.get(4), 90, 90, Img_Gatling);
-                    dice.get(4).side = 5;
-                    diceOutcome.put("Dynamite", ((int)diceOutcome.get("Dynamite") - 1));
-                    diceOutcome.put("Gatling", ((int)diceOutcome.get("Gatling") + 1));
-                    cd5.setDisable(false);
-                    dice.get(4).canRoll = true;
-                });
-            }
-            else if(dice.get(4).sides[4].equals("Bullet")){
-                TTG5.setOnAction(g -> {
-                    imageSet(IV.get(4), 90, 90, Img_DGatling);
-                    dice.get(4).side = 5;
-                    diceOutcome.put("Dynamite", ((int)diceOutcome.get("Dynamite") - 1));
-                    diceOutcome.put("Double Gatling", ((int)diceOutcome.get("Double Gatling") + 1));
-                    cd5.setDisable(false);
-                    dice.get(4).canRoll = true;
-                });
-            }
-            else if(dice.get(4).sides[4].equals("Double Beer")){
-                TTG5.setDisable(true);
-                System.out.println("Coward die does not have gatling to change to");
+            switch (dice.get(4).sides[4]) {
+                case "Beer":
+                    TTG5.setOnAction(g -> {
+                        imageSet(IV.get(4), 90, 90, Img_Gatling);
+                        dice.get(4).side = 5;
+                        diceOutcome.put("Dynamite", ((int)diceOutcome.get("Dynamite") - 1));
+                        diceOutcome.put("Gatling", ((int)diceOutcome.get("Gatling") + 1));
+                        cd5.setDisable(false);
+                        dice.get(4).canRoll = true;
+                    }); break;
+                case "Bullet":
+                    TTG5.setOnAction(g -> {
+                        imageSet(IV.get(4), 90, 90, Img_DGatling);
+                        dice.get(4).side = 5;
+                        diceOutcome.put("Dynamite", ((int)diceOutcome.get("Dynamite") - 1));
+                        diceOutcome.put("Double Gatling", ((int)diceOutcome.get("Double Gatling") + 1));
+                        cd5.setDisable(false);
+                        dice.get(4).canRoll = true;
+                    }); break;
+                case "Double Beer":
+                    TTG5.setDisable(true);
+                    System.out.println("Coward die does not have gatling to change to");
+                    break;
+                default:
+                    break;
             }
             if((int)diceOutcome.get("Indian Arrow") >= 1 && (chiefArrow || current.name.equals("Apache Kid"))){
                 ChiefArrowButton.setDisable(false);
@@ -997,7 +1005,9 @@ public class Bang_fxGUI extends Application {
                     ChiefArrowButton.setDisable(true);
                 });
             }
-
+            if(play_order.get(0).computer){
+                //AI FUNCTION HERE(dice reroll)
+            }
         });
         // FINAL DICE SCENE
         Button5 = new Button("Next");
@@ -1216,7 +1226,7 @@ public class Bang_fxGUI extends Application {
                     nameCheckBoxes.get(i).setLayoutX(500);
                     nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
                     if(play_order.get(i).arrows > 0){
-                       nameCheckBoxes.get(i).setDisable(false); 
+                       nameCheckBoxes.get(i).setDisable(play_order.get(0).computer); 
                     }
                     else{
                         nameCheckBoxes.get(i).setDisable(true);
@@ -1234,6 +1244,9 @@ public class Bang_fxGUI extends Application {
             
             updateCharacters();
             stage = 1;
+            if(play_order.get(0).computer){
+                //AI FUNCTION HERE(people)
+            }
         });
         // Calamity Janet
         Button7.setOnAction(f -> {
@@ -1253,7 +1266,7 @@ public class Bang_fxGUI extends Application {
                     nameCheckBoxes.get(i).setLayoutX(500);
                     nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
                     if(play_order.get(i) == left1 || play_order.get(i) == left2 || play_order.get(i) == right1 || play_order.get(i) == right2){
-                       nameCheckBoxes.get(i).setDisable(false); 
+                       nameCheckBoxes.get(i).setDisable(play_order.get(0).computer); 
                     }
                     else{
                         nameCheckBoxes.get(i).setDisable(true);
@@ -1270,6 +1283,9 @@ public class Bang_fxGUI extends Application {
             }
             updateCharacters();
             stage = 2;
+            if(play_order.get(0).computer){
+                //AI FUNCTION HERE(people)
+            }
         });
         // Calamity Janet(Double)
         Button15.setOnAction(f -> {
@@ -1289,7 +1305,7 @@ public class Bang_fxGUI extends Application {
                     nameCheckBoxes.get(i).setLayoutX(500);
                     nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
                     if(play_order.get(i) == left1 || play_order.get(i) == left2 || play_order.get(i) == right1 || play_order.get(i) == right2){
-                       nameCheckBoxes.get(i).setDisable(false); 
+                       nameCheckBoxes.get(i).setDisable(play_order.get(0).computer); 
                     }
                     else{
                         nameCheckBoxes.get(i).setDisable(true);
@@ -1306,6 +1322,9 @@ public class Bang_fxGUI extends Application {
             }
             updateCharacters();
             stage = 3;
+            if(play_order.get(0).computer){
+                //AI FUNCTION HERE(people)
+            }
         });
         // BE1
         Button8.setOnAction(f -> {
@@ -1326,7 +1345,7 @@ public class Bang_fxGUI extends Application {
                     nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
                     if(current.name.equals("Rose Dulan")){
                       if(play_order.get(i) == left1 || play_order.get(i) == right1 || play_order.get(i) == left2 || play_order.get(i) == right2){
-                           nameCheckBoxes.get(i).setDisable(false); 
+                           nameCheckBoxes.get(i).setDisable(play_order.get(0).computer); 
                         }
                         else{
                             nameCheckBoxes.get(i).setDisable(true);
@@ -1334,7 +1353,7 @@ public class Bang_fxGUI extends Application {
                     }
                     else{
                         if(play_order.get(i) == left1 || play_order.get(i) == right1){
-                           nameCheckBoxes.get(i).setDisable(false); 
+                           nameCheckBoxes.get(i).setDisable(play_order.get(0).computer); 
                         }
                         else{
                             nameCheckBoxes.get(i).setDisable(true);
@@ -1352,6 +1371,9 @@ public class Bang_fxGUI extends Application {
             }
             updateCharacters();
             stage = 4;
+            if(play_order.get(0).computer){
+                //AI FUNCTION HERE (people)
+            }
         });
         // DBE1
         Button9.setOnAction(f -> {
@@ -1372,7 +1394,7 @@ public class Bang_fxGUI extends Application {
                     nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
                     if(current.name.equals("Rose Dulan")){
                       if(play_order.get(i) == left1 || play_order.get(i) == right1 || play_order.get(i) == left2 || play_order.get(i) == right2){
-                           nameCheckBoxes.get(i).setDisable(false); 
+                           nameCheckBoxes.get(i).setDisable(play_order.get(0).computer); 
                         }
                         else{
                             nameCheckBoxes.get(i).setDisable(true);
@@ -1380,7 +1402,7 @@ public class Bang_fxGUI extends Application {
                     }
                     else{
                         if(play_order.get(i) == left1 || play_order.get(i) == right1){
-                           nameCheckBoxes.get(i).setDisable(false); 
+                           nameCheckBoxes.get(i).setDisable(play_order.get(0).computer); 
                         }
                         else{
                             nameCheckBoxes.get(i).setDisable(true);
@@ -1398,6 +1420,9 @@ public class Bang_fxGUI extends Application {
             }
             updateCharacters();
             stage = 5;
+            if(play_order.get(0).computer){
+                //AI FUNCTION HERE (people)
+            }
         });
         // BE2
         Button10.setOnAction(f -> {
@@ -1418,7 +1443,7 @@ public class Bang_fxGUI extends Application {
                     nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
                     if(current.name.equals("Rose Dulan")){
                       if(play_order.get(i) == left2 || play_order.get(i) == right2 || play_order.get(i) == left3 || play_order.get(i) == right3){
-                           nameCheckBoxes.get(i).setDisable(false); 
+                           nameCheckBoxes.get(i).setDisable(play_order.get(0).computer); 
                         }
                         else{
                             nameCheckBoxes.get(i).setDisable(true);
@@ -1426,7 +1451,7 @@ public class Bang_fxGUI extends Application {
                     }
                     else{
                         if(play_order.get(i) == left2 || play_order.get(i) == right2){
-                           nameCheckBoxes.get(i).setDisable(false); 
+                           nameCheckBoxes.get(i).setDisable(play_order.get(0).computer); 
                         }
                         else{
                             nameCheckBoxes.get(i).setDisable(true);
@@ -1444,6 +1469,9 @@ public class Bang_fxGUI extends Application {
             }
             updateCharacters();
             stage = 6;
+            if(play_order.get(0).computer){
+                //AI FUNCTION HERE (people)
+            }
         });
         // DBE2
         Button11.setOnAction(f -> {
@@ -1464,7 +1492,7 @@ public class Bang_fxGUI extends Application {
                     nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
                     if(current.name.equals("Rose Dulan")){
                       if(play_order.get(i) == left2 || play_order.get(i) == right2 || play_order.get(i) == left3 || play_order.get(i) == right3){
-                           nameCheckBoxes.get(i).setDisable(false); 
+                           nameCheckBoxes.get(i).setDisable(play_order.get(0).computer); 
                         }
                         else{
                             nameCheckBoxes.get(i).setDisable(true);
@@ -1472,7 +1500,7 @@ public class Bang_fxGUI extends Application {
                     }
                     else{
                         if(play_order.get(i) == left2 || play_order.get(i) == right2){
-                           nameCheckBoxes.get(i).setDisable(false); 
+                           nameCheckBoxes.get(i).setDisable(play_order.get(0).computer); 
                         }
                         else{
                             nameCheckBoxes.get(i).setDisable(true);
@@ -1490,6 +1518,9 @@ public class Bang_fxGUI extends Application {
             }
             updateCharacters();
             stage = 7;
+            if(play_order.get(0).computer){
+                //AI FUNCTION HERE (people)
+            }
         });
         // Beer
         Button12.setOnAction(f -> {
@@ -1509,7 +1540,7 @@ public class Bang_fxGUI extends Application {
                     nameCheckBoxes.get(i).setLayoutX(500);
                     nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
                     if(play_order.get(i).health != play_order.get(i).maxHealth){
-                        nameCheckBoxes.get(i).setDisable(false); 
+                        nameCheckBoxes.get(i).setDisable(play_order.get(0).computer); 
                      }
                      else{
                          nameCheckBoxes.get(i).setDisable(true);
@@ -1526,6 +1557,9 @@ public class Bang_fxGUI extends Application {
             }
             updateCharacters();
             stage = 8;
+            if(play_order.get(0).computer){
+                //AI FUNCTION HERE (people)
+            }
         });
         // GAT
         Button13.setOnAction(f -> {
@@ -1573,7 +1607,7 @@ public class Bang_fxGUI extends Application {
                     nameCheckBoxes.get(i).setLayoutX(500);
                     nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
                     if(i != 0){
-                        nameCheckBoxes.get(i).setDisable(false); 
+                        nameCheckBoxes.get(i).setDisable(play_order.get(0).computer); 
                      }
                      else{
                          nameCheckBoxes.get(i).setDisable(true);
@@ -1592,6 +1626,9 @@ public class Bang_fxGUI extends Application {
             
             updateCharacters();
             stage = 10;
+            if(play_order.get(0).computer){
+                //AI FUNCTION HERE(people)
+            }
         });
 
         
@@ -1607,7 +1644,7 @@ public class Bang_fxGUI extends Application {
         
         // <easterEgg>
         //logo.setPickOnBounds(true);
-        logo.setOnMouseClicked((MouseEvent easterEgg) -> {
+        logo.setOnMouseClicked((MouseEvent easterEgg) -> { 
             System.out.println("Clicked on logo! Easter egg displayed.");
             
             Label label_easterEgg = new Label("This project SUCKS!!!\n"
@@ -1626,6 +1663,15 @@ public class Bang_fxGUI extends Application {
                                     FontPosture.ITALIC, 18));
             label_easterEgg2.setLayoutX(50);
             label_easterEgg2.setLayoutY(475);
+            music.stop();
+            media = new Media(this.getClass().getResource("/bang/media/coffin.mp3").toString());
+            music = new MediaPlayer(media); 
+            music.play();
+            musicSlider.setValue(.5);
+            music.setCycleCount(100);
+            logo.setImage(img_gif);
+            playerName.setText("Name for Obituary");
+            startButton.setText("ENTER THE COFFIN!");
             
             group1.getChildren().addAll(label_easterEgg, label_easterEgg2);
         });
