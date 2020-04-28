@@ -1612,7 +1612,7 @@ public class Bang_fxGUI extends Application {
             
             Label label_easterEgg = new Label("This project SUCKS!!!\n"
                     + "Like seriously, f*ck this class and f*ck this project.\n"
-                    + "Oh, and f**k COVID-19.");
+                    + "Oh, and f*ck COVID-19.");
             label_easterEgg.setAlignment(Pos.CENTER_LEFT);
             label_easterEgg.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
             label_easterEgg.setLayoutX(50);
