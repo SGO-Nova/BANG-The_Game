@@ -29,6 +29,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -41,6 +42,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.*;
 import java.util.function.UnaryOperator;
+import javafx.scene.text.FontPosture;
 
 public class Bang_fxGUI extends Application {
 
@@ -92,7 +94,7 @@ public class Bang_fxGUI extends Application {
     ImageView table2;
    
     //Global creation of lines and UI elements
-    // also, labels and buttons galore
+    // also, labels and buttons and checkboxes galore
     Label Line1 = new Label(textField);
     Label Line2 = new Label(textField);
     Label Line3 = new Label(textField);
@@ -235,7 +237,7 @@ public class Bang_fxGUI extends Application {
         table2 = new ImageView(img_table);
         Image img_logo = new Image(new FileInputStream("src/bang/media/bang.png"));
         ImageView logo = new ImageView(img_logo);
-
+        
         //Images
         Img_arrow = new Image(new FileInputStream("src/bang/media/Dice/arrow.PNG"));
         Img_BE1 = new Image(new FileInputStream("src/bang/media/Dice/BE1.PNG"));
@@ -1602,6 +1604,33 @@ public class Bang_fxGUI extends Application {
 
         // group all the above together
         Group group1 = new Group();
+        
+        // <easterEgg>
+        //logo.setPickOnBounds(true);
+        logo.setOnMouseClicked((MouseEvent easterEgg) -> {
+            System.out.println("Clicked on logo! Easter egg displayed.");
+            
+            Label label_easterEgg = new Label("This project SUCKS!!!\n"
+                    + "Like seriously, f*ck this class and f*ck this project.\n"
+                    + "Oh, and f**k COVID-19.");
+            label_easterEgg.setAlignment(Pos.CENTER_LEFT);
+            label_easterEgg.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+            label_easterEgg.setLayoutX(50);
+            label_easterEgg.setLayoutY(350);
+            
+            Label label_easterEgg2 = new Label("With lots of f*cking love,\n"
+                    + "> Shafat Rakin\n" + "> Ryan Browning\n" + "> Sagarika KC\n"
+                    + "> Jorge Carlos\n" + "> Mihir Patel\n" + "> Coronavirus");
+            label_easterEgg2.setAlignment(Pos.CENTER_LEFT);
+            label_easterEgg2.setFont(Font.font("Verdana", FontWeight.BOLD,
+                                    FontPosture.ITALIC, 18));
+            label_easterEgg2.setLayoutX(50);
+            label_easterEgg2.setLayoutY(475);
+            
+            group1.getChildren().addAll(label_easterEgg, label_easterEgg2);
+        });
+        // </easterEgg>
+        
         Group group2 = new Group();
         group1.getChildren()
                 .addAll(table, logo, playerName, numPlayers, label_numPlayers,
