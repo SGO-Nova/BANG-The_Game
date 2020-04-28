@@ -35,8 +35,6 @@ public class Picture {
     Image img_luckyDuke = new Image(new FileInputStream("source")); 
     Image img_paulRegret = new Image(new FileInputStream("source")); 
     Image img_pedroRamirez = new Image(new FileInputStream("source")); 
-    Image img_blackJack = new Image(new FileInputStream("source"));
-    Image img_pedroRamirez = new Image(new FileInputStream("source")); 
     Image img_roseDoolan = new Image(new FileInputStream("source")); 
     Image img_sidKetchum = new Image(new FileInputStream("source")); 
     Image img_slabTheKiller = new Image(new FileInputStream("source")); 
@@ -46,9 +44,9 @@ public class Picture {
     Image img_belleStart = new Image(new FileInputStream("source")); 
     Image img_gregDigger= new Image(new FileInputStream("source"));   
    
+   
    //Assigning each character's names with their images 
-    
-                        
+                     
     if(Character_Cards.name.contains ( "Bart Cassidy")){
         ImageView bartCassidy = new ImageView(img_bartCassidy);     
                         }
