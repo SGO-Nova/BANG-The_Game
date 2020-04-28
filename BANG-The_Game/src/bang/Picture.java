@@ -84,10 +84,9 @@ public class Picture {
         ImageView paulRegret = new ImageView(img_paulRegret);     
                         }
       
-
     if(Character_Cards.name.contains ( "Pedro Ramirez")){
         ImageView pedroRamirez = new ImageView(img_pedroRamirez);                 
-  
+                        }
     
     if(Character_Cards.name.contains ( "Rose Doolan")){
         ImageView roseDoolan = new ImageView(img_roseDoolan);                
@@ -96,6 +95,7 @@ public class Picture {
     if(Character_Cards.name.contains ( "Sid Ketchum")){
         ImageView sidKetchum = new ImageView(img_sidKetchum);      
                         }
+                        
      if(Character_Cards.name.contains ( "Slab The Killer")){
         ImageView slabTheKiller = new ImageView(img_slabTheKiller);                
                         }
@@ -108,7 +108,6 @@ public class Picture {
         ImageView vultureSam = new ImageView(img_vultureSam);     
                         }
       
-
     if(Character_Cards.name.contains ( "Willy The Kid")){
         ImageView willyTheKid = new ImageView(img_willyTheKid);                 
                         }
