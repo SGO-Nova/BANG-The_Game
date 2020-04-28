@@ -219,6 +219,7 @@ public class Bang_fxGUI extends Application {
 
     ArrayList<Player> play_order = new ArrayList();
     ArrayList<Player> temp_play_order = new ArrayList();
+    ArrayList<Player> temp_play_order2 = new ArrayList();
     
     Image img_logo;
     Image img_gif;
@@ -496,6 +497,10 @@ public class Bang_fxGUI extends Application {
         nextButton.setOnAction(d -> {
             for(int i = 0; i < dice.size(); i++){
                 dice.get(i).canRoll = true;
+            }
+            temp_play_order2.clear();
+            for(int j = 0; j < play_order.size(); j++){
+               temp_play_order2.add(play_order.get(j)); 
             }
             action();
             play_order.add(play_order.get(0));
@@ -1006,6 +1011,12 @@ public class Bang_fxGUI extends Application {
                 });
             }
             if(play_order.get(0).computer){
+                if(rolls < play_order.get(0).rolls && !Button4.isDisable()){
+                    Button5.setDisable(true);
+                }
+                else{
+                    Button5.setDisable(false);
+                }
                 //AI FUNCTION HERE(dice reroll)
             }
         });
@@ -1115,7 +1126,6 @@ public class Bang_fxGUI extends Application {
                 temp = (int)diceOutcome.get("Bull's Eye 1") + (int)diceOutcome.get("Bull's Eye 2");
                 temp2 = ((int)diceOutcome.get("Double Bull's Eye 1") + (int)diceOutcome.get("Double Bull's Eye 2"));
                 System.out.println(temp + " " +temp2);
-                ////// NEED TO CHANGE THIS UP, GROUPS CANNOT HAVE SAME STUFF(DUPLICATE CHILDREN)
                 if(current.name.equals("Calamity Janet") && temp > 0 || temp2 > 0){
                     if(temp > 0){
                         group.getChildren()
@@ -1223,6 +1233,7 @@ public class Bang_fxGUI extends Application {
             for (int i = 0; i < nameCheckBoxes.size(); i++) {
                 nameCheckBoxes.get(i).setSelected(false);
                 if (i < play_order.size()) {
+                    nameCheckBoxes.get(i).setText(play_order.get(i).name);
                     nameCheckBoxes.get(i).setLayoutX(500);
                     nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
                     if(play_order.get(i).arrows > 0){
@@ -1231,7 +1242,6 @@ public class Bang_fxGUI extends Application {
                     else{
                         nameCheckBoxes.get(i).setDisable(true);
                     }
-                    nameCheckBoxes.get(i).setText(play_order.get(i).name);
                     nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
                 } else {
                     nameCheckBoxes.get(i).setLayoutX(500);
@@ -1263,6 +1273,7 @@ public class Bang_fxGUI extends Application {
             for (int i = 0; i < nameCheckBoxes.size(); i++) {
                 nameCheckBoxes.get(i).setSelected(false);
                 if (i < play_order.size()) {
+                    nameCheckBoxes.get(i).setText(play_order.get(i).name);
                     nameCheckBoxes.get(i).setLayoutX(500);
                     nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
                     if(play_order.get(i) == left1 || play_order.get(i) == left2 || play_order.get(i) == right1 || play_order.get(i) == right2){
@@ -1271,7 +1282,6 @@ public class Bang_fxGUI extends Application {
                     else{
                         nameCheckBoxes.get(i).setDisable(true);
                     }
-                    nameCheckBoxes.get(i).setText(play_order.get(i).name);
                     nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
                 } else {
                     nameCheckBoxes.get(i).setLayoutX(500);
@@ -1302,6 +1312,7 @@ public class Bang_fxGUI extends Application {
             for (int i = 0; i < nameCheckBoxes.size(); i++) {
                 nameCheckBoxes.get(i).setSelected(false);
                 if (i < play_order.size()) {
+                    nameCheckBoxes.get(i).setText(play_order.get(i).name);
                     nameCheckBoxes.get(i).setLayoutX(500);
                     nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
                     if(play_order.get(i) == left1 || play_order.get(i) == left2 || play_order.get(i) == right1 || play_order.get(i) == right2){
@@ -1310,7 +1321,6 @@ public class Bang_fxGUI extends Application {
                     else{
                         nameCheckBoxes.get(i).setDisable(true);
                     }
-                    nameCheckBoxes.get(i).setText(play_order.get(i).name);
                     nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
                 } else {
                     nameCheckBoxes.get(i).setLayoutX(500);
@@ -1369,6 +1379,7 @@ public class Bang_fxGUI extends Application {
                     nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
                 }
             }
+            nameCheckBoxes.get(0).setText(play_order.get(0).name);
             updateCharacters();
             stage = 4;
             if(play_order.get(0).computer){
@@ -1418,6 +1429,7 @@ public class Bang_fxGUI extends Application {
                     nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
                 }
             }
+            nameCheckBoxes.get(0).setText(play_order.get(0).name);
             updateCharacters();
             stage = 5;
             if(play_order.get(0).computer){
@@ -1467,6 +1479,7 @@ public class Bang_fxGUI extends Application {
                     nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
                 }
             }
+            nameCheckBoxes.get(0).setText(play_order.get(0).name);
             updateCharacters();
             stage = 6;
             if(play_order.get(0).computer){
@@ -1516,6 +1529,7 @@ public class Bang_fxGUI extends Application {
                     nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
                 }
             }
+            nameCheckBoxes.get(0).setText(play_order.get(0).name);
             updateCharacters();
             stage = 7;
             if(play_order.get(0).computer){
@@ -1603,10 +1617,11 @@ public class Bang_fxGUI extends Application {
             window.setScene(scene5);
             window.show();
             for (int i = 0; i < nameCheckBoxes.size(); i++) {
+                nameCheckBoxes.get(i).setDisable(false);
                 if (i < play_order.size()) {
                     nameCheckBoxes.get(i).setLayoutX(500);
                     nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
-                    if(i != 0){
+                    if(i != 0 && temp_play_order2.contains(play_order.get(i))){
                         nameCheckBoxes.get(i).setDisable(play_order.get(0).computer); 
                      }
                      else{
@@ -1667,7 +1682,8 @@ public class Bang_fxGUI extends Application {
             media = new Media(this.getClass().getResource("/bang/media/coffin.mp3").toString());
             music = new MediaPlayer(media); 
             music.play();
-            musicSlider.setValue(.5);
+            musicSlider.setValue(.1);
+            music.setVolume(musicSlider.getValue());
             music.setCycleCount(100);
             logo.setImage(img_gif);
             playerName.setText("Name for Obituary");
@@ -1898,6 +1914,7 @@ public class Bang_fxGUI extends Application {
                     System.out.println(tempP.name + "Lost the duel!");
                     updateCharacters();
                 }
+                temp_play_order2.remove(tempP);
                 pick = new Player("NULL", 99, "NULL", true);
                 break;
             default:
