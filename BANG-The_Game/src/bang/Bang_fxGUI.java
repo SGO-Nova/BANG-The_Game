@@ -1620,7 +1620,7 @@ public class Bang_fxGUI extends Application {
             
             Label label_easterEgg2 = new Label("With lots of f*cking love,\n"
                     + "> Coronavirus\n" + "> Jorge Carlos\n" + "> Mihir Patel\n"
-                    + "> Ryan Browning" + "> Sagarika KC\n" + "> Shafat Rakin\n");
+                    + "> Ryan Browning\n" + "> Sagarika KC\n" + "> Shafat Rakin\n");
             label_easterEgg2.setAlignment(Pos.CENTER_LEFT);
             label_easterEgg2.setFont(Font.font("Verdana", FontWeight.BOLD,
                                     FontPosture.ITALIC, 18));
