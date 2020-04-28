@@ -52,51 +52,51 @@ public class Picture {
                         }
     
     if(Character_Cards.name.contains ( "Black Jack")){
-        ImageView table = new ImageView(img_blackJack);                
+        ImageView blackJack = new ImageView(img_blackJack);                
                         }
     
     if(Character_Cards.name.contains ( "Calamity Janet")){
-        ImageView table = new ImageView(img_calamityJanet);      
+        ImageView calamityJanet = new ImageView(img_calamityJanet);      
                         }
     
     if(Character_Cards.name.contains ( "El Gringo")){
-        ImageView bartCassidy = new ImageView(img_elGringo);     
+        ImageView elGringo) = new ImageView(img_elGringo);     
                         }
   
     if(Character_Cards.name.contains ( "Jesse Jones")){
-        ImageView table = new ImageView(img_jesseJones);                 
+        ImageView jesseJones = new ImageView(img_jesseJones);                 
                         }
     
     if(Character_Cards.name.contains ( "Joursonnais")){
-        ImageView table = new ImageView(img_joursonnais);                
+        ImageView joursonnais = new ImageView(img_joursonnais);                
                         }
     
      if(Character_Cards.name.contains ( "Kit Carlson")){
-        ImageView table = new ImageView(img_kitCarlson);                
+        ImageView kitCarlson = new ImageView(img_kitCarlson);                
                         }
     
     if(Character_Cards.name.contains ( "Lucky Duke")){
-        ImageView table = new ImageView(img_luckyDuke);      
+        ImageView luckyDuke = new ImageView(img_luckyDuke);      
                         }
     
     if(Character_Cards.name.contains ( "Paul Regret")){
-        ImageView bartCassidy = new ImageView(img_paulRegret);     
+        ImageView paulRegret = new ImageView(img_paulRegret);     
                         }
       
 
     if(Character_Cards.name.contains ( "Pedro Ramirez")){
-        ImageView table = new ImageView(img_pedroRamirez);                 
+        ImageView pedroRamirez = new ImageView(img_pedroRamirez);                 
   
     
     if(Character_Cards.name.contains ( "Rose Doolan")){
-        ImageView table = new ImageView(img_roseDoolan);                
+        ImageView roseDoolan = new ImageView(img_roseDoolan);                
                         }
     
     if(Character_Cards.name.contains ( "Sid Ketchum")){
-        ImageView table = new ImageView(img_sidKetchum);      
+        ImageView sidKetchum = new ImageView(img_sidKetchum);      
                         }
      if(Character_Cards.name.contains ( "Slab The Killer")){
-        ImageView table = new ImageView(img_slabTheKiller);                
+        ImageView slabTheKiller = new ImageView(img_slabTheKiller);                
                         }
     
     if(Character_Cards.name.contains ( "Suzy Lafayette")){
