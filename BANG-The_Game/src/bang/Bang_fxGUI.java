@@ -42,6 +42,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.*;
 import java.util.function.UnaryOperator;
+import javafx.scene.ImageCursor;
 import javafx.scene.text.FontPosture;
 
 public class Bang_fxGUI extends Application {
@@ -1671,13 +1672,18 @@ public class Bang_fxGUI extends Application {
             label_easterEgg.setLayoutY(350);
             
             Label label_easterEgg2 = new Label("With lots of f*cking love,\n"
-                    + "> Coronavirus\n" + "> Jorge Carlos\n" + "> Mihir Patel\n"
-                    + "> Ryan Browning\n" + "> Sagarika KC\n" + "> Shafat Rakin\n");
+                    + "\u2764 Coronavirus\n" + "\u2764 Jorge Carlos\n" + "\u2764 Mihir Patel\n"
+                    + "\u2764 Ryan Browning\n" + "\u2764 Sagarika KC\n" + "\u2764 Shafat Rakin\n");
             label_easterEgg2.setAlignment(Pos.CENTER_LEFT);
             label_easterEgg2.setFont(Font.font("Verdana", FontWeight.BOLD,
                                     FontPosture.ITALIC, 18));
             label_easterEgg2.setLayoutX(50);
             label_easterEgg2.setLayoutY(475);
+            
+            Image skeleton_cursor = new Image("/bang/media/skeleton_cursor.png");
+            ImageCursor set_skeleton_cursor = new ImageCursor(skeleton_cursor);
+            scene1.setCursor(set_skeleton_cursor);
+            
             music.stop();
             media = new Media(this.getClass().getResource("/bang/media/coffin.mp3").toString());
             music = new MediaPlayer(media); 
