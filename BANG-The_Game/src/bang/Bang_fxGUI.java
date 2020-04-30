@@ -124,7 +124,7 @@ public class Bang_fxGUI extends Application {
     CheckBox c4 = new CheckBox("Regular Die");
     CheckBox c5 = new CheckBox("Regular Die");
     CheckBox c6 = new CheckBox("Loudmouth Die");
-    CheckBox c7 = new CheckBox("Coawrd Die");
+    CheckBox c7 = new CheckBox("Coward Die");
     CheckBox cd1 = new CheckBox();
     CheckBox cd2 = new CheckBox();
     CheckBox cd3 = new CheckBox();
@@ -1680,9 +1680,9 @@ public class Bang_fxGUI extends Application {
             label_easterEgg2.setLayoutX(50);
             label_easterEgg2.setLayoutY(475);
             
-            //Image skeleton_cursor = new Image("/bang/media/skeleton_cursor.png");
-            //ImageCursor set_skeleton_cursor = new ImageCursor(skeleton_cursor);
-            //scene1.setCursor(set_skeleton_cursor);
+            // Image skeleton_cursor = new Image("/bang/media/skeleton_cursor.png");
+            // ImageCursor set_skeleton_cursor = new ImageCursor(skeleton_cursor);
+            // scene1.setCursor(set_skeleton_cursor);
             
             music.stop();
             media = new Media(this.getClass().getResource("/bang/media/coffin.mp3").toString());
