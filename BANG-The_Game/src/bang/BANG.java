@@ -277,6 +277,7 @@ public class BANG {
                 System.out.print("> ");
                 do {
                     try {
+                        //This will decide who to choose when needs to choose what to do
                         if (play_order.get(0).computer == true) {
                             Random random = new Random();
                             players = (random.nextInt(10000000) % list.size());
