@@ -15,6 +15,7 @@ public class BANG {
     static int arrow = 10;
     static boolean chiefArrow = true;
     static Scanner scan;
+    static boolean zombieS = false;
 
     public static void main(String[] args) {
         System.out.println("How many players: ");
@@ -1221,6 +1222,7 @@ public class BANG {
             }
         }
         deadMan.team = 3;
+        deadMan.role = "Dead";
         play_order.remove(deadMan);
         Bang_fxGUI.undeadTotal += Bang_fxGUI.undeadCards.get(0).hand;
         System.out.println(Bang_fxGUI.undeadCards.get(0).hand + " was pulled, new total: " + Bang_fxGUI.undeadTotal);
@@ -1251,8 +1253,50 @@ public class BANG {
         }
     else{
             //DEAD VERSUS ALIVE
-            System.out.println("DEAD VS ALIVE");
+            if(!zombieS){
+                zombieStart();
+            }
+            int t3 = 0;
+            int t4 = 0;
+            for (int j = 0; j < Bang_fxGUI.play_order.size(); j++) {
+                int team = Bang_fxGUI.play_order.get(j).team;
+                if (team == 3) {
+                    t3++;
+                }
+                if (team == 4) {
+                    t4++;
+                }
+            }
+            if (t3 == 0) {
+                endGame(4);
+            } else if (t4 == 0) {
+                endGame(3);
+            }
         }
+    }
+    
+    public static void zombieStart(){
+        System.out.println("DEAD VS ALIVE");
+            for(int k = 0; k < Bang_fxGUI.play_order.size(); k++){
+                Bang_fxGUI.play_order.get(k).team = 4;
+                Bang_fxGUI.play_order.get(k).role = "Alive";
+            }
+            int count = 0;
+            while(Bang_fxGUI.temp_play_order.get(count) != Bang_fxGUI.play_order.get(0)){
+                Bang_fxGUI.temp_play_order.add(Bang_fxGUI.temp_play_order.get(0));
+                Bang_fxGUI.temp_play_order.remove(Bang_fxGUI.temp_play_order.get(0));
+            }
+            int alive = Bang_fxGUI.play_order.size();
+            Bang_fxGUI.play_order.clear();
+            for(int l = 0; l < Bang_fxGUI.temp_play_order.size();l++){
+                Bang_fxGUI.play_order.add(Bang_fxGUI.temp_play_order.get(l));
+                Bang_fxGUI.play_order.get(l).shown = true;
+                Bang_fxGUI.play_order.get(l).known = true;
+                if(Bang_fxGUI.play_order.get(l).health == 0){
+                    Bang_fxGUI.play_order.get(l).health = alive;
+                }
+            }
+            zombieS = true;
     }
     
     public static void deathSeq(ArrayList<Player> play_order, int i) {
@@ -1294,7 +1338,25 @@ public class BANG {
         }
         else{
             //DEAD VERSUS ALIVE
-            System.out.println("DEAD VS ALIVE");
+            if(!zombieS){
+                zombieStart();
+            }
+            int t3 = 0;
+            int t4 = 0;
+            for (int j = 0; j < Bang_fxGUI.play_order.size(); j++) {
+                int team = Bang_fxGUI.play_order.get(j).team;
+                if (team == 3) {
+                    t3++;
+                }
+                if (team == 4) {
+                    t4++;
+                }
+            }
+            if (t3 == 0) {
+                endGame(4);
+            } else if (t4 == 0) {
+                endGame(3);
+            }
         }
         
     }
@@ -1335,6 +1397,12 @@ public class BANG {
                 break;
             case 2:
                 System.out.print("Renegades have won!");
+                break;
+            case 3:
+                System.out.print("The living have won!");
+                break;
+            case 4:
+                System.out.print("The Zombies have won!");
                 break;
         }
         System.exit(0);

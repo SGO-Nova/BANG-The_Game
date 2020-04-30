@@ -231,9 +231,9 @@ public class Bang_fxGUI extends Application {
     Player tempP;
     Player pick = new Player("NULL", 99, "NULL", true);
 
-    ArrayList<Player> play_order = new ArrayList();
-    ArrayList<Player> temp_play_order = new ArrayList();
-    ArrayList<Player> temp_play_order2 = new ArrayList();
+    static ArrayList<Player> play_order = new ArrayList();
+    static ArrayList<Player> temp_play_order = new ArrayList();
+    static ArrayList<Player> temp_play_order2 = new ArrayList();
     
     Image img_logo;
     Image img_gif;
@@ -516,8 +516,10 @@ public class Bang_fxGUI extends Application {
                 play_order.add(play_order.get(0));
                 play_order.remove(play_order.get(0));
             }
-            //play_order.get(0).name = playerName.getText(); ///////////////// FOR DEBUGGING USE ONLY, DELETE ON FINAL PUSH!!!!!
-            
+            //play_order.get(0).name = "Tequilla"; ///////////////// FOR DEBUGGING USE ONLY, DELETE ON FINAL PUSH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            //play_order.get(1).name = "Jose Delgado";
+            //play_order.get(2).name = "Jose Delgado";
+            //play_order.get(3).name = "Jose Delgado";
         });
 
         // button & Action
@@ -526,14 +528,17 @@ public class Bang_fxGUI extends Application {
         nextButton.setLayoutX(1100);
         nextButton.setLayoutY(600);
         nextButton.setOnAction(d -> {
+            action();
             for(int i = 0; i < dice.size(); i++){
                 dice.get(i).canRoll = true;
             }
             temp_play_order2.clear();
+            System.out.println(temp_play_order2.size());
             for(int j = 0; j < play_order.size(); j++){
                temp_play_order2.add(play_order.get(j)); 
+               System.out.println(temp_play_order.get(j).name + " Added");
             }
-            action();
+            
             play_order.add(play_order.get(0));
             play_order.remove(0);
             System.out.println("Start turn");
@@ -681,154 +686,9 @@ public class Bang_fxGUI extends Application {
             imageSet(dice07, 75, 75, Img_Coward);
             imageMove(dice07, (int)c7.getLayoutX(),(int)c7.getLayoutY() - 92);
             total = 0;
-            switch (current.name) {
-                case "Jose Delgado":
-                    c5.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-                        if(c5.isSelected()){
-                            c7.setDisable(true);
-                            dice.remove(d5);
-                            d5 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling"); //regular die
-                            dice.add(d5);
-                            total++;
-                        }
-                        else{
-                            if(!c6.isSelected()){
-                                c7.setDisable(play_order.get(0).computer);
-                            }
-                            total--;
-                        }
-                    }); 
-                    c7.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-                        if(c7.isSelected()){
-                            c5.setDisable(true);
-                            c6.setDisable(true);
-                            dice.remove(d5);
-                            d5 = new Dice(1, 0, "Indian Arrow", "Dynamite", "Double Bull's Eye 1", "Double Bull's Eye 2", "Bullet", "Double Gatling"); //LOUDMOUTH
-                            dice.add(d5);
-                            total++;
-                        }
-                        else{
-                            c5.setDisable(play_order.get(0).computer);
-                            c6.setDisable(play_order.get(0).computer);
-                            total--;
-                        }
-                    }); 
-                    c6.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-                        if(c6.isSelected()){
-                            if(dice.contains(d6)){
-                                dice.remove(d6);
-                            }
-                            d6 = new Dice(1, 0, "Broken Indian Arrow", "Dynamite", "Bull's Eye 1", "Indian Arrow", "Double Beer", "Beer");
-                            dice.add(d6);
-                            c7.setDisable(true);
-                            total++;
-                        }
-                        else{
-                            if(!c5.isSelected()){
-                                c7.setDisable(play_order.get(0).computer);
-                            }
-                            if(dice.contains(d6)){
-                                dice.remove(d6);
-                            }
-                            total--;
-                        }
-                    }); 
-                    break;
-                case "Tequila Joe":
-                    c5.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-                        if(c5.isSelected()){
-                            c6.setDisable(true);
-                            dice.remove(d5);
-                            d5 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling"); //regular die
-                            dice.add(d5);
-                            total++;
-                        }
-                        else{
-                            if(!c7.isSelected()){
-                                c6.setDisable(play_order.get(0).computer);
-                            }
-                            total--;
-                        }
-                    }); 
-                    c6.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-                        if(c6.isSelected()){
-                            c5.setDisable(true);
-                            c7.setDisable(true);
-                            dice.remove(d5);
-                            d5 = new Dice(1, 0, "Indian Arrow", "Dynamite", "Double Bull's Eye 1", "Double Bull's Eye 2", "Bullet", "Double Gatling"); //LOUDMOUTH
-                            dice.add(d5);
-                            total++;
-                        }
-                        else{
-                            c5.setDisable(play_order.get(0).computer);
-                            c7.setDisable(play_order.get(0).computer);
-                            total--;
-                        }
-                    }); 
-                    c7.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-                        if(c7.isSelected()){
-                            if(dice.contains(d6)){
-                                dice.remove(d6);
-                            }
-                            d6 = new Dice(1, 0, "Broken Indian Arrow", "Dynamite", "Bull's Eye 1", "Indian Arrow", "Double Beer", "Beer");
-                            dice.add(d6);
-                            c6.setDisable(true);
-                            total++;
-                        }
-                        else{
-                            if(!c5.isSelected()){
-                                c6.setDisable(play_order.get(0).computer);
-                            }
-                            if(dice.contains(d6)){
-                                dice.remove(d6);
-                            }
-                            total--;
-                            
-                        }
-                    }); 
-                    break;
-                default:
-                    c5.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-                        if(c5.isSelected()){
-                            c6.setDisable(true);
-                            c7.setDisable(true);
-                            dice.remove(d5);
-                            d5 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling"); //regular die
-                            dice.add(d5);
-                        }
-                        else{
-                            c6.setDisable(play_order.get(0).computer);
-                            c7.setDisable(play_order.get(0).computer);
-                        }
-                    }); 
-                    c6.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-                        if(c6.isSelected()){
-                            c5.setDisable(true);
-                            c7.setDisable(true);
-                            dice.remove(d5);
-                            d5 = new Dice(1, 0, "Indian Arrow", "Dynamite", "Double Bull's Eye 1", "Double Bull's Eye 2", "Bullet", "Double Gatling"); //LOUDMOUTH
-                            dice.add(d5);
-                        }
-                        else{
-                            c5.setDisable(play_order.get(0).computer);
-                            c7.setDisable(play_order.get(0).computer);
-                        }
-                    }); 
-                    c7.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
-                        if(c7.isSelected()){
-                            c6.setDisable(true);
-                            c5.setDisable(true);
-                            dice.remove(d5);
-                            d5 = new Dice(1, 0, "Broken Indian Arrow", "Dynamite", "Bull's Eye 1", "Indian Arrow", "Double Beer", "Beer"); //COWARD
-                            dice.add(d5);
-                        }
-                        else{
-                            c5.setDisable(play_order.get(0).computer);
-                            c6.setDisable(play_order.get(0).computer);
-                        }
-                    });
-                    break;
-            }
+            c5.setOnAction(eh1);
+            c6.setOnAction(eh1);
+            c7.setOnAction(eh1);
             if(play_order.get(0).computer){
                 //AI FUNCTION HERE(dice(last dice)) ie. regular, loudmouth, coward
             }
@@ -839,10 +699,15 @@ public class Bang_fxGUI extends Application {
         Button4.setLayoutX(1000);
         Button4.setLayoutY(600);
         Button4.setOnAction(f -> {
-            if(total == 1 && dice.contains(d6)){
-                dice.remove(d6);
+            if((c6.isSelected() || c7.isSelected()) && !c5.isSelected()){
+                System.out.println("d6 in 5 dice");
                 dice.remove(d5);
-                d5 = d6;
+                if(c6.isSelected()){
+                    d5 = new Dice(1, 0, "Indian Arrow", "Dynamite", "Double Bull's Eye 1", "Double Bull's Eye 2", "Bullet", "Double Gatling"); //LOUDMOUTH
+                }
+                else{
+                    d5 = new Dice(1, 0, "Broken Indian Arrow", "Dynamite", "Bull's Eye 1", "Indian Arrow", "Double Beer", "Beer"); //COWARD
+                }
                 dice.add(d5);
             }
             if (rolls >= (play_order.get(0).rolls - 1)) {
@@ -852,7 +717,9 @@ public class Bang_fxGUI extends Application {
             go3();
             
             // group all the above together
+            System.out.println(dice.size());
             if(dice.size() == 5){
+                System.out.println("5 dice");
                 Group group = new Group();
                 group.getChildren().clear();
                 group.getChildren()        
@@ -893,6 +760,7 @@ public class Bang_fxGUI extends Application {
                 }
             }
             else{
+                System.out.println("6 dice");
                 Group group = new Group();
                 group.getChildren().clear();
                 group.getChildren()
@@ -1071,7 +939,7 @@ public class Bang_fxGUI extends Application {
             // group all the above together
             resetDictionary();
             Group group = new Group();
-            if(dice.contains(d6)){
+            if(dice.size() == 6){
                 System.out.println("There are 6 dice");
                 for(int roll = 0; roll < dice.size(); roll++){
                     String side = dice.get(roll).sides[dice.get(roll).side];
@@ -1660,17 +1528,19 @@ public class Bang_fxGUI extends Application {
             scene5 = new Scene(group, 1280, 720, Color.BEIGE);
             window.setScene(scene5);
             window.show();
+            System.out.println(temp_play_order.size());
             for (int i = 0; i < nameCheckBoxes.size(); i++) {
                 nameCheckBoxes.get(i).setDisable(false);
                 if (i < play_order.size()) {
                     nameCheckBoxes.get(i).setLayoutX(500);
                     nameCheckBoxes.get(i).setLayoutY(300 + (i * 50));
-                    if(i != 0 && temp_play_order2.contains(play_order.get(i))){
+                    System.out.println(temp_play_order.get(i).name);
+                    if(i != 0 && i < temp_play_order2.size()){
                         nameCheckBoxes.get(i).setDisable(play_order.get(0).computer); 
-                     }
-                     else{
-                         nameCheckBoxes.get(i).setDisable(true);
-                     }  
+                    }
+                    else{
+                        nameCheckBoxes.get(i).setDisable(true);
+                    }  
                     nameCheckBoxes.get(i).setText(play_order.get(i).name);
                     nameCheckBoxes.get(i).setFont(Font.font("Verdana", FontWeight.BOLD, 24));
                 } else {
@@ -1941,6 +1811,7 @@ public class Bang_fxGUI extends Application {
                 for(int i = 0; i < play_order.size(); i++){
                     if(nameCheckBoxes.get(i).isSelected()){
                         pick = play_order.get(i);
+                        System.out.println(pick.name + " was picked for duel");
                         nameCheckBoxes.get(i).setSelected(false);
                         break;
                     }
@@ -1964,6 +1835,9 @@ public class Bang_fxGUI extends Application {
                     updateCharacters();
                 }
                 temp_play_order2.remove(tempP);
+                if(!play_order.get(0).computer){
+                    System.out.println(tempP.name + " was removed from the list");
+                }
                 pick = new Player("NULL", 99, "NULL", true);
                 break;
             default:
@@ -2147,7 +2021,93 @@ public class Bang_fxGUI extends Application {
         }
     };
     
-    
+       EventHandler eh1 = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            if (event.getSource() instanceof CheckBox) {
+               switch (current.name) {
+                case "Jose Delgado":
+                    if(c5.isSelected()){
+                        c7.setDisable(true);
+                    }
+                    else if (!c5.isSelected()){
+                        if(!c6.isSelected()){
+                            c7.setDisable(play_order.get(0).computer);
+                        }
+                    }
+                    if(c7.isSelected()){
+                        c5.setDisable(true);
+                        c6.setDisable(true);
+                    }
+                    else if (!c7.isSelected()){
+                        c5.setDisable(play_order.get(0).computer);
+                        c6.setDisable(play_order.get(0).computer);
+                    }
+                    if(c6.isSelected()){
+                        c7.setDisable(true);
+                    }
+                    else if(!c6.isSelected()){
+                        if(!c5.isSelected()){
+                            c7.setDisable(play_order.get(0).computer);
+                        }
+                        if(dice.contains(d6)){
+                            dice.remove(d6);
+                        }
+                    }
+                    break;
+                case "Tequila Joe":
+                    if(c5.isSelected()){
+                        c6.setDisable(true);
+                    }
+                    else if(!c5.isSelected()){
+                        if(!c7.isSelected()){
+                            c6.setDisable(play_order.get(0).computer);
+                        }
+                    }
+                    if(c6.isSelected()){
+                        c5.setDisable(true);
+                        c7.setDisable(true);
+                    }
+                    else if(!c6.isSelected()){
+                        c5.setDisable(play_order.get(0).computer);
+                        c7.setDisable(play_order.get(0).computer);
+                    }
+                    if(c7.isSelected()){
+                        c6.setDisable(true);
+                    }
+                    else if(!c7.isSelected()){
+                        if(!c5.isSelected()){
+                            c6.setDisable(play_order.get(0).computer);
+                        }
+                        if(dice.contains(d6)){
+                            dice.remove(d6);
+                        }
+                    }
+                    break;
+                default:
+                    System.out.println("DEFAULT");
+                        if(c5.isSelected()){
+                            c6.setDisable(true);
+                            c7.setDisable(true);
+                        }
+                        else if(c6.isSelected()){
+                            c5.setDisable(true);
+                            c7.setDisable(true);
+                        }
+                        else if(c7.isSelected()){
+                            c6.setDisable(true);
+                            c5.setDisable(true);
+                        }
+                        else{
+                            c5.setDisable(play_order.get(0).computer);
+                            c6.setDisable(play_order.get(0).computer);
+                            c7.setDisable(play_order.get(0).computer);
+                        }
+                    break;
+            } 
+            }
+        }
+    };
     
     
     public void go1(){
@@ -2457,7 +2417,7 @@ public class Bang_fxGUI extends Application {
 
 /*
 Things to fix:
-Duel list reset after turn
+
 Dead vs Alive situtation(really just needs to be added)
 Multiple dice picture even though there are only 5, shows 6 at times(unknown reason)
 Sometimes skips turn???
