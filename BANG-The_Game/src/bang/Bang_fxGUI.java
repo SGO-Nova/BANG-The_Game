@@ -184,6 +184,7 @@ public class Bang_fxGUI extends Application {
     int temp = 0;
     int temp2 = 0;
     int stage = 0;
+    static int undeadTotal = 0;
     Dictionary diceOutcome= new Hashtable<String,Integer>();
     boolean gringo = false;
     boolean gatAttack = false;
@@ -198,6 +199,7 @@ public class Bang_fxGUI extends Application {
 
     //Global creation of game elements
     ArrayList<Character_Cards> char_cards = new ArrayList();
+    static ArrayList<UndeadCard> undeadCards = new ArrayList();
     ArrayList<Dice> dice = new ArrayList();
     ArrayList<Role_Cards> role_cards = new ArrayList();
     Dice d1 = new Dice(2, 0, "Indian Arrow", "Dynamite", "Duel", "Duel", "Whiskey", "Gatling");//LOOK AT ME DICE
@@ -214,6 +216,17 @@ public class Bang_fxGUI extends Application {
     Player ai5 = new Player("NULL", 0, "NULL", true);
     Player ai6 = new Player("NULL", 0, "NULL", true);
     Player ai7 = new Player("NULL", 0, "NULL", true);
+    UndeadCard u1 = new UndeadCard(0);
+    UndeadCard u2 = new UndeadCard(0);
+    UndeadCard u3 = new UndeadCard(0);
+    UndeadCard u4 = new UndeadCard(1);
+    UndeadCard u5 = new UndeadCard(1);
+    UndeadCard u6 = new UndeadCard(1);
+    UndeadCard u7 = new UndeadCard(1);
+    UndeadCard u8 = new UndeadCard(1);
+    UndeadCard u9 = new UndeadCard(2);
+    UndeadCard u10 = new UndeadCard(2);
+    UndeadCard u11 = new UndeadCard(2);
     Player current;
     Player tempP;
     Player pick = new Player("NULL", 99, "NULL", true);
@@ -470,6 +483,19 @@ public class Bang_fxGUI extends Application {
             next.add(Button13);
             next.add(Button14);
             next.add(Button15);
+            undeadCards.add(u1);
+            undeadCards.add(u2);
+            undeadCards.add(u3);
+            undeadCards.add(u4);
+            undeadCards.add(u5);
+            undeadCards.add(u6);
+            undeadCards.add(u7);
+            undeadCards.add(u8);
+            undeadCards.add(u9);
+            undeadCards.add(u10);
+            undeadCards.add(u11);
+            Collections.shuffle(undeadCards);
+            
             
             for(int i = 0; i < checkBoxes.size(); i++){
                 checkBoxes.get(i).setSelected(false);
@@ -486,6 +512,10 @@ public class Bang_fxGUI extends Application {
             window.show();
 
             go1();
+            for(int i = 0; i < play_order.size() - 1; i++){
+                play_order.add(play_order.get(0));
+                play_order.remove(play_order.get(0));
+            }
             //play_order.get(0).name = playerName.getText(); ///////////////// FOR DEBUGGING USE ONLY, DELETE ON FINAL PUSH!!!!!
             
         });
@@ -506,7 +536,7 @@ public class Bang_fxGUI extends Application {
             action();
             play_order.add(play_order.get(0));
             play_order.remove(0);
-            System.out.println("Start tunr");
+            System.out.println("Start turn");
             stage = 0;
             //Move player texts
             updateCharacters();
@@ -538,6 +568,7 @@ public class Bang_fxGUI extends Application {
         Button2.setLayoutX(1100);
         Button2.setLayoutY(600);
         Button2.setOnAction(f -> {
+            stage = -1;
             pick = new Player("NULL", 99, "NULL", true);
             // group all the above together
             Group group = new Group();
@@ -596,6 +627,9 @@ public class Bang_fxGUI extends Application {
                 pick.heal(1);
                 arrow++;
                 updateCharacters();
+            }
+            if(dice.size() == 6){
+                dice.remove(d6);
             }
             pick = new Player("NULL", 99, "NULL", true);
             
@@ -659,7 +693,7 @@ public class Bang_fxGUI extends Application {
                         }
                         else{
                             if(!c6.isSelected()){
-                                c7.setDisable(false);
+                                c7.setDisable(play_order.get(0).computer);
                             }
                             total--;
                         }
@@ -674,8 +708,8 @@ public class Bang_fxGUI extends Application {
                             total++;
                         }
                         else{
-                            c5.setDisable(false);
-                            c6.setDisable(false);
+                            c5.setDisable(play_order.get(0).computer);
+                            c6.setDisable(play_order.get(0).computer);
                             total--;
                         }
                     }); 
@@ -691,7 +725,7 @@ public class Bang_fxGUI extends Application {
                         }
                         else{
                             if(!c5.isSelected()){
-                                c7.setDisable(false);
+                                c7.setDisable(play_order.get(0).computer);
                             }
                             if(dice.contains(d6)){
                                 dice.remove(d6);
@@ -711,7 +745,7 @@ public class Bang_fxGUI extends Application {
                         }
                         else{
                             if(!c7.isSelected()){
-                                c6.setDisable(false);
+                                c6.setDisable(play_order.get(0).computer);
                             }
                             total--;
                         }
@@ -726,8 +760,8 @@ public class Bang_fxGUI extends Application {
                             total++;
                         }
                         else{
-                            c5.setDisable(false);
-                            c7.setDisable(false);
+                            c5.setDisable(play_order.get(0).computer);
+                            c7.setDisable(play_order.get(0).computer);
                             total--;
                         }
                     }); 
@@ -743,7 +777,7 @@ public class Bang_fxGUI extends Application {
                         }
                         else{
                             if(!c5.isSelected()){
-                                c6.setDisable(false);
+                                c6.setDisable(play_order.get(0).computer);
                             }
                             if(dice.contains(d6)){
                                 dice.remove(d6);
@@ -763,8 +797,8 @@ public class Bang_fxGUI extends Application {
                             dice.add(d5);
                         }
                         else{
-                            c6.setDisable(false);
-                            c7.setDisable(false);
+                            c6.setDisable(play_order.get(0).computer);
+                            c7.setDisable(play_order.get(0).computer);
                         }
                     }); 
                     c6.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -776,8 +810,8 @@ public class Bang_fxGUI extends Application {
                             dice.add(d5);
                         }
                         else{
-                            c5.setDisable(false);
-                            c7.setDisable(false);
+                            c5.setDisable(play_order.get(0).computer);
+                            c7.setDisable(play_order.get(0).computer);
                         }
                     }); 
                     c7.selectedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
@@ -789,8 +823,8 @@ public class Bang_fxGUI extends Application {
                             dice.add(d5);
                         }
                         else{
-                            c5.setDisable(false);
-                            c6.setDisable(false);
+                            c5.setDisable(play_order.get(0).computer);
+                            c6.setDisable(play_order.get(0).computer);
                         }
                     });
                     break;
@@ -827,32 +861,36 @@ public class Bang_fxGUI extends Application {
                                 Line6, Line7, Line8, Line9, main1, main2, main3,
                                 main4, main5, main6, main7, main8,
                                 cd1, cd2, cd3, cd4, cd5,
-                                TTG1, TTG2, TTG3, TTG4, TTG5,
                                 ChiefArrowButton);
+                if(play_order.get(0).computer == false){
+                    group.getChildren().addAll(TTG1, TTG2, TTG3, TTG4, TTG5);
+                }
                 scene5 = new Scene(group, 1280, 720, Color.BEIGE);
                 window.setScene(scene5);
                 window.show();
                 updateCharacters();
-                for(int i = 0; i < TTG.size(); i++){
-                    TTG.get(i).setLayoutX((i * 100) + 410);
-                    TTG.get(i).setLayoutY(250);
-                    TTG.get(i).setMinWidth(90);
-                    TTG.get(i).setMaxWidth(90);
-                    TTG.get(i).setMinHeight(30);
-                    TTG.get(i).setFont(Font.font("Verdana",FontWeight.BOLD, 12));
-                    TTG.get(i).setDisable(false);
-                    if(!(current.name.equals("Belle Star"))){
-                        TTG.get(i).setDisable(true);
+                if(play_order.get(0).computer == false){
+                    for(int i = 0; i < TTG.size(); i++){
+                        TTG.get(i).setLayoutX((i * 100) + 410);
+                        TTG.get(i).setLayoutY(250);
+                        TTG.get(i).setMinWidth(90);
+                        TTG.get(i).setMaxWidth(90);
+                        TTG.get(i).setMinHeight(30);
+                        TTG.get(i).setFont(Font.font("Verdana",FontWeight.BOLD, 12));
+                        TTG.get(i).setDisable(false);
+                        if(!(current.name.equals("Belle Star"))){
+                            TTG.get(i).setDisable(true);
+                        }
+                        String side = dice.get(i).sides[dice.get(i).side];
+                        if(!side.equals("Dynamite")){
+                            TTG.get(i).setDisable(true);
+                        }
+                        if((int)diceOutcome.get("Dynamite") >= 3){
+                           TTG.get(i).setDisable(true); 
+                        }
                     }
-                    String side = dice.get(i).sides[dice.get(i).side];
-                    if(!side.equals("Dynamite")){
-                        TTG.get(i).setDisable(true);
-                    }
-                    if((int)diceOutcome.get("Dynamite") >= 3){
-                       TTG.get(i).setDisable(true); 
-                    }
+
                 }
-                
             }
             else{
                 Group group = new Group();
@@ -936,65 +974,67 @@ public class Bang_fxGUI extends Application {
                 }
                 imageMove(IV.get(i), (i * 100) + 410, 300);
             }
-            TTG1.setOnAction(g -> {
-            imageSet(IV.get(0), 90, 90, Img_Gatling);
-            dice.get(0).side = 5;
-            diceOutcome.put("Dynamite", ((int)diceOutcome.get("Dynamite") - 1));
-            diceOutcome.put("Gatling", ((int)diceOutcome.get("Gatling") + 1));
-            cd1.setDisable(false);
-            dice.get(0).canRoll = true;
-            });
-            TTG2.setOnAction(g -> {
-                imageSet(IV.get(1), 90, 90, Img_Gatling);
-                dice.get(1).side = 5;
+            if(play_order.get(0).computer != true){
+                TTG1.setOnAction(g -> {
+                imageSet(IV.get(0), 90, 90, Img_Gatling);
+                dice.get(0).side = 5;
                 diceOutcome.put("Dynamite", ((int)diceOutcome.get("Dynamite") - 1));
                 diceOutcome.put("Gatling", ((int)diceOutcome.get("Gatling") + 1));
-                cd2.setDisable(false);
-                dice.get(1).canRoll = true;
-            });
-            TTG3.setOnAction(g -> {
-                imageSet(IV.get(2), 90, 90, Img_Gatling);
-                dice.get(2).side = 5;
-                diceOutcome.put("Dynamite", ((int)diceOutcome.get("Dynamite") - 1));
-                diceOutcome.put("Gatling", ((int)diceOutcome.get("Gatling") + 1));
-                cd3.setDisable(false);
-                dice.get(2).canRoll = true;
-            });
-            TTG4.setOnAction(g -> {
-                imageSet(IV.get(3), 90, 90, Img_Gatling);
-                dice.get(3).side = 5;
-                diceOutcome.put("Dynamite", ((int)diceOutcome.get("Dynamite") - 1));
-                diceOutcome.put("Gatling", ((int)diceOutcome.get("Gatling") + 1));
-                cd4.setDisable(false);
-                dice.get(3).canRoll = true;
-            });
-            switch (dice.get(4).sides[4]) {
-                case "Beer":
-                    TTG5.setOnAction(g -> {
-                        imageSet(IV.get(4), 90, 90, Img_Gatling);
-                        dice.get(4).side = 5;
-                        diceOutcome.put("Dynamite", ((int)diceOutcome.get("Dynamite") - 1));
-                        diceOutcome.put("Gatling", ((int)diceOutcome.get("Gatling") + 1));
-                        cd5.setDisable(false);
-                        dice.get(4).canRoll = true;
-                    }); break;
-                case "Bullet":
-                    TTG5.setOnAction(g -> {
-                        imageSet(IV.get(4), 90, 90, Img_DGatling);
-                        dice.get(4).side = 5;
-                        diceOutcome.put("Dynamite", ((int)diceOutcome.get("Dynamite") - 1));
-                        diceOutcome.put("Double Gatling", ((int)diceOutcome.get("Double Gatling") + 1));
-                        cd5.setDisable(false);
-                        dice.get(4).canRoll = true;
-                    }); break;
-                case "Double Beer":
-                    TTG5.setDisable(true);
-                    System.out.println("Coward die does not have gatling to change to");
-                    break;
-                default:
-                    break;
+                cd1.setDisable(false);
+                dice.get(0).canRoll = true;
+                });
+                TTG2.setOnAction(g -> {
+                    imageSet(IV.get(1), 90, 90, Img_Gatling);
+                    dice.get(1).side = 5;
+                    diceOutcome.put("Dynamite", ((int)diceOutcome.get("Dynamite") - 1));
+                    diceOutcome.put("Gatling", ((int)diceOutcome.get("Gatling") + 1));
+                    cd2.setDisable(false);
+                    dice.get(1).canRoll = true;
+                });
+                TTG3.setOnAction(g -> {
+                    imageSet(IV.get(2), 90, 90, Img_Gatling);
+                    dice.get(2).side = 5;
+                    diceOutcome.put("Dynamite", ((int)diceOutcome.get("Dynamite") - 1));
+                    diceOutcome.put("Gatling", ((int)diceOutcome.get("Gatling") + 1));
+                    cd3.setDisable(false);
+                    dice.get(2).canRoll = true;
+                });
+                TTG4.setOnAction(g -> {
+                    imageSet(IV.get(3), 90, 90, Img_Gatling);
+                    dice.get(3).side = 5;
+                    diceOutcome.put("Dynamite", ((int)diceOutcome.get("Dynamite") - 1));
+                    diceOutcome.put("Gatling", ((int)diceOutcome.get("Gatling") + 1));
+                    cd4.setDisable(false);
+                    dice.get(3).canRoll = true;
+                });
+                switch (dice.get(4).sides[4]) {
+                    case "Beer":
+                        TTG5.setOnAction(g -> {
+                            imageSet(IV.get(4), 90, 90, Img_Gatling);
+                            dice.get(4).side = 5;
+                            diceOutcome.put("Dynamite", ((int)diceOutcome.get("Dynamite") - 1));
+                            diceOutcome.put("Gatling", ((int)diceOutcome.get("Gatling") + 1));
+                            cd5.setDisable(false);
+                            dice.get(4).canRoll = true;
+                        }); break;
+                    case "Bullet":
+                        TTG5.setOnAction(g -> {
+                            imageSet(IV.get(4), 90, 90, Img_DGatling);
+                            dice.get(4).side = 5;
+                            diceOutcome.put("Dynamite", ((int)diceOutcome.get("Dynamite") - 1));
+                            diceOutcome.put("Double Gatling", ((int)diceOutcome.get("Double Gatling") + 1));
+                            cd5.setDisable(false);
+                            dice.get(4).canRoll = true;
+                        }); break;
+                    case "Double Beer":
+                        TTG5.setDisable(true);
+                        System.out.println("Coward die does not have gatling to change to");
+                        break;
+                    default:
+                        break;
+                }
             }
-            if((int)diceOutcome.get("Indian Arrow") >= 1 && (chiefArrow || current.name.equals("Apache Kid"))){
+            if((int)diceOutcome.get("Indian Arrow") >= 1 && (chiefArrow || current.name.equals("Apache Kid")) && play_order.get(0).computer == false){
                 ChiefArrowButton.setDisable(false);
                 ChiefArrowButton.setOnAction(g -> {
                     if(chiefArrow){
@@ -1032,6 +1072,7 @@ public class Bang_fxGUI extends Application {
             resetDictionary();
             Group group = new Group();
             if(dice.contains(d6)){
+                System.out.println("There are 6 dice");
                 for(int roll = 0; roll < dice.size(); roll++){
                     String side = dice.get(roll).sides[dice.get(roll).side];
                     diceOutcome.put(side, ((int)diceOutcome.get(side))+1);
@@ -1074,7 +1115,7 @@ public class Bang_fxGUI extends Application {
                     group.getChildren().clear();
                     group.getChildren()
                             .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
-                                    Button12, Line1, Line2, Line3, Line4, Line5, Line6,
+                                    Button13, Line1, Line2, Line3, Line4, Line5, Line6,
                                     Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                                     ChiefArrowButton);   
                 }
@@ -1082,7 +1123,7 @@ public class Bang_fxGUI extends Application {
                     group.getChildren().clear();
                     group.getChildren()
                             .addAll(table2, dice1, dice2, dice3, dice4, dice5, dice6,
-                                    Button13, Line1, Line2, Line3, Line4, Line5, Line6,
+                                    Button12, Line1, Line2, Line3, Line4, Line5, Line6,
                                     Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                                     ChiefArrowButton);  
                 }
@@ -1127,7 +1168,7 @@ public class Bang_fxGUI extends Application {
                 temp = (int)diceOutcome.get("Bull's Eye 1") + (int)diceOutcome.get("Bull's Eye 2");
                 temp2 = ((int)diceOutcome.get("Double Bull's Eye 1") + (int)diceOutcome.get("Double Bull's Eye 2"));
                 System.out.println(temp + " " +temp2);
-                if(current.name.equals("Calamity Janet") && temp > 0 || temp2 > 0){
+                if(current.name.equals("Calamity Janet") && (temp > 0 || temp2 > 0)){
                     if(temp > 0){
                         group.getChildren()
                                 .addAll(table2, dice1, dice2, dice3, dice4, dice5,
@@ -1179,7 +1220,7 @@ public class Bang_fxGUI extends Application {
                     group.getChildren().clear();
                     group.getChildren()
                             .addAll(table2, dice1, dice2, dice3, dice4, dice5,
-                                    Button12, Line1, Line2, Line3, Line4, Line5, Line6,
+                                    Button13, Line1, Line2, Line3, Line4, Line5, Line6,
                                     Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                                     ChiefArrowButton);   
                 }
@@ -1187,7 +1228,7 @@ public class Bang_fxGUI extends Application {
                     group.getChildren().clear();
                     group.getChildren()
                             .addAll(table2, dice1, dice2, dice3, dice4, dice5,
-                                    Button13, Line1, Line2, Line3, Line4, Line5, Line6,
+                                    Button12, Line1, Line2, Line3, Line4, Line5, Line6,
                                     Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                                     ChiefArrowButton);  
                 }
@@ -1261,6 +1302,7 @@ public class Bang_fxGUI extends Application {
         });
         // Calamity Janet
         Button7.setOnAction(f -> {
+            System.out.println("Button 7 was pressed: " + play_order.get(0).name);
             temp--;
             action();
             updateCharacters();
@@ -1270,7 +1312,7 @@ public class Bang_fxGUI extends Application {
             scene5 = new Scene(group, 1280, 720, Color.BEIGE);
             window.setScene(scene5);
             window.show();
-            Line1.setText("Calmity, Who do you want to shoot: ");
+            Line1.setText("Calamity, Who do you want to shoot: ");
             for (int i = 0; i < nameCheckBoxes.size(); i++) {
                 nameCheckBoxes.get(i).setSelected(false);
                 if (i < play_order.size()) {
@@ -1300,6 +1342,7 @@ public class Bang_fxGUI extends Application {
         });
         // Calamity Janet(Double)
         Button15.setOnAction(f -> {
+            System.out.println("Button 15 was pressed: " + play_order.get(0).name);
             temp2--;
             action();
             updateCharacters();
@@ -1309,7 +1352,7 @@ public class Bang_fxGUI extends Application {
             scene5 = new Scene(group, 1280, 720, Color.BEIGE);
             window.setScene(scene5);
             window.show();
-            Line1.setText("Calmity, Who do you want to shoot (Double damage): ");
+            Line1.setText("Calamity, Who do you want to shoot (Double damage): ");
             for (int i = 0; i < nameCheckBoxes.size(); i++) {
                 nameCheckBoxes.get(i).setSelected(false);
                 if (i < play_order.size()) {
@@ -1939,7 +1982,7 @@ public class Bang_fxGUI extends Application {
                             nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);
 
         }
-        else if(current.name.equals("Calamity Janet") && temp > 0 && stage <= 2){
+        else if(play_order.get(0).name.equals("Calamity Janet") && temp > 0 && stage <= 2){
             group.getChildren().clear();
                 group.getChildren()
                     .addAll(table2,
@@ -1948,7 +1991,7 @@ public class Bang_fxGUI extends Application {
                             nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);
 
         }
-        else if(current.name.equals("Calamity Janet") && temp2 > 0 && stage <= 3){
+        else if(play_order.get(0).name.equals("Calamity Janet") && temp2 > 0 && stage <= 3){
             group.getChildren().clear();
                 group.getChildren()
                     .addAll(table2, 
@@ -2079,10 +2122,24 @@ public class Bang_fxGUI extends Application {
                         }
                         nameCheckBoxes.get(j).setDisable(false);
                     } else {
-                        for (int i = 0; i < play_order.size(); i++) {
-                            nameCheckBoxes.get(i).setDisable(false);
+                        switch (stage) {
+                            case -1:
+                                for (int i = 0; i < play_order.size(); i++) {
+                                    nameCheckBoxes.get(i).setDisable(false);
+                                }   break;
+                            case 4:
+                            case 5:
+                                nameCheckBoxes.get(1).setDisable(false);
+                                nameCheckBoxes.get(nameCheckBoxes.size()-1).setDisable(false);
+                                break;
+                            case 6:
+                            case 7:
+                                nameCheckBoxes.get(2).setDisable(false);
+                                nameCheckBoxes.get(nameCheckBoxes.size()-2).setDisable(false);
+                                break;
+                            default:
+                                break;
                         }
-
                     }
                 }
 
@@ -2189,6 +2246,7 @@ public class Bang_fxGUI extends Application {
         int stop = -1;
         boolean sher = false;
 
+        temp_play_order.get(0).shown = true;
         if (players != 2) {
             for (int i = 0; i < 16; i++) {
                 if (!(temp_play_order.get(i % 8).role.equals("NULL"))) {
@@ -2204,6 +2262,7 @@ public class Bang_fxGUI extends Application {
                             temp_play_order.get(i % 8).setMaxHealth(temp_play_order.get(i % 8).maxHealth + 2);
                             temp_play_order.get(i % 8).heal(2);
                             temp_play_order.get(i % 8).shown = true;
+                            temp_play_order.get(i % 8).known = true;
                             play_order.add(temp_play_order.get(i % 8));
                             stop = i;
                             sher = true;
@@ -2395,3 +2454,11 @@ public class Bang_fxGUI extends Application {
     
 
 }
+
+/*
+Things to fix:
+Duel list reset after turn
+Dead vs Alive situtation(really just needs to be added)
+Multiple dice picture even though there are only 5, shows 6 at times(unknown reason)
+Sometimes skips turn???
+*/

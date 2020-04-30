@@ -1213,35 +1213,45 @@ public class BANG {
     }
 
     public static void deathSeq(ArrayList<Player> play_order, Player deadMan){
-        System.out.println(deadMan + " has died!");
+        System.out.println(deadMan.name + " has died!");
         deadMan.shown = true;
         for (int l = 0; l < play_order.size(); l++) {
             if (play_order.get(l).name.equals("Vulture Sam") && !(deadMan.name.equals("Vulture Sam"))) {
                 play_order.get(l).heal(2);
             }
         }
+        deadMan.team = 3;
         play_order.remove(deadMan);
-        int t0 = 0;
-        int t1 = 0;
-        int t2 = 0;
-        for (int j = 0; j < play_order.size(); j++) {
-            int team = play_order.get(j).team;
-            if (team == 0) {
-                t0++;
+        Bang_fxGUI.undeadTotal += Bang_fxGUI.undeadCards.get(0).hand;
+        System.out.println(Bang_fxGUI.undeadCards.get(0).hand + " was pulled, new total: " + Bang_fxGUI.undeadTotal);
+        Bang_fxGUI.undeadCards.remove(Bang_fxGUI.undeadCards.get(0));
+        if(Bang_fxGUI.undeadTotal <= play_order.size()){
+            int t0 = 0;
+            int t1 = 0;
+            int t2 = 0;
+            for (int j = 0; j < play_order.size(); j++) {
+                int team = play_order.get(j).team;
+                if (team == 0) {
+                    t0++;
+                }
+                if (team == 1) {
+                    t1++;
+                }
+                if (team == 2) {
+                    t2++;
+                }
             }
-            if (team == 1) {
-                t1++;
-            }
-            if (team == 2) {
-                t2++;
+            if (t0 == 0 && t1 == 0) {
+                endGame(2);
+            } else if (t0 == 0) {
+                endGame(1);
+            } else if (t1 == 0 && t2 == 0) {
+                endGame(0);
             }
         }
-        if (t0 == 0 && t1 == 0) {
-            endGame(2);
-        } else if (t0 == 0) {
-            endGame(1);
-        } else if (t1 == 0 && t2 == 0) {
-            endGame(0);
+    else{
+            //DEAD VERSUS ALIVE
+            System.out.println("DEAD VS ALIVE");
         }
     }
     
@@ -1253,30 +1263,40 @@ public class BANG {
                 play_order.get(l).heal(2);
             }
         }
+        play_order.get(i).team = 3;
         play_order.remove(i);
-        int t0 = 0;
-        int t1 = 0;
-        int t2 = 0;
-        for (int j = 0; j < play_order.size(); j++) {
-            int team = play_order.get(j).team;
-            if (team == 0) {
-                t0++;
+        Bang_fxGUI.undeadTotal += Bang_fxGUI.undeadCards.get(0).hand;
+        System.out.println(Bang_fxGUI.undeadCards.get(0).hand + " was pulled, new total: " + Bang_fxGUI.undeadTotal);
+        Bang_fxGUI.undeadCards.remove(Bang_fxGUI.undeadCards.get(0));
+        if(Bang_fxGUI.undeadTotal <= play_order.size()){
+            int t0 = 0;
+            int t1 = 0;
+            int t2 = 0;
+            for (int j = 0; j < play_order.size(); j++) {
+                int team = play_order.get(j).team;
+                if (team == 0) {
+                    t0++;
+                }
+                if (team == 1) {
+                    t1++;
+                }
+                if (team == 2) {
+                    t2++;
+                }
             }
-            if (team == 1) {
-                t1++;
-            }
-            if (team == 2) {
-                t2++;
+            if (t0 == 0 && t1 == 0) {
+                endGame(2);
+            } else if (t0 == 0) {
+                endGame(1);
+            } else if (t1 == 0 && t2 == 0) {
+                endGame(0);
             }
         }
-        if (t0 == 0 && t1 == 0) {
-            endGame(2);
-        } else if (t0 == 0) {
-            endGame(1);
-        } else if (t1 == 0 && t2 == 0) {
-            endGame(0);
+        else{
+            //DEAD VERSUS ALIVE
+            System.out.println("DEAD VS ALIVE");
         }
-
+        
     }
 
     public static boolean notBart(ArrayList<Player> play_order, int i, boolean gringo, int damage) {

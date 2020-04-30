@@ -17,6 +17,7 @@ public class Player {
     int gatsNeeded = 3;
     int team;
     public boolean shown;
+    public boolean known;
     public boolean chiefArrow = false;
 
     Character_Cards c; //team assign
@@ -105,6 +106,7 @@ public class Player {
 
     public void revealRole() {
         this.shown = true;
+        this.known = true;
     }
     
     
