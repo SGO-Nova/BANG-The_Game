@@ -106,4 +106,20 @@ public class Player {
     public void revealRole() {
         this.shown = true;
     }
+    
+    
+//    public Player personChoice()
+//    {
+//        //Player something();
+//        
+//        return something;
+//    }
+    public boolean diceChoice()
+    {
+        
+        
+        
+        return true;
+    }
+    
 }

@@ -106,6 +106,7 @@ public class BANG {
             case 5:
                 ai5 = new Player(char_cards.get(5).name, char_cards.get(5).hp, role_cards.get(5).role, true);
             case 4:
+                
                 ai4 = new Player(char_cards.get(4).name, char_cards.get(4).hp, role_cards.get(4).role, true);
             case 3:
                 human = new Player(char_cards.get(0).name, char_cards.get(0).hp, role_cards.get(0).role, true); //MAKE THIS TRUE TO LET AI DO ALL THE PLAYING
