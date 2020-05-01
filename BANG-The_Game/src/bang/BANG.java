@@ -1289,11 +1289,13 @@ public class BANG {
             int alive = Bang_fxGUI.play_order.size();
             Bang_fxGUI.play_order.clear();
             for(int l = 0; l < Bang_fxGUI.temp_play_order.size();l++){
-                Bang_fxGUI.play_order.add(Bang_fxGUI.temp_play_order.get(l));
-                Bang_fxGUI.play_order.get(l).shown = true;
-                Bang_fxGUI.play_order.get(l).known = true;
-                if(Bang_fxGUI.play_order.get(l).health == 0){
-                    Bang_fxGUI.play_order.get(l).health = alive;
+                if(!Bang_fxGUI.temp_play_order.get(l).name.equals("NULL")){
+                    Bang_fxGUI.play_order.add(Bang_fxGUI.temp_play_order.get(l));
+                    Bang_fxGUI.temp_play_order.get(l).shown = true;
+                    Bang_fxGUI.temp_play_order.get(l).known = true;
+                    if(Bang_fxGUI.temp_play_order.get(l).health == 0){
+                        Bang_fxGUI.temp_play_order.get(l).health = alive;
+                    }
                 }
             }
             zombieS = true;
