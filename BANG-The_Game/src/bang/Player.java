@@ -61,12 +61,7 @@ public class Player {
     }
 
     public void addArrow(int number) {
-        if (this.name.equals("Jessie Jones") && this.health < 5) {
-            //do nothing 
-        } //else
-        else {
-            this.arrows += number;
-        }
+        this.arrows += number;
     }
 
     public void removeArrow(int number) {

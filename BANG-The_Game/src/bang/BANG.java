@@ -1184,7 +1184,7 @@ public class BANG {
                 most = play_order.get(i).arrows;
                 index = i;
             }
-            if (play_order.get(i).arrows == most) {
+            else if (play_order.get(i).arrows == most) {
                 index = 10;
             }
         }
@@ -1206,7 +1206,6 @@ public class BANG {
                 play_order.get(j).arrowReset();
                 play_order.get(j).chiefArrow = false;
             }
-            System.out.println(play_order.get(j).name + ") " + play_order.get(j).arrows);
         }
         
         Bang_fxGUI.arrow = 10;
@@ -1224,10 +1223,8 @@ public class BANG {
         deadMan.team = 3;
         deadMan.role = "Dead";
         play_order.remove(deadMan);
-        Bang_fxGUI.undeadTotal += Bang_fxGUI.undeadCards.get(0).hand;
-        System.out.println(Bang_fxGUI.undeadCards.get(0).hand + " was pulled, new total: " + Bang_fxGUI.undeadTotal);
-        Bang_fxGUI.undeadCards.remove(Bang_fxGUI.undeadCards.get(0));
-        if(Bang_fxGUI.undeadTotal <= play_order.size()){
+        Bang_fxGUI.turnDead++;
+        if(Bang_fxGUI.undeadTotal <= play_order.size() && Bang_fxGUI.zombieS == false){
             int t0 = 0;
             int t1 = 0;
             int t2 = 0;
@@ -1251,11 +1248,8 @@ public class BANG {
                 endGame(0);
             }
         }
-    else{
+    else if (Bang_fxGUI.zombieS == true){
             //DEAD VERSUS ALIVE
-            if(!zombieS){
-                zombieStart();
-            }
             int t3 = 0;
             int t4 = 0;
             for (int j = 0; j < Bang_fxGUI.play_order.size(); j++) {
@@ -1295,10 +1289,11 @@ public class BANG {
                     Bang_fxGUI.temp_play_order.get(l).known = true;
                     if(Bang_fxGUI.temp_play_order.get(l).health == 0){
                         Bang_fxGUI.temp_play_order.get(l).health = alive;
+                        Bang_fxGUI.temp_play_order.get(l).role = "Zombie";
                     }
                 }
             }
-            zombieS = true;
+            Bang_fxGUI.zombieS = true;
     }
     
     public static void deathSeq(ArrayList<Player> play_order, int i) {
@@ -1310,11 +1305,10 @@ public class BANG {
             }
         }
         play_order.get(i).team = 3;
+        play_order.get(i).role = "Dead";
         play_order.remove(i);
-        Bang_fxGUI.undeadTotal += Bang_fxGUI.undeadCards.get(0).hand;
-        System.out.println(Bang_fxGUI.undeadCards.get(0).hand + " was pulled, new total: " + Bang_fxGUI.undeadTotal);
-        Bang_fxGUI.undeadCards.remove(Bang_fxGUI.undeadCards.get(0));
-        if(Bang_fxGUI.undeadTotal <= play_order.size()){
+        Bang_fxGUI.turnDead++;
+        if(Bang_fxGUI.undeadTotal <= play_order.size() && Bang_fxGUI.zombieS == false){
             int t0 = 0;
             int t1 = 0;
             int t2 = 0;
@@ -1338,11 +1332,7 @@ public class BANG {
                 endGame(0);
             }
         }
-        else{
-            //DEAD VERSUS ALIVE
-            if(!zombieS){
-                zombieStart();
-            }
+        else if (Bang_fxGUI.zombieS == true){
             int t3 = 0;
             int t4 = 0;
             for (int j = 0; j < Bang_fxGUI.play_order.size(); j++) {
@@ -1401,10 +1391,10 @@ public class BANG {
                 System.out.print("Renegades have won!");
                 break;
             case 3:
-                System.out.print("The living have won!");
+                System.out.print("The Zombies have won!");
                 break;
             case 4:
-                System.out.print("The Zombies have won!");
+                System.out.print("The Living have won!");
                 break;
         }
         System.exit(0);

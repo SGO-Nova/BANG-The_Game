@@ -185,6 +185,7 @@ public class Bang_fxGUI extends Application {
     int temp = 0;
     int temp2 = 0;
     int stage = 0;
+    static int turnDead = 0;
     static int undeadTotal = 0;
     Dictionary diceOutcome= new Hashtable<String,Integer>();
     boolean gringo = false;
@@ -192,13 +193,15 @@ public class Bang_fxGUI extends Application {
     boolean reroll;
     boolean test;
     boolean Slab = false;
+    static boolean zombieS = false;
     Player left1;
     Player right1;
     Player left2;
     Player right2;
     Player left3;
     Player right3;
-
+    Player temp_player = new Player("NULL", 99, "Temp_role", true);
+    
     //Global creation of game elements
     ArrayList<Character_Cards> char_cards = new ArrayList();
     static ArrayList<UndeadCard> undeadCards = new ArrayList();
@@ -547,11 +550,29 @@ public class Bang_fxGUI extends Application {
                temp_play_order2.add(play_order.get(j)); 
                System.out.println(temp_play_order.get(j).name + " Added");
             }
+            while(turnDead != 0){
+                undeadTotal+= undeadCards.get(0).hand;
+                System.out.println(undeadCards.get(0) + " - " +undeadCards.get(0).hand);
+                System.out.println(undeadTotal);
+                turnDead--;
+                undeadCards.remove(undeadCards.get(0));
+            }
+            if(undeadTotal > play_order.size() && zombieS == false){
+                BANG.zombieStart();
+                music.stop();
+                media = new Media(this.getClass().getResource("/bang/media/Zombie.mp3").toString());
+                music = new MediaPlayer(media); 
+                music.play();
+                musicSlider.setValue(.1);
+                music.setVolume(musicSlider.getValue());
+                music.setCycleCount(100);
+            }
             
             play_order.add(play_order.get(0));
             play_order.remove(0);
             System.out.println("Start turn");
-            pick = play_order.get(0);
+            turnDead = 0;
+            pick = temp_player;
             stage = 0;
             //Move player texts
             updateCharacters();
@@ -1084,9 +1105,8 @@ public class Bang_fxGUI extends Application {
                         if(current.name.equals("Bill Noface")){
                             if (side.equals("Indian Arrow")) {
                                 current.addArrow(1);
-                                System.out.println("BILL");
                                 arrow--;
-                                if (arrow == 0) {
+                                if (arrow <= 0) {
                                     BANG.indianAttack(play_order);
                                 }
                             }
@@ -1101,9 +1121,8 @@ public class Bang_fxGUI extends Application {
                         if(current.name.equals("Bill Noface")){
                             if (side.equals("Indian Arrow")) {
                                 current.addArrow(1);
-                                System.out.println("BILL");
                                 arrow--;
-                                if (arrow == 0) {
+                                if (arrow <= 0) {
                                     BANG.indianAttack(play_order);
                                 }
                             }
@@ -1829,7 +1848,7 @@ public class Bang_fxGUI extends Application {
                         gringo = true;
                         current.addArrow(1);
                         arrow--;
-                        if(arrow == 0){
+                        if(arrow <= 0){
                             BANG.indianAttack(play_order);
                         }
                     }
@@ -1861,7 +1880,7 @@ public class Bang_fxGUI extends Application {
                         gringo = true;
                         current.addArrow(1);
                         arrow--;
-                        if(arrow == 0){
+                        if(arrow <= 0){
                             BANG.indianAttack(play_order);
                         }
                     }
@@ -1900,7 +1919,7 @@ public class Bang_fxGUI extends Application {
                         gringo = true;
                         current.addArrow(1);
                         arrow--;
-                        if(arrow == 0){
+                        if(arrow <= 0){
                             BANG.indianAttack(play_order);
                         }
                     }
@@ -1938,7 +1957,7 @@ public class Bang_fxGUI extends Application {
                         gringo = true;
                         current.addArrow(1);
                         arrow--;
-                        if(arrow == 0){
+                        if(arrow <= 0){
                             BANG.indianAttack(play_order);
                         }
                     }
@@ -1976,7 +1995,7 @@ public class Bang_fxGUI extends Application {
                         gringo = true;
                         current.addArrow(1);
                         arrow--;
-                        if(arrow == 0){
+                        if(arrow <= 0){
                             BANG.indianAttack(play_order);
                         }
                     }
@@ -2014,7 +2033,7 @@ public class Bang_fxGUI extends Application {
                         gringo = true;
                         current.addArrow(1);
                         arrow--;
-                        if(arrow == 0){
+                        if(arrow <= 0){
                             BANG.indianAttack(play_order);
                         }
                     }
@@ -2056,7 +2075,7 @@ public class Bang_fxGUI extends Application {
                         gringo = true;
                         current.addArrow(1);
                         arrow--;
-                        if(arrow == 0){
+                        if(arrow <= 0){
                             BANG.indianAttack(play_order);
                         }
                     }
@@ -2084,6 +2103,10 @@ public class Bang_fxGUI extends Application {
                 }
                 if(!(pick.name.equals("NULL"))){
                     tempP = pick;
+                    temp_play_order2.remove(tempP);
+                    if(!play_order.get(0).computer){
+                        System.out.println(tempP.name + " was removed from the list");
+                    }
                     while (dice.get(0).sides[dice.get(0).side].equals("Duel")) {
                         tempP = pick;
                         dice.get(0).roll();
@@ -2098,7 +2121,7 @@ public class Bang_fxGUI extends Application {
                         gringo = true;
                         current.addArrow(1);
                         arrow--;
-                        if(arrow == 0){
+                        if(arrow <= 0){
                             BANG.indianAttack(play_order);
                         }
                     }
@@ -2114,10 +2137,7 @@ public class Bang_fxGUI extends Application {
                     System.out.println(tempP.name + "Lost the duel!");
                     updateCharacters();
                 }
-                temp_play_order2.remove(tempP);
-                if(!play_order.get(0).computer){
-                    System.out.println(tempP.name + " was removed from the list");
-                }
+                
                 pick = new Player("NULL", 99, "NULL", true);
                 break;
             default:
@@ -2626,7 +2646,7 @@ public class Bang_fxGUI extends Application {
                         if (side.equals("Indian Arrow") && !(current.name.equals("Bill Noface"))) {
                             current.addArrow(1);
                             arrow--;
-                            if (arrow == 0) {
+                            if (arrow <= 0) {
                                 BANG.indianAttack(play_order);
                             }
                         }
@@ -2670,7 +2690,7 @@ public class Bang_fxGUI extends Application {
                         if (side.equals("Indian Arrow") && !(current.name.equals("Bill Noface"))) {
                             current.addArrow(1);
                             arrow--;
-                            if (arrow == 0) {
+                            if (arrow <= 0) {
                                 BANG.indianAttack(play_order);
                             }
                         }
@@ -2745,7 +2765,7 @@ public class Bang_fxGUI extends Application {
             } 
         }
         else{
-            for (int count = 0; count < dice.size(); count++) {
+            for (int count = 2; count < dice.size(); count++) {
                 String side = dice.get(count).sides[dice.get(count).side];
                 if (side.equals("Whiskey")) {
                     current.heal(1);
@@ -2766,7 +2786,7 @@ public class Bang_fxGUI extends Application {
 
 /*
 Things to fix:
-Dead vs Alive situtation(sometimes thinks it's situation, but isn't (figure out counting mech))
+
 ADD: 
 Whether they want to use the expansion or not (Fuck this option)
 */

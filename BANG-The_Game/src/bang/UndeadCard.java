@@ -13,7 +13,7 @@ package bang;
  * @author Ryan
  */
 public class UndeadCard {
-    public static int hand;
+    public int hand;
     public UndeadCard(int hand){
         this.hand = hand;
     }
