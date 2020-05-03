@@ -139,6 +139,7 @@ public class Bang_fxGUI extends Application {
     CheckBox nc6 = new CheckBox("");
     CheckBox nc7 = new CheckBox("");
     CheckBox nc8 = new CheckBox("");
+    CheckBox slab = new CheckBox("Double Damage");
     ArrayList<CheckBox> checkBoxes = new ArrayList();
     ArrayList<CheckBox> checkBoxes2 = new ArrayList();
     ArrayList<CheckBox> nameCheckBoxes = new ArrayList();
@@ -190,6 +191,7 @@ public class Bang_fxGUI extends Application {
     boolean gatAttack = false;
     boolean reroll;
     boolean test;
+    boolean Slab = false;
     Player left1;
     Player right1;
     Player left2;
@@ -495,7 +497,9 @@ public class Bang_fxGUI extends Application {
             undeadCards.add(u10);
             undeadCards.add(u11);
             Collections.shuffle(undeadCards);
-            
+            slab.setLayoutX(875);
+            slab.setLayoutY(600);
+            slab.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
             
             for(int i = 0; i < checkBoxes.size(); i++){
                 checkBoxes.get(i).setSelected(false);
@@ -517,9 +521,9 @@ public class Bang_fxGUI extends Application {
                 play_order.remove(play_order.get(0));
             }
             //play_order.get(0).name = "Tequilla"; ///////////////// FOR DEBUGGING USE ONLY, DELETE ON FINAL PUSH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            //play_order.get(1).name = "Jose Delgado";
-            //play_order.get(2).name = "Jose Delgado";
-            //play_order.get(3).name = "Jose Delgado";
+            //play_order.get(1).name = "Slab The Killer";
+            //play_order.get(2).name = "Slab The Killer";
+            //play_order.get(3).name = "Slab The Killer";
         });
 
         // button & Action
@@ -529,6 +533,8 @@ public class Bang_fxGUI extends Application {
         nextButton.setLayoutY(600);
         nextButton.setOnAction(d -> {
             action();
+            Slab = false;
+            gringo = false;
             dice.remove(d5);
             d5 = new Dice(0, 0, "Indian Arrow", "Dynamite", "Bull's Eye 1", "Bull's Eye 2", "Beer", "Gatling");
             dice.add(d5);
@@ -545,6 +551,7 @@ public class Bang_fxGUI extends Application {
             play_order.add(play_order.get(0));
             play_order.remove(0);
             System.out.println("Start turn");
+            pick = play_order.get(0);
             stage = 0;
             //Move player texts
             updateCharacters();
@@ -1039,7 +1046,7 @@ public class Bang_fxGUI extends Application {
                 else if((int)diceOutcome.get("Double Bull's Eye 2") > 0){
                     group.getChildren().clear();
                     group.getChildren()
-                            .addAll(table2, dice3, dice4, dice5, dice6,
+                            .addAll(table2, dice3, dice4, dice5, dice6, 
                                     Button11, Line1, Line2, Line3, Line4, Line5, Line6,
                                     Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                                     ChiefArrowButton);   
@@ -1140,7 +1147,7 @@ public class Bang_fxGUI extends Application {
                 else if((int)diceOutcome.get("Bull's Eye 1") > 0){
                     group.getChildren().clear();
                     group.getChildren()
-                            .addAll(table2, dice3, dice4, dice5,
+                            .addAll(table2, dice3, dice4, dice5, 
                                     Button8, Line1, Line2, Line3, Line4, Line5, Line6,
                                     Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                                     ChiefArrowButton);
@@ -1344,6 +1351,16 @@ public class Bang_fxGUI extends Application {
             // group all the above together
             Group group = new Group();
             group = stageSet(group);
+            if(current.name.equals("Slab The Killer")){
+                group.getChildren().addAll(slab);
+                if(Slab){
+                    slab.setDisable(true);
+                }
+                else{
+                    slab.setDisable(false);
+                }
+                slab.setSelected(false);
+            }
             scene5 = new Scene(group, 1280, 720, Color.BEIGE);
             window.setScene(scene5);
             window.show();
@@ -1394,6 +1411,16 @@ public class Bang_fxGUI extends Application {
             // group all the above together
             Group group = new Group();
             group = stageSet(group);
+            if(current.name.equals("Slab The Killer")){
+                group.getChildren().addAll(slab);
+                if(Slab){
+                    slab.setDisable(true);
+                }
+                else{
+                    slab.setDisable(false);
+                }
+                slab.setSelected(false);
+            }
             scene5 = new Scene(group, 1280, 720, Color.BEIGE);
             window.setScene(scene5);
             window.show();
@@ -1444,6 +1471,16 @@ public class Bang_fxGUI extends Application {
             // group all the above together
             Group group = new Group();
             group = stageSet(group);
+            if(current.name.equals("Slab The Killer")){
+                group.getChildren().addAll(slab);
+                if(Slab){
+                    slab.setDisable(true);
+                }
+                else{
+                    slab.setDisable(false);
+                }
+                slab.setSelected(false);
+            }
             scene5 = new Scene(group, 1280, 720, Color.BEIGE);
             window.setScene(scene5);
             window.show();
@@ -1494,6 +1531,16 @@ public class Bang_fxGUI extends Application {
             // group all the above together
             Group group = new Group();
             group = stageSet(group);
+            if(current.name.equals("Slab The Killer")){
+                group.getChildren().addAll(slab);
+                if(Slab){
+                    slab.setDisable(true);
+                }
+                else{
+                    slab.setDisable(false);
+                }
+                slab.setSelected(false);
+            }
             scene5 = new Scene(group, 1280, 720, Color.BEIGE);
             window.setScene(scene5);
             window.show();
@@ -1646,6 +1693,7 @@ public class Bang_fxGUI extends Application {
             }
             Line1.setText(current.name + ", Who do you want to duel: ");
             
+            
             updateCharacters();
             stage = 10;
             if(play_order.get(0).computer){
@@ -1777,7 +1825,21 @@ public class Bang_fxGUI extends Application {
                 }
                 if(!(pick.name.equals("NULL"))){
                     pick.damage(1);
+                    if(!gringo && pick.name.equals("El Gringo")){
+                        gringo = true;
+                        current.addArrow(1);
+                        arrow--;
+                        if(arrow == 0){
+                            BANG.indianAttack(play_order);
+                        }
+                    }
+                    if(pick.name.equals("Pedro Ramirez") && pick.arrows > 0){
+                        pick.removeArrow(1);
+                        arrow++;
+                    }
                     if (pick.health <= 0) {
+                        arrow += pick.arrows;
+                        pick.arrows = 0;
                         deathSeq(play_order, pick);
                     }
                     updateCharacters();
@@ -1795,7 +1857,21 @@ public class Bang_fxGUI extends Application {
                 }
                 if(!(pick.name.equals("NULL"))){
                     pick.damage(2);
+                    if(!gringo && pick.name.equals("El Gringo")){
+                        gringo = true;
+                        current.addArrow(1);
+                        arrow--;
+                        if(arrow == 0){
+                            BANG.indianAttack(play_order);
+                        }
+                    }
+                    if(pick.name.equals("Pedro Ramirez") && pick.arrows > 0){
+                        pick.removeArrow(1);
+                        arrow++;
+                    }
                     if (pick.health <= 0) {
+                        arrow += pick.arrows;
+                        pick.arrows = 0;
                         deathSeq(play_order, pick);
                     }
                     updateCharacters();
@@ -1813,8 +1889,28 @@ public class Bang_fxGUI extends Application {
                     }
                 }
                 if(!(pick.name.equals("NULL"))){
-                    pick.damage(1);
+                    if(slab.isSelected()){
+                        Slab = true;
+                        pick.damage(2);
+                    }
+                    else{
+                      pick.damage(1);  
+                    }
+                    if(!gringo && pick.name.equals("El Gringo")){
+                        gringo = true;
+                        current.addArrow(1);
+                        arrow--;
+                        if(arrow == 0){
+                            BANG.indianAttack(play_order);
+                        }
+                    }
+                    if(pick.name.equals("Pedro Ramirez") && pick.arrows > 0){
+                        pick.removeArrow(1);
+                        arrow++;
+                    }
                     if (pick.health <= 0) {
+                        arrow += pick.arrows;
+                        pick.arrows = 0;
                         deathSeq(play_order, pick);
                     }
                     updateCharacters();
@@ -1831,8 +1927,28 @@ public class Bang_fxGUI extends Application {
                     }
                 }
                 if(!(pick.name.equals("NULL"))){
-                    pick.damage(2);
+                    if(slab.isSelected()){
+                        Slab = true;
+                        pick.damage(4);
+                    }
+                    else{
+                      pick.damage(2);  
+                    }
+                    if(!gringo && pick.name.equals("El Gringo")){
+                        gringo = true;
+                        current.addArrow(1);
+                        arrow--;
+                        if(arrow == 0){
+                            BANG.indianAttack(play_order);
+                        }
+                    }
+                    if(pick.name.equals("Pedro Ramirez") && pick.arrows > 0){
+                        pick.removeArrow(1);
+                        arrow++;
+                    }
                     if (pick.health <= 0) {
+                        arrow += pick.arrows;
+                        pick.arrows = 0;
                         deathSeq(play_order, pick);
                     }
                     updateCharacters();
@@ -1849,8 +1965,28 @@ public class Bang_fxGUI extends Application {
                     }
                 }
                 if(!(pick.name.equals("NULL"))){
-                    pick.damage(1);
+                    if(slab.isSelected()){
+                        Slab = true;
+                        pick.damage(2);
+                    }
+                    else{
+                      pick.damage(1);  
+                    }
+                    if(!gringo && pick.name.equals("El Gringo")){
+                        gringo = true;
+                        current.addArrow(1);
+                        arrow--;
+                        if(arrow == 0){
+                            BANG.indianAttack(play_order);
+                        }
+                    }
+                    if(pick.name.equals("Pedro Ramirez") && pick.arrows > 0){
+                        pick.removeArrow(1);
+                        arrow++;
+                    }
                     if (pick.health <= 0) {
+                        arrow += pick.arrows;
+                        pick.arrows = 0;
                         deathSeq(play_order, pick);
                     }
                     updateCharacters();
@@ -1867,8 +2003,28 @@ public class Bang_fxGUI extends Application {
                     }
                 }
                 if(!(pick.name.equals("NULL"))){
-                    pick.damage(2);
+                    if(slab.isSelected()){
+                        Slab = true;
+                        pick.damage(4);
+                    }
+                    else{
+                      pick.damage(2);  
+                    }
+                    if(!gringo && pick.name.equals("El Gringo")){
+                        gringo = true;
+                        current.addArrow(1);
+                        arrow--;
+                        if(arrow == 0){
+                            BANG.indianAttack(play_order);
+                        }
+                    }
+                    if(pick.name.equals("Pedro Ramirez") && pick.arrows > 0){
+                        pick.removeArrow(1);
+                        arrow++;
+                    }
                     if (pick.health <= 0) {
+                        arrow += pick.arrows;
+                        pick.arrows = 0;
                         deathSeq(play_order, pick);
                     }
                     updateCharacters();
@@ -1893,10 +2049,27 @@ public class Bang_fxGUI extends Application {
             case 9:
                 //Gatling
                 for(int i = 1; i < play_order.size(); i++){
-                    play_order.get(i).damage(1);
+                    if(!play_order.get(i).name.equals("Paul Regret")){
+                       play_order.get(i).damage(1); 
+                    }
+                    if(!gringo && play_order.get(i).name.equals("El Gringo")){
+                        gringo = true;
+                        current.addArrow(1);
+                        arrow--;
+                        if(arrow == 0){
+                            BANG.indianAttack(play_order);
+                        }
+                    }
+                    if(play_order.get(i).name.equals("Pedro Ramirez") && play_order.get(i).arrows > 0){
+                        play_order.get(i).removeArrow(1);
+                        arrow++;
+                    }
                     if (play_order.get(i).health <= 0) {
+                        arrow += play_order.get(i).arrows;
+                        play_order.get(i).arrows = 0;
                         deathSeq(play_order, i);
                     }
+                    
                 }
                 break;
             case 10:
@@ -1921,7 +2094,21 @@ public class Bang_fxGUI extends Application {
                         dice.get(0).roll();
                     }
                     tempP.damage(1);
+                    if(!gringo && pick.name.equals("El Gringo")){
+                        gringo = true;
+                        current.addArrow(1);
+                        arrow--;
+                        if(arrow == 0){
+                            BANG.indianAttack(play_order);
+                        }
+                    }
+                    if(pick.name.equals("Pedro Ramirez") && pick.arrows > 0){
+                        pick.removeArrow(1);
+                        arrow++;
+                    }
                     if (tempP.health <= 0) {
+                        arrow += tempP.arrows;
+                        tempP.arrows = 0;
                         deathSeq(play_order, tempP);
                     }
                     System.out.println(tempP.name + "Lost the duel!");
@@ -1961,13 +2148,14 @@ public class Bang_fxGUI extends Application {
         else if(play_order.get(0).name.equals("Calamity Janet") && temp2 > 0 && stage <= 3){
             group.getChildren().clear();
                 group.getChildren()
-                    .addAll(table2, 
+                    .addAll(table2,
                             Button15, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                             nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);
 
         }
         else if((int)diceOutcome.get("Bull's Eye 1") > 0 && stage <= 4 && !current.name.equals("Calamity Janet")){
+            System.out.println("SLAB DD!");
             group.getChildren().clear();
                 group.getChildren()
                     .addAll(table2, 
@@ -1977,22 +2165,25 @@ public class Bang_fxGUI extends Application {
 
         }
         else if((int)diceOutcome.get("Double Bull's Eye 1") > 0 && stage < 5 && !current.name.equals("Calamity Janet")){
+            System.out.println("SLAB DD!");
             group.getChildren().clear();
                 group.getChildren()
-                    .addAll(table2, 
+                    .addAll(table2,
                             Button9, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                             nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);  
         }
         else if((int)diceOutcome.get("Bull's Eye 2") > 0 && stage <= 6 && !current.name.equals("Calamity Janet")){
+            System.out.println("SLAB DD!");
             group.getChildren().clear();
                 group.getChildren()
-                    .addAll(table2,
+                    .addAll(table2, 
                             Button10, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                             nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8); 
         }
         else if((int)diceOutcome.get("Double Bull's Eye 2") > 0 && stage < 7 && !current.name.equals("Calamity Janet")){
+            System.out.println("SLAB DD!");
             group.getChildren().clear();
                 group.getChildren()
                     .addAll(table2,
@@ -2020,7 +2211,7 @@ public class Bang_fxGUI extends Application {
         else if(((int)diceOutcome.get("Duel") > 0) && stage <= 10){
             group.getChildren().clear();
                 group.getChildren()
-                    .addAll(table2, 
+                    .addAll(table2,
                             Button14, Line1, Line2, Line3, Line4, Line5, Line6,
                             Line7, Line8, Line9, main1, main2, main3, main4, main5, main6, main7, main8,
                             nc1, nc2, nc3, nc4, nc5, nc6, nc7, nc8);   
@@ -2207,7 +2398,6 @@ public class Bang_fxGUI extends Application {
         players = (int)numPlayers.getValue() - 1; 
             //Create character cards, dice, and role cards
         
-        char_cards.add(new Character_Cards("Bart Cassidy", 8));
         char_cards.add(new Character_Cards("Black Jack", 8));
         char_cards.add(new Character_Cards("Calamity Janet", 8));
         char_cards.add(new Character_Cards("El Gringo", 7));
@@ -2445,7 +2635,13 @@ public class Bang_fxGUI extends Application {
                         }
                         if (side.equals("Bullet")) {
                             current.damage(1);
+                            if(current.name.equals("Pedro Ramirez") && current.arrows > 0){
+                                current.removeArrow(1);
+                                arrow++;
+                            }
                             if (current.health <= 0) {
+                                arrow += play_order.get(0).arrows;
+                                play_order.get(0).arrows = 0;
                                 deathSeq(play_order, current);
                             }
                         }
@@ -2483,7 +2679,13 @@ public class Bang_fxGUI extends Application {
                         }
                         if (side.equals("Bullet")) {
                             current.damage(1);
+                            if(current.name.equals("Pedro Ramirez") && current.arrows > 0){
+                                current.removeArrow(1);
+                                arrow++;
+                            }
                             if (current.health <= 0) {
+                                arrow += play_order.get(0).arrows;
+                                play_order.get(0).arrows = 0;
                                 deathSeq(play_order, current);
                             }
                         }
@@ -2504,7 +2706,13 @@ public class Bang_fxGUI extends Application {
         
         if((int)diceOutcome.get("Dynamite") >= 3){
             current.damage(1);
+            if(current.name.equals("Pedro Ramirez") && current.arrows > 0){
+                current.removeArrow(1);
+                arrow++;
+            }
             if (current.health <= 0) {
+                    arrow += play_order.get(0).arrows;
+                    play_order.get(0).arrows = 0;
                     deathSeq(play_order, current);
                 }
             Button4.setDisable(true);
@@ -2559,7 +2767,6 @@ public class Bang_fxGUI extends Application {
 /*
 Things to fix:
 Dead vs Alive situtation(sometimes thinks it's situation, but isn't (figure out counting mech))
-ADD:
-Bart casidy ability
-Slab Ability
+ADD: 
+Whether they want to use the expansion or not (Fuck this option)
 */
