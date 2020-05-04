@@ -211,6 +211,27 @@ public class BANG {
             int Beer = 0;
             int dynamite = 0;
             int sheriff = 0;
+            int sheriffHealth=play_order.get(sheriff).health;
+
+            //Check where the sheriff is at in the game
+            if(play_order.get(1).shown==true)
+            {   
+                sheriff = 1;
+            }
+            else if (play_order.get(2).shown==true)
+            {
+                sheriff = 2;
+            }
+            else if ((play_order.get(play_order.size()-1).shown)==true)
+            {
+                //1 to the opposite side 
+                sheriff=play_order.size()-1;
+            }
+            else if ((play_order.get(play_order.size()-2).shown)==true)
+            {
+                //2 to the opposite side
+                sheriff = play_order.size()-2;
+            }
 
             boolean gringo = false;
             boolean gatAttack = false;
@@ -279,8 +300,12 @@ public class BANG {
                     try {
                         //This will decide who to choose when needs to choose what to do
                         if (play_order.get(0).computer == true) {
-                            Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
+                            
+                            //We will choose who will gain the health point
+                            
+//                            Random random = new Random();
+//                            players = (random.nextInt(10000000) % list.size());
+                            
                             players = list.get(players);
                             System.out.println(players);
                         } else {
@@ -305,11 +330,27 @@ public class BANG {
                 try {
                     //AI choice will go here choosing coward die or loudmouth die
                     if (play_order.get(0).computer == true) {
-                        Random random = new Random();
-                        int random_int = (random.nextInt(10000000) % 2);
-                        if (random_int == 1) {
-                            answer = "y";
-                        }
+                          //We will check if the player's condition
+                          int healthCheck=play_order.get(0).health;
+                          if(healthCheck<=2)
+                          {
+                              //Going to just coward die in the end of it
+                              answer = "y";
+                              
+                          }
+                            else 
+                            {
+                                //going to take the loudmouth die
+                                //doing this for testing purposes
+                                answer= "n";
+                            }
+                          
+
+//                        Random random = new Random();
+//                        int random_int = (random.nextInt(10000000) % 2);
+//                        if (random_int == 1) {
+//                            answer = "y";
+//                        
                         System.out.println(answer);
                     } else {
                         answer = scan.next();
@@ -402,11 +443,10 @@ public class BANG {
                             {
                                 answer="y";
                             }
-                            else
-                            {
-                             
-                             //answer = "n";
-                            }
+                                else
+                                {
+                                    answer = "n";
+                                }
                             
 //                            Random random = new Random();
 //                            int random_int = (random.nextInt(10000000) % 2);
@@ -440,32 +480,15 @@ public class BANG {
                         {
                             if(play_order.get(0).role.equals("Deputy"))
                             {
-                                //Check where the sheriff is at in the game
-                                if(play_order.get(1).shown==true)
-                                {
-                                    sheriff = 1;
-                                }
-                                else if (play_order.get(2).shown==true)
-                                {
-                                    sheriff = 2;
-                                }
-                                else if ((play_order.get(play_order.size()-1).shown)==true)
-                                {
-                                    //1 to the opposite side 
-                                    sheriff=play_order.size()-1;
-                                }
-                                else if ((play_order.get(play_order.size()-2).shown)==true)
-                                {
-                                    //2 to the opposite side
-                                    sheriff = play_order.size()-2;
-                                }
+                                
                                 //Reroll Gats unless you roll two
 
                                 //Reroll Arrows and Dynomite if blackjack
                                 //So if player is BlackJack reroll dynomite otherwise must stay 
                                 //if(play_order)
-                                if(Gat>=(play_order.get(0).gatsNeeded)-1)
+                                if(dice.get(roll).sides[dice.get(roll).side].equals("Gatling"))
                                 {
+                                    //Reroll all the gats don't want to hurt the sheriff 
                                     answer= scan.next();
                                 }
                                     else
@@ -510,7 +533,6 @@ public class BANG {
                                         answer = scan.next();
                                     }
                                 }
-                                int sheriffHealth=play_order.get(sheriff).health;
                                 //Want to heal the sherriff if they are hurt, any type of hurt they are feeling we will give them the beers
                                 if(sheriffHealth<=play_order.get(sheriff).maxHealth)
                                 {
@@ -663,7 +685,7 @@ public class BANG {
                     break;
                 }
             }
-            //No Ai needed/writing this for my own sake - Jorge
+
             System.out.println("Final results: ");
             for (int count = 0; count < 5; count++) {
                 System.out.println("Dice " + (count + 1) + ": " + dice.get(count).sides[dice.get(count).side]);
@@ -685,9 +707,10 @@ public class BANG {
                         do {
                             try {
                                 
-                                //Will this use Ai
-                                //My guess is that this randomly checks if ther
+                                //Ai to select which player that will get arrow removed from 
                                 if (play_order.get(0).computer == true) {
+                                    
+                                    //Wouldn't we just want to remove the arrow from ourselves
                                     Random random = new Random();
                                     players = (random.nextInt(10000000) % list.size());
                                     players = list.get(players);
@@ -705,6 +728,7 @@ public class BANG {
                         arrow++;
                     }
                 }
+                
                 if (dice.get(count).sides[dice.get(count).side].equals("Gatling")) {
                     Gat++;
                     if (Gat >= play_order.get(0).gatsNeeded) {
@@ -816,7 +840,7 @@ public class BANG {
                     System.out.print("> ");
                     do {
                         try {
-                            //AI will go here???? 
+                            //AI will go here 
                             if (play_order.get(0).computer == true) {
                                 Random random = new Random();
                                 players = (random.nextInt(10000000) % list.size());
@@ -921,12 +945,59 @@ public class BANG {
                                 list.add(play_order.size() - 1);
                             }
                             System.out.print("> ");
+                            //BE1 decisions
                             do {
                                 try {
+                                    //We want to know which player we would like to target
+                                    
                                     if (play_order.get(0).computer == true) {
-                                        Random random = new Random();
-                                        players = (random.nextInt(10000000) % list.size());
-                                        players = list.get(players);
+                                        if(play_order.get(0).role.equals("Outlaw"))
+                                        {
+                                            
+                                            if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
+                                            {
+                                                //shoot them
+                                                
+                                            }
+                                            else
+                                            {
+                                                
+                                            }
+                                        }
+                                        else if(play_order.get(0).equals("Renegade"))
+                                        {
+                                            if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
+                                            {
+                                                //shoot them
+                                                
+                                            }
+                                            else
+                                            {
+                                                
+                                            }
+                                        }
+                                        else if (play_order.get(0).equals("Deputy"))
+                                        {
+                                            if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
+                                            {
+                                                //shoot them
+                                                
+                                            }    
+                                            else
+                                            {
+                                                
+                                            }
+                                        }
+                                        else
+                                        {
+                                                
+                                        }
+                                        
+                                        
+                                        
+//                                        Random random = new Random();
+//                                        players = (random.nextInt(10000000) % list.size());
+//                                        players = list.get(players);
                                         System.out.println(players);
                                     } else {
                                         players = scan.nextInt();
@@ -970,13 +1041,47 @@ public class BANG {
                                 list.add(play_order.size() - 3);
                             }
                             System.out.print("> ");
+                            //BE2 decisions 
                             do {
                                 try {
                                     if (play_order.get(0).computer == true) {
-                                        Random random = new Random();
-                                        players = (random.nextInt(10000000) % list.size());
-                                        players = list.get(players);
-                                        System.out.println(players);
+                                        if(play_order.get(0).role.equals("Outlaw"))
+                                        {
+                                            
+                                            if(((play_order.get(play_order.size()-2).shown)==true)||((play_order.get(2).shown)==true))
+                                            {
+                                                //shoot them
+                                                players = sheriff;
+                                                players = list.get(players);
+                                                System.out.println(players);
+                                            }
+                                                else
+                                                {
+                                                    //shoot whoever it doesn't matter we want sheriff priority 
+                                                    Random random = new Random();
+                                                    players = (random.nextInt(10000000) % list.size());
+                                                    players = list.get(players);
+                                                    System.out.println(players);
+                                                }
+                                        }
+                                        else if(play_order.get(0).role.equals("Renegade"))
+                                        {
+                                            if((((play_order.get(play_order.size()-2).shown)==true)||((play_order.get(2).shown)==true)))
+                                            {
+                                                    
+                                            }
+                                        }
+                                        else if(play_order.get(0).role.equals("Deputy"))
+                                        {
+                                            if((((play_order.get(play_order.size()-2).shown)==true)||((play_order.get(2).shown)==true)))
+                                            {
+                                                    
+                                            }
+                                        }
+                                                
+                                        
+
+//                                        
                                     } else {
                                         players = scan.nextInt();
                                     }
@@ -1085,10 +1190,12 @@ public class BANG {
                         do {
                             try {
                                 if (play_order.get(0).computer == true) {
-                                    Random random = new Random();
-                                    players = (random.nextInt(10000000) % list.size());
-                                    players = list.get(players);
-                                    System.out.println(players);
+                                    //So we want to check who to attack when we are getting 
+                                    
+//                                    Random random = new Random();
+//                                    players = (random.nextInt(10000000) % list.size());
+//                                    players = list.get(players);
+//                                    System.out.println(players);
                                 } else {
                                     players = scan.nextInt();
                                 }
