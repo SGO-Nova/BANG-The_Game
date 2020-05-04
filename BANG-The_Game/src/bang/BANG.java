@@ -431,7 +431,8 @@ public class BANG {
                 for (int roll = 0; roll < 5; roll++) {
                     if (dynamite >= 3) {
                         break;
-                    }
+                    }{
+
                     if (dice.get(roll).sides[dice.get(roll).side].equals("Dynamite") && play_order.get(0).name.equals("Belle Star")) {
                         System.out.println("Do you want to change dice" + (roll + 1) + " to a gatling gun? (y/n)");
                         answer = "n";
@@ -458,7 +459,7 @@ public class BANG {
                         }
                             else 
                             {
-                                answer = scan.next();
+                                answer = "n";
                             }
                         if (answer.equalsIgnoreCase("yes") || answer.equalsIgnoreCase("y")) 
                         {
@@ -481,15 +482,13 @@ public class BANG {
                             if(play_order.get(0).role.equals("Deputy"))
                             {
                                 
-                                //Reroll Gats unless you roll two
-
                                 //Reroll Arrows and Dynomite if blackjack
                                 //So if player is BlackJack reroll dynomite otherwise must stay 
                                 //if(play_order)
                                 if(dice.get(roll).sides[dice.get(roll).side].equals("Gatling"))
                                 {
                                     //Reroll all the gats don't want to hurt the sheriff 
-                                    answer= scan.next();
+                                    answer= "n";
                                 }
                                     else
                                     {
@@ -517,44 +516,45 @@ public class BANG {
                                     else if ((play_order.get(0).health)>=playerMaxHealth-2 && (play_order.get(0).health)<=playerMaxHealth-4)
                                     {
                                         //want to keep one beer 
-                                        answer = scan.next();
+                                        answer= "n";
 
                                     }
                                     else if((play_order.get(0).health)>=playerMaxHealth-4 && (play_order.get(0).health)<=playerMaxHealth-6)
                                     {
                                         //want to keep two beers
-                                        answer = scan.next();
+                                        answer= "n";
 
                                     }
                                     else 
                                     {
                                         //keep all beers 
                                         //reroll= false;
-                                        answer = scan.next();
+                                        answer= "n";
                                     }
                                 }
                                 //Want to heal the sherriff if they are hurt, any type of hurt they are feeling we will give them the beers
                                 if(sheriffHealth<=play_order.get(sheriff).maxHealth)
                                 {
                                     //keep beers 
-                                    answer= scan.next();
+                                    answer= "n";
                                     //reroll= false;
                                 }
-                                else
-                                {
-                                    answer= "y";
-                                }
+                                    else
+                                    {
+                                        answer= "y";
+                                    }
                                 //Also need to keep/reroll BE1 and BE2
                                 if(dice.get(roll).sides[dice.get(roll).side].equals("BE1"))
                                 {
-                                    if(sheriff!=(play_order.size()-1))
+                                    if(sheriff!=(play_order.size()-1)||sheriff!=())
                                     {
                                         //Want to keep BE1 unless it will hurt Sheriff
+                                        
                                     }
                                 }
                                     else if(dice.get(roll).sides[dice.get(roll).side].equals("BE2"))
                                     {
-                                        if(sheriff!=((play_order.size())-1))
+                                        if(sheriff!=((play_order.size())-2))
                                         {
                                             //Want to keep BE2 unless it will hurt Sheriff
 
@@ -563,7 +563,7 @@ public class BANG {
                                     }
                                     else
                                     {
-
+                                       
                                     }
                             }
                             else if (play_order.get(0).role.equals("Renegade"))
@@ -912,6 +912,7 @@ public class BANG {
                                     System.out.print("> ");
                                     answer = "n";
                                     if (play_order.get(0).computer == true) {
+                                        
                                         Random random = new Random();
                                         int random_int = (random.nextInt(10000000) % 2);
                                         if (random_int == 1) {
@@ -953,44 +954,72 @@ public class BANG {
                                     if (play_order.get(0).computer == true) {
                                         if(play_order.get(0).role.equals("Outlaw"))
                                         {
-                                            
                                             if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
                                             {
+                                                players = sheriff;
                                                 //shoot them
-                                                
+                                                players = list.get(players);
+                                                System.out.println(players);
                                             }
-                                            else
-                                            {
-                                                
-                                            }
+                                                else
+                                                {
+                                                    //Randomly going to shoot someone
+                                                    Random random = new Random();
+                                                    players = (random.nextInt(10000000) % list.size());
+                                                    players = list.get(players);
+                                                    System.out.println(players);
+                                                }
                                         }
                                         else if(play_order.get(0).equals("Renegade"))
                                         {
                                             if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
                                             {
-                                                //shoot them
+                                                //Don't shoot them
                                                 
                                             }
                                             else
                                             {
-                                                
+                                                //Shoot anyone else
                                             }
                                         }
                                         else if (play_order.get(0).equals("Deputy"))
                                         {
+                                            //Doing this to make sure the Dep doesn't shoot on the sheriff
                                             if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
                                             {
-                                                //shoot them
                                                 
+                                                Random random = new Random();
+                                                players = (random.nextInt(10000000) % list.size());
+                                                
+                                                //Don't shoot them
+                                                //This will check if the random number generated is not the sheriff
+                                                if(sheriff == players)
+                                                {
+                                                    players++;
+                                                    if(players>list.size())
+                                                    {
+                                                        players = players - 2;
+                                                    }
+                                                    players = list.get(players);
+                                                    System.out.println(players);
+                                                }
                                             }    
-                                            else
-                                            {
-                                                
-                                            }
+                                                else
+                                                {
+                                                    //Shoot anyone else
+                                                    Random random = new Random();
+                                                    players = (random.nextInt(10000000) % list.size());
+                                                    players = list.get(players);
+                                                    System.out.println(players);
+                                                }
                                         }
                                         else
                                         {
-                                                
+                                            Random random = new Random();
+                                            players = (random.nextInt(10000000) % list.size());
+                                            players = list.get(players);
+                                            System.out.println(players);
+                                            
                                         }
                                         
                                         
@@ -998,7 +1027,7 @@ public class BANG {
 //                                        Random random = new Random();
 //                                        players = (random.nextInt(10000000) % list.size());
 //                                        players = list.get(players);
-                                        System.out.println(players);
+//                                        System.out.println(players);
                                     } else {
                                         players = scan.nextInt();
                                     }
@@ -1046,8 +1075,7 @@ public class BANG {
                                 try {
                                     if (play_order.get(0).computer == true) {
                                         if(play_order.get(0).role.equals("Outlaw"))
-                                        {
-                                            
+                                        {                                            
                                             if(((play_order.get(play_order.size()-2).shown)==true)||((play_order.get(2).shown)==true))
                                             {
                                                 //shoot them
@@ -1481,6 +1509,7 @@ public class BANG {
         }
 
     }
+    
 
     public static void bartAction(ArrayList<Player> play_order, int i, int dam) {
         System.out.println("Bart Cassidy: Would you like to take an arrow instead of damage? (y/n)");
