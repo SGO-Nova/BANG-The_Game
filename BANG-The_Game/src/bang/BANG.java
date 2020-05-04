@@ -308,8 +308,15 @@ public class BANG {
 //                            players = (random.nextInt(10000000) % list.size());
                             if(play_order.get(0).role.equals("Deputy"))
                             {
-                                
+                                //We want to give health to sheriff
+                                players=sheriff;
+                                players = list.get(players);
+                                System.out.println(players);
                             }
+                                else
+                                {
+                                
+                                }
                             players = list.get(players);
                             System.out.println(players);
                         } else {
