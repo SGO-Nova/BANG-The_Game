@@ -211,6 +211,7 @@ public class BANG {
             int Beer = 0;
             int dynamite = 0;
             int sheriff = 0;
+            int healthCheck=play_order.get(0).health;
             int sheriffHealth=play_order.get(sheriff).health;
 
             //Check where the sheriff is at in the game
@@ -298,14 +299,17 @@ public class BANG {
                 System.out.print("> ");
                 do {
                     try {
-                        //This will decide who to choose when needs to choose what to do
+                        //This will decide who to choose to gain the health point
                         if (play_order.get(0).computer == true) {
                             
                             //We will choose who will gain the health point
                             
 //                            Random random = new Random();
 //                            players = (random.nextInt(10000000) % list.size());
-                            
+                            if(play_order.get(0).role.equals("Deputy"))
+                            {
+                                
+                            }
                             players = list.get(players);
                             System.out.println(players);
                         } else {
@@ -331,7 +335,7 @@ public class BANG {
                     //AI choice will go here choosing coward die or loudmouth die
                     if (play_order.get(0).computer == true) {
                           //We will check if the player's condition
-                          int healthCheck=play_order.get(0).health;
+                          healthCheck=play_order.get(0).health;
                           if(healthCheck<=2)
                           {
                               //Going to just coward die in the end of it
@@ -368,6 +372,10 @@ public class BANG {
                 do {
                     try {
                         if (play_order.get(0).computer == true) {
+                            if(healthCheck<)
+                            {
+                                //asdf
+                            }
                             Random random = new Random();
                             int random_int = (random.nextInt(10000000) % 2);
                             if (random_int == 1) {
