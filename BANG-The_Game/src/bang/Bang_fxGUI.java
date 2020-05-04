@@ -145,7 +145,7 @@ public class Bang_fxGUI extends Application {
     Button nextButton = new Button("Next");
     Button Button2 = new Button("Next");
     Button Button3 = new Button("Next");
-    Button Button4 = new Button("Next");
+    Button Button4 = new Button("Re-Roll");
     Button Button5 = new Button("Next");
     Button Button6 = new Button("Next");
     Button Button7 = new Button("Next");
@@ -514,6 +514,7 @@ public class Bang_fxGUI extends Application {
             TTG.add(TTG5);
             
             //Add all the next scene buttons to their ArrayList
+            next.add(nextButton);
             next.add(Button2);
             next.add(Button3);
             next.add(Button5);
@@ -559,6 +560,10 @@ public class Bang_fxGUI extends Application {
                 next.get(j).setLayoutX(1100);
                 next.get(j).setLayoutY(600);
             }
+            Button4.setText("Roll");
+            Button4.setFont(Font.font("Verdana", FontWeight.BOLD, 18));
+            Button4.setLayoutX(1025);
+            Button4.setLayoutY(600);
             
             //set the main menu scene
             window.setScene(scene2);
