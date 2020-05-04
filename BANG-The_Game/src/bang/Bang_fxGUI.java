@@ -789,7 +789,7 @@ public class Bang_fxGUI extends Application {
             updateCharacters();
             
             //Prompts user to select dice to use
-            Line1.setText("Pick the dice you want to use: ");
+            Line1.setText(current.name + ", pick the dice you want to use: ");
 
             //Format dice checkboxes
             for (int i = 0; i < 7; i++) {                                       //For the size of all the check boxes for the dice selection
@@ -844,7 +844,7 @@ public class Bang_fxGUI extends Application {
             c6.setText("Loudmouth");
             imageSet(dice06, 75, 75, Img_Loud);
             imageMove(dice06, (int)c6.getLayoutX(),(int)c6.getLayoutY() - 92);
-            c7.setText("Coawrd");
+            c7.setText("Coward");
             imageSet(dice07, 75, 75, Img_Coward);
             imageMove(dice07, (int)c7.getLayoutX(),(int)c7.getLayoutY() - 92);
             
@@ -1017,7 +1017,7 @@ public class Bang_fxGUI extends Application {
             ChiefArrowButton.setDisable(true);
         
             //Prompts to select dice to reroll
-            Line1.setText("Pick the dice you want to Re-Roll: ");
+            Line1.setText(current.name + ", pick the dice you want to Re-Roll: ");
             
             //Sets the checkboxes and images for dice 
             for (int i = 0; i < dice.size(); i++) {
@@ -1685,7 +1685,7 @@ public class Bang_fxGUI extends Application {
             window.show();
             
             //Prompts who they want to shoot
-            Line1.setText(current.name + ", Who do you want to shoot: ");
+            Line1.setText(current.name + ", who do you want to shoot: ");
             
             //Sets checkboxes
             for (int i = 0; i < nameCheckBoxes.size(); i++) {
@@ -1779,7 +1779,7 @@ public class Bang_fxGUI extends Application {
             
             //Prompts who to shoot
             Line1.setText(current.name +
-                    ", Who do you want to shoot (Double damage): ");
+                    ", who do you want to shoot (Double damage): ");
             
             //Format Checkboxes
             for (int i = 0; i < nameCheckBoxes.size(); i++) {
@@ -1872,7 +1872,7 @@ public class Bang_fxGUI extends Application {
             window.show();
             
             //Prompts who to shoot
-            Line1.setText(current.name + ", Who do you want to shoot: ");
+            Line1.setText(current.name + ", who do you want to shoot: ");
             
             //Format Checkboxes
             for (int i = 0; i < nameCheckBoxes.size(); i++) {
@@ -1966,7 +1966,7 @@ public class Bang_fxGUI extends Application {
             
             //Prompts who to shoot
             Line1.setText(current.name +
-                    ", Who do you want to shoot (Double damage): ");
+                    ", who do you want to shoot (Double damage): ");
             
             //Format checkboxes
             for (int i = 0; i < nameCheckBoxes.size(); i++) {
@@ -2046,7 +2046,7 @@ public class Bang_fxGUI extends Application {
             window.show();
             
             //Prompts who to heal
-            Line1.setText(current.name + ", Who do you want to heal: ");
+            Line1.setText(current.name + ", who do you want to heal: ");
             
             //Formats Checkboxes
             for (int i = 0; i < nameCheckBoxes.size(); i++) {
@@ -2129,7 +2129,7 @@ public class Bang_fxGUI extends Application {
             }
             
             //Prompts they have a gatling gun
-            Line1.setText(current.name + ", You have used a Gatling Gun!");
+            Line1.setText(current.name + ", you have used a Gatling Gun!");
             
             //Calls character label update function
             updateCharacters();
@@ -2193,7 +2193,7 @@ public class Bang_fxGUI extends Application {
             }
             
             //Prompts who to duel
-            Line1.setText(current.name + ", Who do you want to duel: ");
+            Line1.setText(current.name + ", who do you want to duel: ");
             
             //Calls character label update function
             updateCharacters();
