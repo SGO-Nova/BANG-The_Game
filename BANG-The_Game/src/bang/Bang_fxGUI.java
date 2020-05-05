@@ -10,6 +10,7 @@ package bang;
 
 // imports galore
 import static bang.BANG.deathSeq;
+import static bang.BANG.scan;
 import java.util.*;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -197,10 +198,13 @@ public class Bang_fxGUI extends Application {
     int total = 0;
     int total2 = 0;
     int dynamite = 0;
+    int sheriff = 0;
     static int players;
     static int arrow = 10;
     static int turnDead = 0;
     static int undeadTotal = 0;
+    int healthCheck=play_order.get(0).health;
+    int sheriffHealth=play_order.get(sheriff).health;
     
     //All of the Booleans(static and non-static)
     boolean test;
@@ -210,6 +214,10 @@ public class Bang_fxGUI extends Application {
     boolean gatAttack = false;
     static boolean zombieS = false;
     static boolean chiefArrow = true;
+    
+    
+    
+    
     
     //Dictionary used to hold all the roll values later used for the AI functions
     Dictionary diceOutcome= new Hashtable<String,Integer>();
@@ -721,13 +729,65 @@ public class Bang_fxGUI extends Application {
                             FontWeight.BOLD, 24));                                  //Set Font
                 }
             }
+            
+            
+            if(play_order.get(1).known==true)
+            {   
+                sheriff = 1;
+            }
+            else if (play_order.get(2).known==true)
+            {
+                sheriff = 2;
+            }
+            else if ((play_order.get(play_order.size()-1).known)==true)
+            {
+                //1 to the opposite side 
+                sheriff=play_order.size()-1;
+            }
+            else if ((play_order.get(play_order.size()-2).known)==true)
+            {
+                //2 to the opposite side
+                sheriff = play_order.size()-2;
+            }
             //Set text to who Sid wants to heal
             Line1.setText(current.name + ", who do you want to heal?");
             
             //Call AI function to answer if they are a computer
             if(play_order.get(0).computer){
                 //AI FUNCTION HERE(people)
-            }
+                if(play_order.get(0).role.equals("Deputy"))
+                    {
+                        //We want to give health to sheriff
+                        players=sheriff;
+                        players = list.get(players);
+                        System.out.println(players);
+                    }
+                else if(play_order.get(0).role.equals("Renegade"))
+                {
+                    if(play_order.get(0).health<=4)
+                    {
+                        Random random = new Random();
+                        players = (random.nextInt(10000000) % list.size());
+                        players = list.get(players);
+                        System.out.println(players);
+                    }
+                    else
+                    {
+                        players=sheriff;
+                        players = list.get(players);
+                        System.out.println(players);
+                    }
+                }
+                else
+                {
+                    Random random = new Random();
+                    players = (random.nextInt(10000000) % list.size());
+                    players = list.get(players);
+                    System.out.println(players);
+                }                        
+                } 
+        
+            
             
             //Call event handler for checkboxes if checked and unchecked
             nc1.setOnAction(eh2);
@@ -864,6 +924,24 @@ public class Bang_fxGUI extends Application {
             //AI function call if computer
             if(play_order.get(0).computer){
                 //AI FUNCTION HERE(dice(last dice)) ie. regular, loudmouth, coward
+                          //We will check if the player's condition has low health
+                          healthCheck=play_order.get(0).health;
+                          //Doing this since there is double beer for the deputy to take advantage 
+                          if(play_order.get(0).role.equals("Deputy")||play_order.get(0).maxHealth<8)
+                          {
+                              //Going to just coward die to be get a more defensive playstyle
+                              
+                          }
+                          else if(play_order.get(0).role.equals("Outlaw"))
+                          {
+                              //We want all the smoke we want loudmouth with outlaws 
+                          }
+                            else 
+                            {
+                                //Everyone else will just get normal die
+                                //doing this for testing purposes
+                                //answer= "n";
+                            }
             }
         });
 
@@ -1198,6 +1276,68 @@ public class Bang_fxGUI extends Application {
                     Button5.setDisable(false);
                 }
                 //AI FUNCTION HERE(dice reroll)
+                if(play_order.get(0).role.equals("Deputy"))
+                {
+                    if(dice.get(rolls).sides[dice.get(rolls).side].equals("Gatling"))
+                    {
+                        //Reroll all the gats don't want to hurt the sheriff 
+                        //answer= "n";
+                    }
+                        else
+                        {
+                            //reroll= true;
+                            //answer= "y";
+                            //dice.get(roll).roll();
+                        }
+                    //
+                    if(dice.get(rolls).sides[dice.get(rolls).side].equals("Indian Arrow"))
+                    {
+                        //reroll=true;
+                        dice.get(rolls).roll();
+                    }
+                        //keep beers if player has low health 
+                    if(dice.get(rolls).sides[dice.get(rolls).side].equals("Beer"))
+                    {
+                        //loop this to see all sides 
+                        int playerMaxHealth= play_order.get(0).maxHealth;
+                        //want to reroll if current health is less than max 
+                        if((play_order.get(0).health)>=playerMaxHealth-2)
+                        {
+                            //answer= "y";
+                            //reroll=true;
+                        }
+                        else if ((play_order.get(0).health)>=playerMaxHealth-2 && (play_order.get(0).health)<=playerMaxHealth-4)
+                        {
+                            //want to keep one beer 
+                            //answer= "n";
+
+                        }
+                        else if((play_order.get(0).health)>=playerMaxHealth-4 && (play_order.get(0).health)<=playerMaxHealth-6)
+                        {
+                            //want to keep two beers
+                            //answer= "n";
+
+                        }
+                        else 
+                        {
+                            //keep all beers 
+                            //reroll= false;
+                            //answer= "n";
+                        }
+                    }
+                                //Want to heal the sherriff if they are hurt, any type of hurt they are feeling we will give them the beers
+                        if(sheriffHealth<=play_order.get(sheriff).maxHealth)
+                        {
+                            //keep beers 
+                            //answer= "n";
+                            //reroll= false;
+                        }
+                        else
+                        {
+                            //answer= "y";
+                        }
+                }
+                
             }
         });
 
@@ -1518,6 +1658,75 @@ public class Bang_fxGUI extends Application {
             //AI funciton
             if(play_order.get(0).computer){
                 //AI FUNCTION HERE(people)
+                if(play_order.get(0).role.equals("Outlaw"))
+                                        {
+                                            if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
+                                            {
+                                                players = sheriff;
+                                                //shoot them
+                                                players = list.get(players);
+                                                System.out.println(players);
+                                            }
+                                                else
+                                                {
+                                                    //Randomly going to shoot someone
+                                                    Random random = new Random();
+                                                    players = (random.nextInt(10000000) % list.size());
+                                                    players = list.get(players);
+                                                    System.out.println(players);
+                                                }
+                                        }
+                                        else if(play_order.get(0).equals("Renegade"))
+                                        {
+                                            if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
+                                            {
+                                                //Don't shoot them
+                                                
+                                            }
+                                            else
+                                            {
+                                                //Shoot anyone else
+                                            }
+                                        }
+                                        else if (play_order.get(0).equals("Deputy"))
+                                        {
+                                            //Doing this to make sure the Dep doesn't shoot on the sheriff
+                                            if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
+                                            {
+                                                
+                                                Random random = new Random();
+                                                players = (random.nextInt(10000000) % list.size());
+                                                
+                                                //Don't shoot them
+                                                //This will check if the random number generated is not the sheriff
+                                                if(sheriff == players)
+                                                {
+                                                    players++;
+                                                    if(players>list.size())
+                                                    {
+                                                        players = players - 2;
+                                                    }
+                                                    players = list.get(players);
+                                                    System.out.println(players);
+                                                }
+                                            }    
+                                                else
+                                                {
+                                                    //Shoot anyone else
+                                                    Random random = new Random();
+                                                    players = (random.nextInt(10000000) % list.size());
+                                                    players = list.get(players);
+                                                    System.out.println(players);
+                                                }
+                                        }
+                                        else
+                                        {
+                                            Random random = new Random();
+                                            players = (random.nextInt(10000000) % list.size());
+                                            players = list.get(players);
+                                            System.out.println(players);
+                                            
+                                        }
             }
         });
         
