@@ -2474,7 +2474,7 @@ public class Bang_fxGUI extends Application {
                 //AI FUNCTION HERE (people)
                 if(play_order.get(0).role.equals("Outlaw"))
                 {
-                    if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
+                    if(((play_order.get(play_order.size()-2).shown)==true)||((play_order.get(2).shown)==true))
                     {
                         players = sheriff;
                         //shoot them
@@ -2492,7 +2492,7 @@ public class Bang_fxGUI extends Application {
                     }
                     else if(play_order.get(0).equals("Renegade"))
                     {
-                        if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
+                        if(((play_order.get(play_order.size()-2).shown)==true)||((play_order.get(2).shown)==true))
                         {
                             //First going to check if it's only the renegade and sheriff, since if that's it only attack them 
                             if((play_order.size())<=2)
@@ -2534,7 +2534,7 @@ public class Bang_fxGUI extends Application {
                     else if (play_order.get(0).equals("Deputy"))
                     {
                         //Doing this to make sure the Dep doesn't shoot on the sheriff
-                        if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
+                        if(((play_order.get(play_order.size()-2).shown)==true)||((play_order.get(2).shown)==true))
                         {
                             Random random = new Random();
                             players = (random.nextInt(10000000) % list.size());
@@ -2664,7 +2664,7 @@ public class Bang_fxGUI extends Application {
                 //AI FUNCTION HERE (people)
                 if(play_order.get(0).role.equals("Outlaw"))
                 {
-                    if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
+                    if(((play_order.get(play_order.size()-2).shown)==true)||((play_order.get(2).shown)==true))
                     {
                         players = sheriff;
                         //shoot them
@@ -2682,7 +2682,7 @@ public class Bang_fxGUI extends Application {
                     }
                     else if(play_order.get(0).equals("Renegade"))
                     {
-                        if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
+                        if(((play_order.get(play_order.size()-2).shown)==true)||((play_order.get(2).shown)==true))
                         {
                             //First going to check if it's only the renegade and sheriff, since if that's it only attack them 
                             if((play_order.size())<=2)
@@ -2824,30 +2824,33 @@ public class Bang_fxGUI extends Application {
             if(play_order.get(0).computer)
             {
                 //AI FUNCTION HERE (people)
-                int playerMaxHealth= play_order.get(0).maxHealth;
-                //want to reroll if current health is less than max 
-                if((play_order.get(0).health)>=playerMaxHealth-2)
+                if(play_order.get(0).role.equals("Deputy"))
                 {
-                    //answer= "y";
-                    //reroll=true;
+                    //Heal the sheriff no matter what 
+                    players=sheriff;
+                    players = list.get(players);
+                    System.out.println(players);
                 }
-                else if ((play_order.get(0).health)>=playerMaxHealth-2 && (play_order.get(0).health)<=playerMaxHealth-4)
+                else if(play_order.get(0).role.equals("Renegade"))
                 {
-                    //want to keep one beer 
-                    //answer= "n";
-
+                    //Heal the sheriff only if they are not the last ones
+                    if((play_order.size())<=2)
+                    {
+                        //Don't heal them you want to kill them
+                        //Could try to be cute with it like this
+                        //players=play_order.get(0);
+                    }
+                    else
+                    {
+                        //
+                        players=sheriff;
+                        players = list.get(players);
+                        System.out.println(players); 
+                    }
                 }
-                else if((play_order.get(0).health)>=playerMaxHealth-4 && (play_order.get(0).health)<=playerMaxHealth-6)
+                else
                 {
-                    //want to keep two beers
-                    //answer= "n";
-
-                }
-                else 
-                {
-                    //keep all beers 
-                    //reroll= false;
-                    //answer= "n";
+                    //Heal random ones
                 }
             }
         });
@@ -2973,6 +2976,7 @@ public class Bang_fxGUI extends Application {
                 if(play_order.get(0).role.equals("Deputy"))
                 {
                     //We want to square up with literally anyone but the sheriff 
+                    
                 }
                 else if(play_order.get(0).role.equals("Outlaw"))
                 {
@@ -2980,7 +2984,7 @@ public class Bang_fxGUI extends Application {
                 }
                 else 
                 {
-                    
+                    //Square up with anyone
                 }
             }
         });
