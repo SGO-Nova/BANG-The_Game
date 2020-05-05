@@ -203,8 +203,8 @@ public class Bang_fxGUI extends Application {
     static int arrow = 10;
     static int turnDead = 0;
     static int undeadTotal = 0;
-    int healthCheck=play_order.get(0).health;
-    int sheriffHealth=play_order.get(sheriff).health;
+    int healthCheck;
+    int sheriffHealth;
     
     //All of the Booleans(static and non-static)
     boolean test;
@@ -645,7 +645,9 @@ public class Bang_fxGUI extends Application {
             turnDead = 0;
             pick = temp_player;
             stage = 0;
-            
+            healthCheck=play_order.get(0).health;
+            sheriffHealth=play_order.get(sheriff).health;
+    
             //Calls label update function
             updateCharacters();
             
