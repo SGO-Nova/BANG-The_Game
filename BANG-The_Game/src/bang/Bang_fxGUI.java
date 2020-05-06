@@ -3232,7 +3232,7 @@ public class Bang_fxGUI extends Application {
         //Makes group for main menu scene
         Group group1 = new Group();
         
-        // <easterEgg>
+        // <01000101 01100001 01110011 01110100 01100101 01110010 00100000 01100101 01100111 01100111>
         //logo.setPickOnBounds(true);
         logo.setOnMouseClicked((MouseEvent easterEgg) -> { 
             System.out.println("Clicked on logo! Easter egg displayed.");
@@ -3269,7 +3269,7 @@ public class Bang_fxGUI extends Application {
             
             group1.getChildren().addAll(label_easterEgg, label_easterEgg2);
         });
-        // </easterEgg>
+        // </01000101 01100001 01110011 01110100 01100101 01110010 00100000 01100101 01100111 01100111>
         
         //Sets group
         Group group2 = new Group();
