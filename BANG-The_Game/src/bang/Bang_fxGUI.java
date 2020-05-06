@@ -1,7 +1,8 @@
 /*
  * Ryan Browning
+ * Collaborators: Shafat Rakin & Jorge Carlos
  * CS 2365-001
- * Project 3
+ * Project 3 - 4
  * Spring 2020
  * This file implements a GUI using JavaFX.
  */
