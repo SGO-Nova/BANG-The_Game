@@ -35,7 +35,7 @@ public class BANG_endGame extends Application
     public void start (Stage stage1) throws Exception
     {   
         // uploads background and logo images
-        Image img_table = new Image(new FileInputStream("src/bang/media/wood_TableTop.jpg"));
+        Image img_table = new Image(new FileInputStream("src/bang/media/winner_bg.jpg"));
         ImageView table = new ImageView(img_table);
         Image img_logo = new Image(new FileInputStream("src/bang/media/bang.png"));
         ImageView logo = new ImageView(img_logo);
@@ -54,8 +54,8 @@ public class BANG_endGame extends Application
         Label label_winner = new Label("Congratulations to the winner!!!");
         label_winner.setAlignment(Pos.CENTER);
         label_winner.setFont(Font.font("Verdana", FontWeight.BOLD, 36));
-        label_winner.setLayoutX(350);
-        label_winner.setLayoutY(375);
+        label_winner.setLayoutX(325);
+        label_winner.setLayoutY(350);
 
         // groups the above together
         Group group1 = new Group();
