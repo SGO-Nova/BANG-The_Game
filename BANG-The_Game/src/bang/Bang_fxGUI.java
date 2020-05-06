@@ -2156,7 +2156,7 @@ public class Bang_fxGUI extends Application {
                     }
                     else if (play_order.get(0).equals("Deputy"))
                     {
-                        //Doing this to make sure the Dep doesn't shoot on the sheriff
+                        //Doing this to make sure the Dep doesn't shoot the sheriff
                         if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
                         {
                             Random random = new Random();
@@ -2820,7 +2820,7 @@ public class Bang_fxGUI extends Application {
             updateCharacters();
             
             //Sets stage for action function
-            stage = 8;
+            stage = 8; 
             
             //AI Function
             if(play_order.get(0).computer)
@@ -2831,7 +2831,7 @@ public class Bang_fxGUI extends Application {
                     //Heal the sheriff no matter what 
                     players=sheriff;
                     players = list.get(players);
-                    System.out.println(players);
+                    //System.out.println(players);
                 }
                 else if(play_order.get(0).role.equals("Renegade"))
                 {
