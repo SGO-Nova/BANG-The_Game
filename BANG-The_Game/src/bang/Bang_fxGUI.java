@@ -588,7 +588,7 @@ public class Bang_fxGUI extends Application {
                 play_order.remove(play_order.get(0));
             }
             
-            play_order.get(1).name = "Sid Ketchum";
+            //play_order.get(1).name = "Sid Ketchum";
         });
         
         //Start of the round button
