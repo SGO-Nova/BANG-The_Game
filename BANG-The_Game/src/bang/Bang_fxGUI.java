@@ -42,6 +42,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.*;
 import java.util.function.UnaryOperator;
 import javafx.scene.text.FontPosture;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Bang_fxGUI extends Application {
 
@@ -586,6 +587,8 @@ public class Bang_fxGUI extends Application {
                 play_order.add(play_order.get(0));
                 play_order.remove(play_order.get(0));
             }
+            
+            play_order.get(1).name = "Sid Ketchum";
         });
         
         //Start of the round button
@@ -762,7 +765,7 @@ public class Bang_fxGUI extends Application {
                 {
                     for(int i=0; i < nameCheckBoxes.size();i++)
                     {
-                        if(nameCheckBoxes.get(i).getText().equals("Sheriff"))
+                        if(play_order.get(i).role.equals("Sheriff"))
                         {
                             nameCheckBoxes.get(i).setSelected(true);
                         }
@@ -778,9 +781,7 @@ public class Bang_fxGUI extends Application {
                 {
                     if(play_order.get(0).health<=4)
                     {
-                        Random random = new Random();
-                        players = (random.nextInt(10000000) % list.size());
-                        nameCheckBoxes.get(players).setSelected(true);
+                        nameCheckBoxes.get(0).setSelected(true);
 //                        players = list.get(players);
 //                        System.out.println(players);
                     }
@@ -788,7 +789,7 @@ public class Bang_fxGUI extends Application {
                     {
                         for(int i=0; i < nameCheckBoxes.size();i++)
                         {
-                            if(nameCheckBoxes.get(i).getText().equals("Sheriff"))
+                            if(play_order.get(i).role.equals("Sheriff"))
                             {
                                 nameCheckBoxes.get(i).setSelected(true);
                                
@@ -802,9 +803,7 @@ public class Bang_fxGUI extends Application {
                 }
                 else
                 {
-                    Random random = new Random();
-                    players = (random.nextInt(10000000) % list.size());
-                    nameCheckBoxes.get(players).setSelected(true);
+                    nameCheckBoxes.get(0).setSelected(true);
                 }                        
                 } 
         
@@ -951,7 +950,7 @@ public class Bang_fxGUI extends Application {
                 //Doing this since there is double beer for the deputy to take advantage 
                 if(play_order.get(0).role.equals("Deputy")||play_order.get(0).maxHealth<8)
                 {
-                    checkBoxes2.get(5).setSelected(true);
+                    checkBoxes.get(5).setSelected(true);
                     
                 }
                 //team outlaws
@@ -959,7 +958,7 @@ public class Bang_fxGUI extends Application {
                 {
 
                     //We want all the smoke we want loudmouth with outlaws 
-                    checkBoxes2.get(6).setSelected(true);
+                    checkBoxes.get(6).setSelected(true);
 
                 }
                 else 
@@ -967,7 +966,7 @@ public class Bang_fxGUI extends Application {
                     //Everyone else will just get normal die
                     //doing this for testing purposes
                     //answer= "n";
-                    checkBoxes2.get(4).setSelected(true);
+                    checkBoxes.get(4).setSelected(true);
 
                     
                 }
@@ -1305,79 +1304,45 @@ public class Bang_fxGUI extends Application {
                     Button5.setDisable(false);
                 }
                 //AI FUNCTION HERE(dice reroll)
-                if(play_order.get(0).role.equals("Deputy"))
-                {
-                    //for(int i; i)
-                    if(dice.get(rolls).sides[dice.get(rolls).side].equals("Gatling"))
-                    {
-                        //Reroll all the gats don't want to hurt the sheriff 
-                        //answer= "n";
-                        checkBoxes.get(0).setSelected(true);
-                        
-                        
-                    }
-                        else
+                for(int roll = 0; roll < dice.size(); roll++){
+                    if(dice.get(roll).canRoll){
+                        //
+                        if(dice.get(rolls).sides[dice.get(rolls).side].equals("Indian Arrow"))
                         {
-                            //reroll= true;
-                            //answer= "y";
-                            //dice.get(roll).roll();
-                            checkBoxes.get(0).setSelected(true);
-                        }
-                    //
-                    if(dice.get(rolls).sides[dice.get(rolls).side].equals("Indian Arrow"))
-                    {
-                        //reroll=true;
-                        //dice.get(rolls).roll();
-                        
-                    }
-                        //keep beers if player has low health 
-                    if(dice.get(rolls).sides[dice.get(rolls).side].equals("Beer"))
-                    {
-                        //loop this to see all sides 
-                        int playerMaxHealth= play_order.get(0).maxHealth;
-                        //want to reroll if current health is less than max 
-                        if((play_order.get(0).health)>=playerMaxHealth-2)
-                        {
-                            //answer= "y";
                             //reroll=true;
-                        }
-                        else if ((play_order.get(0).health)>=playerMaxHealth-2 && (play_order.get(0).health)<=playerMaxHealth-4)
-                        {
-                            //want to keep one beer 
-                            //answer= "n";
+                            //dice.get(rolls).roll();
+                            checkBoxes2.get(roll).setSelected(true);
 
                         }
-                        else if((play_order.get(0).health)>=playerMaxHealth-4 && (play_order.get(0).health)<=playerMaxHealth-6)
+                            //keep beers if player has low health 
+                        if(dice.get(rolls).sides[dice.get(rolls).side].equals("Beer") || dice.get(rolls).sides[dice.get(rolls).side].equals("Whiskey"))
                         {
-                            //want to keep two beers
-                            //answer= "n";
+                            //loop this to see all sides 
+                            int playerMaxHealth= play_order.get(0).maxHealth;
+                            //want to reroll if current health is less than max 
+                            if((play_order.get(0).health)!= playerMaxHealth)
+                            {
+                                //answer= "y";
+                                //reroll=true;
+                                checkBoxes2.get(roll).setSelected(true);
+                            }
 
-                        }
-                        else 
-                        {
-                            //keep all beers 
-                            //reroll= false;
-                            //answer= "n";
-                        }
-                    }
-                                //Want to heal the sherriff if they are hurt, any type of hurt they are feeling we will give them the beers
-                        if(sheriffHealth<=play_order.get(sheriff).maxHealth)
-                        {
-                            //keep beers 
-                            //answer= "n";
-                            //reroll= false;
                         }
                         else
                         {
                             //answer= "y";
+                            if(ThreadLocalRandom.current().nextInt(0, 200000 + 1) % 2 == 1){
+                                checkBoxes2.get(roll).setSelected(true);
+                            }
+                            else{
+                                checkBoxes2.get(roll).setSelected(false);
+                            }
                         }
+                    }
                 }
-                else
-                {
-                    
-                }
-                
             }
+            
+            
         });
 
         //Button Action leads to Final Result scene
@@ -1702,7 +1667,7 @@ public class Bang_fxGUI extends Application {
                 {
                     for(int i=0; i < nameCheckBoxes.size();i++)
                     {
-                        if(nameCheckBoxes.get(i).getText().equals("Sheriff"))
+                        if(play_order.get(i).role.equals("Sheriff"))
                         {
                             nameCheckBoxes.get(i).setSelected(true);
                             break;
@@ -1720,7 +1685,10 @@ public class Bang_fxGUI extends Application {
                 {
                     //Going to take it off from anyone else 
                     Random random = new Random();
-                    players = (random.nextInt(10000000) % list.size());
+                    players = (random.nextInt(10000000) % play_order.size());
+                    if(players == 0){
+                        players = 1;
+                    }
                     nameCheckBoxes.get(players).setSelected(true);
 //                    players = list.get(players);
 //                    System.out.println(players);
@@ -1799,7 +1767,7 @@ public class Bang_fxGUI extends Application {
                     {
                         for(int i=0; i < nameCheckBoxes.size();i++)
                         {
-                            if(nameCheckBoxes.get(i).getText().equals("Sheriff"))
+                            if(play_order.get(i).role.equals("Sheriff"))
                             {
                                 nameCheckBoxes.get(i).setSelected(true);
                                 break;
@@ -1817,11 +1785,14 @@ public class Bang_fxGUI extends Application {
                     {
                         //Randomly going to shoot someone
                         Random random = new Random();
-                        players = (random.nextInt(10000000) % list.size());
+                        players = (random.nextInt(10000000) % play_order.size());
+                        if(players == 0){
+                            players = 1;
+                        }
                         nameCheckBoxes.get(players).setSelected(true);
                     }
                     }
-                    else if(play_order.get(0).equals("Renegade"))
+                    else if(play_order.get(0).role.equals("Renegade"))
                     {
                         if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
                         {
@@ -1830,14 +1801,14 @@ public class Bang_fxGUI extends Application {
                             {
                                 for(int i=0; i < nameCheckBoxes.size();i++)
                                 {
-                                    if(nameCheckBoxes.get(i).getText().equals("Sheriff"))
+                                    if(play_order.get(i).role.equals("Sheriff"))
                                     {
                                         nameCheckBoxes.get(i).setSelected(true);
                                         break;
                                     }
                                     else
                                     {
-                                        nameCheckBoxes.get(i).setSelected(true);
+                                        nameCheckBoxes.get(i).setSelected(false);
                                         break;
                                     }
                                 }
@@ -1847,13 +1818,13 @@ public class Bang_fxGUI extends Application {
                             {
                                 //Don't shoot them
                                 Random random = new Random();
-                                players = (random.nextInt(10000000) % list.size());
+                                players = (random.nextInt(10000000) % play_order.size());
                                 //Don't shoot them
                                 //This will check if the random number generated is not the sheriff
                                 if(sheriff == players)
                                 {
                                     players++;
-                                    if(players>list.size())
+                                    if(players>play_order.size())
                                     {
                                         players = players - 2;
                                     }
@@ -1865,7 +1836,10 @@ public class Bang_fxGUI extends Application {
                                 {
                                     //Shoot anyone else
                                     random = new Random();
-                                    players = (random.nextInt(10000000) % list.size());
+                                    players = (random.nextInt(10000000) % play_order.size());
+                                    if(players == 0){
+                                        players = 1;
+                                    }
                                     nameCheckBoxes.get(players).setSelected(true);
 
                                 }
@@ -1873,19 +1847,19 @@ public class Bang_fxGUI extends Application {
                             
                         }
                     }
-                    else if (play_order.get(0).equals("Deputy"))
+                    else if (play_order.get(0).role.equals("Deputy"))
                     {
                         //Doing this to make sure the Dep doesn't shoot on the sheriff
                         if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
                         {
                             Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
+                            players = (random.nextInt(10000000) % play_order.size());
                             //Don't shoot them
                             //This will check if the random number generated is not the sheriff
                             if(sheriff == players)
                             {
                                 players++;
-                                if(players>list.size())
+                                if(players>play_order.size())
                                 {
                                     players = players - 2;
                                 }
@@ -1897,7 +1871,10 @@ public class Bang_fxGUI extends Application {
                         {
                             //Shoot anyone else
                             Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
+                            players = (random.nextInt(10000000) % play_order.size());
+                            if(players == 0){
+                                players = 1;
+                            }
                             nameCheckBoxes.get(players).setSelected(true);
 
                         }
@@ -1905,7 +1882,10 @@ public class Bang_fxGUI extends Application {
                     else
                     {
                         Random random = new Random();
-                        players = (random.nextInt(10000000) % list.size());
+                        players = (random.nextInt(10000000) % play_order.size());
+                        if(players == 0){
+                            players = 1;
+                        }
                         nameCheckBoxes.get(players).setSelected(true);
 
                                             
@@ -1975,36 +1955,41 @@ public class Bang_fxGUI extends Application {
             stage = 3;
             
             //AI Function
-            if(play_order.get(0).computer){
+            if(play_order.get(0).computer)
+            {
                 //AI FUNCTION HERE(people)
-                //Repeated from last attacking time
                 if(play_order.get(0).role.equals("Outlaw"))
                 {
-                    if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
+                    if(((play_order.get(play_order.size()-1).known)==true)||((play_order.get(1).known)==true))
                     {
                         for(int i=0; i < nameCheckBoxes.size();i++)
                         {
-                            if(nameCheckBoxes.get(i).getText().equals("Sheriff"))
+                            if(play_order.get(i).role.equals("Sheriff"))
                             {
                                 nameCheckBoxes.get(i).setSelected(true);
+                                break;
                             }
                             else
                             {
-                                nameCheckBoxes.get(i).setSelected(false);
+                                nameCheckBoxes.get(i).setSelected(true);
                             }
                         }
-
-                        }
-                        else
-                        {
-                            //Randomly going to shoot someone
-                            Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
-                            nameCheckBoxes.get(players).setSelected(true);
-
-                        }
+                        //shoot them
+//                        players = list.get(players);
+//                        System.out.println(players);
                     }
-                    else if(play_order.get(0).equals("Renegade"))
+                    else
+                    {
+                        //Randomly going to shoot someone
+                        Random random = new Random();
+                        players = (random.nextInt(10000000) % play_order.size());
+                        if(players == 0){
+                            players = 1;
+                        }
+                        nameCheckBoxes.get(players).setSelected(true);
+                    }
+                    }
+                    else if(play_order.get(0).role.equals("Renegade"))
                     {
                         if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
                         {
@@ -2013,7 +1998,7 @@ public class Bang_fxGUI extends Application {
                             {
                                 for(int i=0; i < nameCheckBoxes.size();i++)
                                 {
-                                    if(nameCheckBoxes.get(i).getText().equals("Sheriff"))
+                                    if(play_order.get(i).role.equals("Sheriff"))
                                     {
                                         nameCheckBoxes.get(i).setSelected(true);
                                         break;
@@ -2021,32 +2006,37 @@ public class Bang_fxGUI extends Application {
                                     else
                                     {
                                         nameCheckBoxes.get(i).setSelected(false);
+                                        break;
                                     }
                                 }
-
+                                
                             }
                             else
                             {
                                 //Don't shoot them
                                 Random random = new Random();
-                                players = (random.nextInt(10000000) % list.size());
+                                players = (random.nextInt(10000000) % play_order.size());
                                 //Don't shoot them
                                 //This will check if the random number generated is not the sheriff
                                 if(sheriff == players)
                                 {
                                     players++;
-                                    if(players>list.size())
+                                    if(players>play_order.size())
                                     {
                                         players = players - 2;
                                     }
                                     nameCheckBoxes.get(players).setSelected(true);
-
+                                    
+                                    
                                 }
                                 else
                                 {
                                     //Shoot anyone else
                                     random = new Random();
-                                    players = (random.nextInt(10000000) % list.size());
+                                    players = (random.nextInt(10000000) % play_order.size());
+                                    if(players == 0){
+                                        players = 1;
+                                    }
                                     nameCheckBoxes.get(players).setSelected(true);
 
                                 }
@@ -2054,19 +2044,19 @@ public class Bang_fxGUI extends Application {
                             
                         }
                     }
-                    else if (play_order.get(0).equals("Deputy"))
+                    else if (play_order.get(0).role.equals("Deputy"))
                     {
                         //Doing this to make sure the Dep doesn't shoot on the sheriff
                         if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
                         {
                             Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
+                            players = (random.nextInt(10000000) % play_order.size());
                             //Don't shoot them
                             //This will check if the random number generated is not the sheriff
                             if(sheriff == players)
                             {
                                 players++;
-                                if(players>list.size())
+                                if(players>play_order.size())
                                 {
                                     players = players - 2;
                                 }
@@ -2078,7 +2068,10 @@ public class Bang_fxGUI extends Application {
                         {
                             //Shoot anyone else
                             Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
+                            players = (random.nextInt(10000000) % play_order.size());
+                            if(players == 0){
+                                players = 1;
+                            }
                             nameCheckBoxes.get(players).setSelected(true);
 
                         }
@@ -2086,10 +2079,14 @@ public class Bang_fxGUI extends Application {
                     else
                     {
                         Random random = new Random();
-                        players = (random.nextInt(10000000) % list.size());
+                        players = (random.nextInt(10000000) % play_order.size());
+                        if(players == 0){
+                            players = 1;
+                        }
                         nameCheckBoxes.get(players).setSelected(true);
-       
-                    }
+
+                                            
+                    }               
             }
         });
         
@@ -2182,60 +2179,88 @@ public class Bang_fxGUI extends Application {
             stage = 4;
             
             //AI Function
-            if(play_order.get(0).computer){
-                //AI FUNCTION HERE (people)
+            if(play_order.get(0).computer)
+            {
+                //AI FUNCTION HERE(people)
                 if(play_order.get(0).role.equals("Outlaw"))
                 {
-                    if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
+                    if(((play_order.get(play_order.size()-1).known)==true)||((play_order.get(1).known)==true))
                     {
-                        players = sheriff;
-                        //shoot them
-                        nameCheckBoxes.get(players).setSelected(true);
-
-                        }
-                        else
+                        for(int i=0; i < nameCheckBoxes.size();i++)
                         {
-                            //Randomly going to shoot someone
-                            Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
-                            nameCheckBoxes.get(players).setSelected(true);
-
+                            if(play_order.get(i).role.equals("Sheriff"))
+                            {
+                                nameCheckBoxes.get(i).setSelected(true);
+                                break;
+                            }
+                            else
+                            {
+                                nameCheckBoxes.get(i).setSelected(true);
+                            }
                         }
+                        //shoot them
+//                        players = list.get(players);
+//                        System.out.println(players);
                     }
-                    else if(play_order.get(0).equals("Renegade"))
+                    else
+                    {
+                        //Randomly going to shoot someone
+                        Random random = new Random();
+                        players = (random.nextInt(10000000) % play_order.size());
+                        if(players == 0){
+                            players = 1;
+                        }
+                        nameCheckBoxes.get(players).setSelected(true);
+                    }
+                    }
+                    else if(play_order.get(0).role.equals("Renegade"))
                     {
                         if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
                         {
                             //First going to check if it's only the renegade and sheriff, since if that's it only attack them 
                             if((play_order.size())<=2)
                             {
-                                players = sheriff;
-                                //shoot them
-                                nameCheckBoxes.get(players).setSelected(true);
-
+                                for(int i=0; i < nameCheckBoxes.size();i++)
+                                {
+                                    if(play_order.get(i).role.equals("Sheriff"))
+                                    {
+                                        nameCheckBoxes.get(i).setSelected(true);
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        nameCheckBoxes.get(i).setSelected(false);
+                                        break;
+                                    }
+                                }
+                                
                             }
                             else
                             {
                                 //Don't shoot them
                                 Random random = new Random();
-                                players = (random.nextInt(10000000) % list.size());
+                                players = (random.nextInt(10000000) % play_order.size());
                                 //Don't shoot them
                                 //This will check if the random number generated is not the sheriff
                                 if(sheriff == players)
                                 {
                                     players++;
-                                    if(players>list.size())
+                                    if(players>play_order.size())
                                     {
                                         players = players - 2;
                                     }
                                     nameCheckBoxes.get(players).setSelected(true);
-
+                                    
+                                    
                                 }
                                 else
                                 {
                                     //Shoot anyone else
                                     random = new Random();
-                                    players = (random.nextInt(10000000) % list.size());
+                                    players = (random.nextInt(10000000) % play_order.size());
+                                    if(players == 0){
+                                        players = 1;
+                                    }
                                     nameCheckBoxes.get(players).setSelected(true);
 
                                 }
@@ -2243,19 +2268,19 @@ public class Bang_fxGUI extends Application {
                             
                         }
                     }
-                    else if (play_order.get(0).equals("Deputy"))
+                    else if (play_order.get(0).role.equals("Deputy"))
                     {
-                        //Doing this to make sure the Dep doesn't shoot the sheriff
+                        //Doing this to make sure the Dep doesn't shoot on the sheriff
                         if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
                         {
                             Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
+                            players = (random.nextInt(10000000) % play_order.size());
                             //Don't shoot them
                             //This will check if the random number generated is not the sheriff
                             if(sheriff == players)
                             {
                                 players++;
-                                if(players>list.size())
+                                if(players>play_order.size())
                                 {
                                     players = players - 2;
                                 }
@@ -2267,7 +2292,10 @@ public class Bang_fxGUI extends Application {
                         {
                             //Shoot anyone else
                             Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
+                            players = (random.nextInt(10000000) % play_order.size());
+                            if(players == 0){
+                                players = 1;
+                            }
                             nameCheckBoxes.get(players).setSelected(true);
 
                         }
@@ -2275,11 +2303,14 @@ public class Bang_fxGUI extends Application {
                     else
                     {
                         Random random = new Random();
-                        players = (random.nextInt(10000000) % list.size());
+                        players = (random.nextInt(10000000) % play_order.size());
+                        if(players == 0){
+                            players = 1;
+                        }
                         nameCheckBoxes.get(players).setSelected(true);
 
                                             
-                    }
+                    }               
             }
         });
         
@@ -2372,60 +2403,88 @@ public class Bang_fxGUI extends Application {
             stage = 5;
             
             //AI Function
-            if(play_order.get(0).computer){
-                //AI FUNCTION HERE (people)
+            if(play_order.get(0).computer)
+            {
+                //AI FUNCTION HERE(people)
                 if(play_order.get(0).role.equals("Outlaw"))
                 {
-                    if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
+                    if(((play_order.get(play_order.size()-1).known)==true)||((play_order.get(1).known)==true))
                     {
-                        players = sheriff;
-                        //shoot them
-                        nameCheckBoxes.get(players).setSelected(true);
-
-                        }
-                        else
+                        for(int i=0; i < nameCheckBoxes.size();i++)
                         {
-                            //Randomly going to shoot someone
-                            Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
-                            nameCheckBoxes.get(players).setSelected(true);
-
+                            if(play_order.get(i).role.equals("Sheriff"))
+                            {
+                                nameCheckBoxes.get(i).setSelected(true);
+                                break;
+                            }
+                            else
+                            {
+                                nameCheckBoxes.get(i).setSelected(true);
+                            }
                         }
+                        //shoot them
+//                        players = list.get(players);
+//                        System.out.println(players);
                     }
-                    else if(play_order.get(0).equals("Renegade"))
+                    else
+                    {
+                        //Randomly going to shoot someone
+                        Random random = new Random();
+                        players = (random.nextInt(10000000) % play_order.size());
+                        if(players == 0){
+                            players = 1;
+                        }
+                        nameCheckBoxes.get(players).setSelected(true);
+                    }
+                    }
+                    else if(play_order.get(0).role.equals("Renegade"))
                     {
                         if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
                         {
                             //First going to check if it's only the renegade and sheriff, since if that's it only attack them 
                             if((play_order.size())<=2)
                             {
-                                players = sheriff;
-                                //shoot them
-                                nameCheckBoxes.get(players).setSelected(true);
-
+                                for(int i=0; i < nameCheckBoxes.size();i++)
+                                {
+                                    if(play_order.get(i).role.equals("Sheriff"))
+                                    {
+                                        nameCheckBoxes.get(i).setSelected(true);
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        nameCheckBoxes.get(i).setSelected(false);
+                                        break;
+                                    }
+                                }
+                                
                             }
                             else
                             {
                                 //Don't shoot them
                                 Random random = new Random();
-                                players = (random.nextInt(10000000) % list.size());
+                                players = (random.nextInt(10000000) % play_order.size());
                                 //Don't shoot them
                                 //This will check if the random number generated is not the sheriff
                                 if(sheriff == players)
                                 {
                                     players++;
-                                    if(players>list.size())
+                                    if(players>play_order.size())
                                     {
                                         players = players - 2;
                                     }
                                     nameCheckBoxes.get(players).setSelected(true);
-
+                                    
+                                    
                                 }
                                 else
                                 {
                                     //Shoot anyone else
                                     random = new Random();
-                                    players = (random.nextInt(10000000) % list.size());
+                                    players = (random.nextInt(10000000) % play_order.size());
+                                    if(players == 0){
+                                        players = 1;
+                                    }
                                     nameCheckBoxes.get(players).setSelected(true);
 
                                 }
@@ -2433,19 +2492,19 @@ public class Bang_fxGUI extends Application {
                             
                         }
                     }
-                    else if (play_order.get(0).equals("Deputy"))
+                    else if (play_order.get(0).role.equals("Deputy"))
                     {
                         //Doing this to make sure the Dep doesn't shoot on the sheriff
                         if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
                         {
                             Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
+                            players = (random.nextInt(10000000) % play_order.size());
                             //Don't shoot them
                             //This will check if the random number generated is not the sheriff
                             if(sheriff == players)
                             {
                                 players++;
-                                if(players>list.size())
+                                if(players>play_order.size())
                                 {
                                     players = players - 2;
                                 }
@@ -2457,7 +2516,10 @@ public class Bang_fxGUI extends Application {
                         {
                             //Shoot anyone else
                             Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
+                            players = (random.nextInt(10000000) % play_order.size());
+                            if(players == 0){
+                                players = 1;
+                            }
                             nameCheckBoxes.get(players).setSelected(true);
 
                         }
@@ -2465,11 +2527,14 @@ public class Bang_fxGUI extends Application {
                     else
                     {
                         Random random = new Random();
-                        players = (random.nextInt(10000000) % list.size());
+                        players = (random.nextInt(10000000) % play_order.size());
+                        if(players == 0){
+                            players = 1;
+                        }
                         nameCheckBoxes.get(players).setSelected(true);
 
                                             
-                    }
+                    }               
             }
         });
         
@@ -2561,60 +2626,88 @@ public class Bang_fxGUI extends Application {
             stage = 6;
             
             //AI Function
-            if(play_order.get(0).computer){
-                //AI FUNCTION HERE (people)
+            if(play_order.get(0).computer)
+            {
+                //AI FUNCTION HERE(people)
                 if(play_order.get(0).role.equals("Outlaw"))
                 {
-                    if(((play_order.get(play_order.size()-2).shown)==true)||((play_order.get(2).shown)==true))
+                    if(((play_order.get(play_order.size()-1).known)==true)||((play_order.get(1).known)==true))
                     {
-                        players = sheriff;
-                        //shoot them
-                        nameCheckBoxes.get(players).setSelected(true);
-
-                        }
-                        else
+                        for(int i=0; i < nameCheckBoxes.size();i++)
                         {
-                            //Randomly going to shoot someone
-                            Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
-                            nameCheckBoxes.get(players).setSelected(true);
-
+                            if(play_order.get(i).role.equals("Sheriff"))
+                            {
+                                nameCheckBoxes.get(i).setSelected(true);
+                                break;
+                            }
+                            else
+                            {
+                                nameCheckBoxes.get(i).setSelected(true);
+                            }
                         }
+                        //shoot them
+//                        players = list.get(players);
+//                        System.out.println(players);
                     }
-                    else if(play_order.get(0).equals("Renegade"))
+                    else
                     {
-                        if(((play_order.get(play_order.size()-2).shown)==true)||((play_order.get(2).shown)==true))
+                        //Randomly going to shoot someone
+                        Random random = new Random();
+                        players = (random.nextInt(10000000) % play_order.size());
+                        if(players == 0){
+                            players = 1;
+                        }
+                        nameCheckBoxes.get(players).setSelected(true);
+                    }
+                    }
+                    else if(play_order.get(0).role.equals("Renegade"))
+                    {
+                        if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
                         {
                             //First going to check if it's only the renegade and sheriff, since if that's it only attack them 
                             if((play_order.size())<=2)
                             {
-                                players = sheriff;
-                                //shoot them
-                                nameCheckBoxes.get(players).setSelected(true);
-
+                                for(int i=0; i < nameCheckBoxes.size();i++)
+                                {
+                                    if(play_order.get(i).role.equals("Sheriff"))
+                                    {
+                                        nameCheckBoxes.get(i).setSelected(true);
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        nameCheckBoxes.get(i).setSelected(false);
+                                        break;
+                                    }
+                                }
+                                
                             }
                             else
                             {
                                 //Don't shoot them
                                 Random random = new Random();
-                                players = (random.nextInt(10000000) % list.size());
+                                players = (random.nextInt(10000000) % play_order.size());
                                 //Don't shoot them
                                 //This will check if the random number generated is not the sheriff
                                 if(sheriff == players)
                                 {
                                     players++;
-                                    if(players>list.size())
+                                    if(players>play_order.size())
                                     {
                                         players = players - 2;
                                     }
                                     nameCheckBoxes.get(players).setSelected(true);
-
+                                    
+                                    
                                 }
                                 else
                                 {
                                     //Shoot anyone else
                                     random = new Random();
-                                    players = (random.nextInt(10000000) % list.size());
+                                    players = (random.nextInt(10000000) % play_order.size());
+                                    if(players == 0){
+                                        players = 1;
+                                    }
                                     nameCheckBoxes.get(players).setSelected(true);
 
                                 }
@@ -2622,19 +2715,19 @@ public class Bang_fxGUI extends Application {
                             
                         }
                     }
-                    else if (play_order.get(0).equals("Deputy"))
+                    else if (play_order.get(0).role.equals("Deputy"))
                     {
                         //Doing this to make sure the Dep doesn't shoot on the sheriff
-                        if(((play_order.get(play_order.size()-2).shown)==true)||((play_order.get(2).shown)==true))
+                        if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
                         {
                             Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
+                            players = (random.nextInt(10000000) % play_order.size());
                             //Don't shoot them
                             //This will check if the random number generated is not the sheriff
                             if(sheriff == players)
                             {
                                 players++;
-                                if(players>list.size())
+                                if(players>play_order.size())
                                 {
                                     players = players - 2;
                                 }
@@ -2646,7 +2739,10 @@ public class Bang_fxGUI extends Application {
                         {
                             //Shoot anyone else
                             Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
+                            players = (random.nextInt(10000000) % play_order.size());
+                            if(players == 0){
+                                players = 1;
+                            }
                             nameCheckBoxes.get(players).setSelected(true);
 
                         }
@@ -2654,11 +2750,14 @@ public class Bang_fxGUI extends Application {
                     else
                     {
                         Random random = new Random();
-                        players = (random.nextInt(10000000) % list.size());
+                        players = (random.nextInt(10000000) % play_order.size());
+                        if(players == 0){
+                            players = 1;
+                        }
                         nameCheckBoxes.get(players).setSelected(true);
 
                                             
-                    }
+                    }               
             }
         });
         
@@ -2751,60 +2850,88 @@ public class Bang_fxGUI extends Application {
             stage = 7;
             
             //AI Function
-            if(play_order.get(0).computer){
-                //AI FUNCTION HERE (people)
+            if(play_order.get(0).computer)
+            {
+                //AI FUNCTION HERE(people)
                 if(play_order.get(0).role.equals("Outlaw"))
                 {
-                    if(((play_order.get(play_order.size()-2).shown)==true)||((play_order.get(2).shown)==true))
+                    if(((play_order.get(play_order.size()-1).known)==true)||((play_order.get(1).known)==true))
                     {
-                        players = sheriff;
-                        //shoot them
-                        nameCheckBoxes.get(players).setSelected(true);
-
-                        }
-                        else
+                        for(int i=0; i < nameCheckBoxes.size();i++)
                         {
-                            //Randomly going to shoot someone
-                            Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
-                            nameCheckBoxes.get(players).setSelected(true);
-
+                            if(play_order.get(i).role.equals("Sheriff"))
+                            {
+                                nameCheckBoxes.get(i).setSelected(true);
+                                break;
+                            }
+                            else
+                            {
+                                nameCheckBoxes.get(i).setSelected(true);
+                            }
                         }
+                        //shoot them
+//                        players = list.get(players);
+//                        System.out.println(players);
                     }
-                    else if(play_order.get(0).equals("Renegade"))
+                    else
                     {
-                        if(((play_order.get(play_order.size()-2).shown)==true)||((play_order.get(2).shown)==true))
+                        //Randomly going to shoot someone
+                        Random random = new Random();
+                        players = (random.nextInt(10000000) % play_order.size());
+                        if(players == 0){
+                            players = 1;
+                        }
+                        nameCheckBoxes.get(players).setSelected(true);
+                    }
+                    }
+                    else if(play_order.get(0).role.equals("Renegade"))
+                    {
+                        if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
                         {
                             //First going to check if it's only the renegade and sheriff, since if that's it only attack them 
                             if((play_order.size())<=2)
                             {
-                                players = sheriff;
-                                //shoot them
-                                nameCheckBoxes.get(players).setSelected(true);
-
+                                for(int i=0; i < nameCheckBoxes.size();i++)
+                                {
+                                    if(play_order.get(i).role.equals("Sheriff"))
+                                    {
+                                        nameCheckBoxes.get(i).setSelected(true);
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        nameCheckBoxes.get(i).setSelected(false);
+                                        break;
+                                    }
+                                }
+                                
                             }
                             else
                             {
                                 //Don't shoot them
                                 Random random = new Random();
-                                players = (random.nextInt(10000000) % list.size());
+                                players = (random.nextInt(10000000) % play_order.size());
                                 //Don't shoot them
                                 //This will check if the random number generated is not the sheriff
                                 if(sheriff == players)
                                 {
                                     players++;
-                                    if(players>list.size())
+                                    if(players>play_order.size())
                                     {
                                         players = players - 2;
                                     }
                                     nameCheckBoxes.get(players).setSelected(true);
-
+                                    
+                                    
                                 }
                                 else
                                 {
                                     //Shoot anyone else
                                     random = new Random();
-                                    players = (random.nextInt(10000000) % list.size());
+                                    players = (random.nextInt(10000000) % play_order.size());
+                                    if(players == 0){
+                                        players = 1;
+                                    }
                                     nameCheckBoxes.get(players).setSelected(true);
 
                                 }
@@ -2812,20 +2939,19 @@ public class Bang_fxGUI extends Application {
                             
                         }
                     }
-                    else if (play_order.get(0).equals("Deputy"))
+                    else if (play_order.get(0).role.equals("Deputy"))
                     {
                         //Doing this to make sure the Dep doesn't shoot on the sheriff
-                        //Now that it is two we need to tweak to make srue it still 
-                        if(((play_order.get(play_order.size()-2).shown)==true)||((play_order.get(2).shown)==true))
+                        if(((play_order.get(play_order.size()-1).shown)==true)||((play_order.get(1).shown)==true))
                         {
                             Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
+                            players = (random.nextInt(10000000) % play_order.size());
                             //Don't shoot them
                             //This will check if the random number generated is not the sheriff
                             if(sheriff == players)
                             {
                                 players++;
-                                if(players>list.size())
+                                if(players>play_order.size())
                                 {
                                     players = players - 2;
                                 }
@@ -2837,7 +2963,10 @@ public class Bang_fxGUI extends Application {
                         {
                             //Shoot anyone else
                             Random random = new Random();
-                            players = (random.nextInt(10000000) % list.size());
+                            players = (random.nextInt(10000000) % play_order.size());
+                            if(players == 0){
+                                players = 1;
+                            }
                             nameCheckBoxes.get(players).setSelected(true);
 
                         }
@@ -2845,11 +2974,14 @@ public class Bang_fxGUI extends Application {
                     else
                     {
                         Random random = new Random();
-                        players = (random.nextInt(10000000) % list.size());
+                        players = (random.nextInt(10000000) % play_order.size());
+                        if(players == 0){
+                            players = 1;
+                        }
                         nameCheckBoxes.get(players).setSelected(true);
 
                                             
-                    }
+                    }               
             }
         });
         
@@ -2945,7 +3077,7 @@ public class Bang_fxGUI extends Application {
                 {
                     //Heal random ones
                     Random random = new Random();
-                    players = (random.nextInt(10000000) % list.size());
+                    players = (random.nextInt(10000000) % play_order.size());
                     nameCheckBoxes.get(players).setSelected(true);
                 }
             }
@@ -3086,7 +3218,7 @@ public class Bang_fxGUI extends Application {
                 {
                     //Square up with anyone
                     Random random = new Random();
-                    players = (random.nextInt(10000000) % list.size());
+                    players = (random.nextInt(10000000) % play_order.size());
                     nameCheckBoxes.get(players).setSelected(true);
                     
                 }
@@ -3519,6 +3651,9 @@ public class Bang_fxGUI extends Application {
                 break;
             default:
                 System.out.println("Stage 0");
+        }
+        for(int i = 0; i < nameCheckBoxes.size(); i++){
+            nameCheckBoxes.get(i).setSelected(false);
         }
     }
     
